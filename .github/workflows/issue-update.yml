@@ -1,0 +1,19 @@
+name: Import issues from Template
+
+on:
+  project:
+    types: [created]
+  schedule:
+    # run a 8:00 12:00 and 18:00 every day in march
+    - cron:  '30 9,12,18 * 3 *'
+  workflow_dispatch:
+
+jobs:
+  copy:
+    if: github.run_number == '1' || github.event == 'schedule' || github.event == 'workflow_dispatch'
+    name: Copy Issues
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Estia-advanced-programming/pandora-public/issueGenerator@v2022-alpha
+        with:
+          destination-repo: ${{ github.repository }}

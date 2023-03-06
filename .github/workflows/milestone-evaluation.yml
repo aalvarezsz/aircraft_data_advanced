@@ -1,0 +1,62 @@
+name: Milestone Assessement
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+env:
+  TEST_SUITES_URL: https://github.com/Estia-advanced-programming/pandora-public/releases/download/v2022-alpha/
+
+jobs:
+  maven_build:
+    name: Automatic Milestone Evaluation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your code
+        uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build pandora.jar with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Download Test suite
+        run: |
+          wget $TEST_SUITES_URL/autograder.zip -O autograder.zip
+          unzip autograder.zip -d autograder
+
+      - name: Set up nodejs to run the tests
+        uses: actions/setup-node@v2
+
+      - name: Create Output directory
+        run: mkdir results
+
+      - name: run tests
+        id: runTests
+        run: node autograder/execute.mjs 1 2 3 -f a1 a2 a3 target/pandora.jar
+
+      - name: update report
+        if: failure()
+        run: echo error
+
+      - name: Create Report Artifact to be downloaded  
+        uses: actions/upload-artifact@v2
+        if: success()
+        with:
+          name: score-report
+          path: results/
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1  
+        if: github.event_name == 'pull_request'
+        with:
+          message: ${{steps.runTests.outputs.annotation}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
