@@ -22,8 +22,9 @@ public class RecordParser {
 	        // get values separated by coma (csv file...)
         String[] values = data.split(",");
         if( values.length > 0 ) {
-        	record = new Record() ;
-        	record.setTimestamp( (int) Float.parseFloat(values[0]));
+        	record = new Record();
+        	record.setTimestamp( Double.parseDouble(values[0]));
+        	record.setEnginePower(Double.parseDouble(values[9]));
         }
 		return record;
 	}
