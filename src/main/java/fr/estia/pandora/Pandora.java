@@ -9,6 +9,7 @@ import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.printer.ConsolePrinter;
 import fr.estia.pandora.printer.FeaturePrinter;
 import fr.estia.pandora.readers.commandLine.CLI;
+import fr.estia.pandora.readers.commandLine.Configuration;
 import fr.estia.pandora.readers.commandLine.Option;
 import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
 import fr.estia.pandora.readers.commandLine.exceptions.OptionException;
@@ -38,23 +39,27 @@ public class Pandora {
 					new Option( 'v', "Version - print the version of the application ", "version"),
 					new Option( 'd', "Debug - print additional debug information on Unhandled error", "debug")
 			} ;
-			CLI.initialize( "pandora", 1, 0, 1, options  ) ;
+			CLI.initialize("pandora", 1, 0, 1, options) ;
 			// Parse the command line arguments
-			CLI.read( arguments ) ;
-			// Check that exactly one source file was provided, exit otherwise
-			List<String> sources = CLI.getConfiguration().getSources() ;
-			if( sources.size() != 1 ) {
-				throw new OptionException( "no source provided" ) ;
-			}
-			//Create a file reader
-			FileReader fileReader = new FileReader( "./" ) ;
-			//Get the flight
-			Flight flight = fileReader.GetRecordsFromFile( sources.get( 0 )  ) ;
-			//Get the analysis
-			Analysis analysis = new Analysis( flight ) ;
-			//Print everything
-			print( flight, analysis ) ;
+			Configuration config = CLI.read( arguments );
 
+			if(config.getTargetFeature() != null) {
+				// Check that exactly one source file was provided, exit otherwise
+				List<String> sources = CLI.getConfiguration().getSources() ;
+				if( sources.size() != 1 ) {
+					throw new OptionException("No source provided");
+				}
+				//Create a file reader
+				FileReader fileReader = new FileReader( "./" );
+				//Get the flight
+				Flight flight = fileReader.GetRecordsFromFile(sources.get( 0 ));
+				//Get the analysis
+				Analysis analysis = new Analysis(flight, config.getTargetFeature());
+				//Print everything
+				print( flight, analysis );
+			} else {
+				System.out.println("Aucune analyse demandée");
+			}
 		} catch (OptionException e) {
 			System.out.println( e.getMessage() );
 			System.exit( EXIT_ILLEGAL_ARGUMENT );
@@ -80,14 +85,14 @@ public class Pandora {
 	static void print( Flight flight, Analysis analysis ) {
 		//Select printer according to configuration
 		switch (CLI.getConfiguration().getOutputMode()) {
-		case feature :
-			//output mode is set to only one feature, set target and print
-			FeaturePrinter.setTargetFeature( CLI.getConfiguration().getTargetFeature() ) ;
-			FeaturePrinter.print(flight, analysis);
-			break ;
-		default :
-			//Default mode print everything
-			ConsolePrinter.print( flight, analysis );
-		}
+			case feature :
+				//output mode is set to only one feature, set target and print
+				FeaturePrinter.setTargetFeature( CLI.getConfiguration().getTargetFeature() ) ;
+				FeaturePrinter.print(flight, analysis);
+				break ;
+			default :
+				//Default mode print everything
+				ConsolePrinter.print( flight, analysis );
+			}
 	}
 }

@@ -10,6 +10,7 @@ public class FeaturePrinter {
 		FeaturePrinter.targetFeature = targetFeature ;
 	}
 	public static void print( Flight flight, Analysis analysis ) {
-		System.out.println( analysis.getFeatureValue( targetFeature ) );
+		// System.out.println( analysis.getFeatureValue( targetFeature ) );
+		System.out.println( analysis.toString() );
 	}
 }

@@ -78,24 +78,24 @@ public class CLI {
 
 		while ((code = g.getopt()) != -1) {
 			switch (code) {
-			case 'o': //Feature
-				configuration.setFeature( g.getOptarg() ) ;
-				break;
-			case 'd':
-				configuration.setDebugSession( true ) ;
-				break ;
-			case 'v':
-				printVersion() ;
-				throw new NoOpException( "version" ) ;
-			case 'h':
-				printUsage();
-				throw new NoOpException( "help" ) ;
-			case ':':	//Missing parameters
-				throw new MissingParameterException( String.valueOf((char)g.getOptopt() ) ) ;
-			case '?':	//Invalid Options
-				throw new InvalidOptionException( String.valueOf((char)g.getOptopt() ) ) ;
-			default:
-				throw new UnhandledOptionException( String.valueOf( code ) ) ;
+				case 'o': //Feature
+					configuration.setFeature( g.getOptarg() ) ;
+					break;
+				case 'd':
+					configuration.setDebugSession( true ) ;
+					break ;
+				case 'v':
+					printVersion() ;
+					throw new NoOpException( "version" ) ;
+				case 'h':
+					printUsage();
+					throw new NoOpException( "help" ) ;
+				case ':':	//Missing parameters
+					throw new MissingParameterException( String.valueOf((char)g.getOptopt() ) ) ;
+				case '?':	//Invalid Options
+					throw new InvalidOptionException( String.valueOf((char)g.getOptopt() ) ) ;
+				default:
+					throw new UnhandledOptionException( String.valueOf( code ) ) ;
 			}
 		}
 		for (int i = g.getOptind(); i < arguments.length ; i++) {
