@@ -43,23 +43,20 @@ public class Pandora {
 			// Parse the command line arguments
 			Configuration config = CLI.read( arguments );
 
-			if(config.getTargetFeature() != null) {
-				// Check that exactly one source file was provided, exit otherwise
-				List<String> sources = CLI.getConfiguration().getSources() ;
-				if( sources.size() != 1 ) {
-					throw new OptionException("No source provided");
-				}
-				//Create a file reader
-				FileReader fileReader = new FileReader( "./" );
-				//Get the flight
-				Flight flight = fileReader.GetRecordsFromFile(sources.get( 0 ));
-				//Get the analysis
-				Analysis analysis = new Analysis(flight, config.getTargetFeature());
-				//Print everything
-				print( flight, analysis );
-			} else {
-				System.out.println("Aucune analyse demandée");
+			// Check that exactly one source file was provided, exit otherwise
+			List<String> sources = CLI.getConfiguration().getSources() ;
+			if( sources.size() != 1 ) {
+				throw new OptionException("No source provided");
 			}
+			//Create a file reader
+			FileReader fileReader = new FileReader( "./" );
+			//Get the flight
+			Flight flight = fileReader.GetRecordsFromFile(sources.get( 0 ));
+			//Get the analysis
+			Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+			//Print everything
+			print( flight, analysis );
+			
 		} catch (OptionException e) {
 			System.out.println( e.getMessage() );
 			System.exit( EXIT_ILLEGAL_ARGUMENT );

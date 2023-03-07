@@ -31,7 +31,6 @@ public class Flight {
 	public void addRecord(Record record) {
 		this.records.add( record ) ;
 	}
-	
 
 	public void parseMetaData(String line) {
 		String elements[] = line.split("\\s*:\\s*") ;
