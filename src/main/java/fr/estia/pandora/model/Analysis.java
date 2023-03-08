@@ -71,13 +71,13 @@ public class Analysis {
 			case "minHumidity":
 				this.featureValues.put( "minHumidity", String.format("%.2f", Humidity.min(flight)));
 				break;
-			case "avgHeartrate":
+			case "avgHeartRate":
 				this.featureValues.put( "avgHeartRate", String.format("%.2f", Heartrate.average(flight)));
 				break;
-			case "maxHeartrate":
+			case "maxHeartRate":
 				this.featureValues.put( "maxHeartRate", String.format("%.2f", Heartrate.max(flight)));
 				break;
-			case "minHeartrate":
+			case "minHeartRate":
 				this.featureValues.put( "minHeartRate", String.format("%.2f", Heartrate.min(flight)));
 				break;
 			case "avgOxygen":
