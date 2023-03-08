@@ -33,7 +33,7 @@ public class Analysis {
 	public void execute(String targetFeature) {
 		switch(targetFeature) {
 			case "flightDuration":
-				this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
+				this.featureValues.put( "flightDuration", FlightDuration.getFormattedDuration(this.flightDuration));
 				break;
 			case "avgAltitude":
 				System.out.println("Average Altitude");
@@ -58,7 +58,7 @@ public class Analysis {
 	
 	public void executeAll() {
 		this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
-		this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
+		this.featureValues.put( "flightDuration", FlightDuration.getFormattedDuration(this.flightDuration));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 	}
 	
