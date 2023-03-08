@@ -90,10 +90,10 @@ public class Analysis {
 				this.featureValues.put( "minOxygen", String.format("%.2f", Oxygen.min(flight)));
 				break;
 			case "avgAirSpeed":
-				this.featureValues.put( "minOxygen", String.format("%.2f", AirSpeed.average(flight)));
+				this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
 				break;
 			case "maxAirSpeed":
-				this.featureValues.put( "minOxygen", String.format("%.2f", AirSpeed.max(flight)));
+				this.featureValues.put( "maxAirSpeed", String.format("%.2f", AirSpeed.max(flight)));
 				break;
 			case "avgEnginePower":
 				this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
