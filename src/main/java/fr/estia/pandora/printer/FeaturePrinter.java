@@ -10,7 +10,12 @@ public class FeaturePrinter {
 		FeaturePrinter.targetFeature = targetFeature ;
 	}
 	public static void print( Flight flight, Analysis analysis ) {
+<<<<<<< HEAD
 		System.out.println( analysis.getFeatureValue( targetFeature ) );	
 		// System.out.println( analysis.toString() );
+=======
+		System.out.println( analysis.getFeatureValue( targetFeature ) );
+		//System.out.println( analysis.toString() );
+>>>>>>> 6235aa9 (milestone 1 and 2 implementation in analysis)
 	}
 }
