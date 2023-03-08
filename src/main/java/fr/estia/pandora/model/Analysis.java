@@ -35,15 +35,15 @@ public class Analysis {
 			case "flightDuration":
 				this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
 				break;
-			case "avgAltitude":
+			case "avgAlt":
 				this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 				break;
-			case "maxAltitude":
+			case "maxAlt":
 				this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
 				break;
-			case "minAltitude":
-				this.featureValues.put( "minAlt", String.format("%.2f", Altitude.min(flight)));
-				break;
+//			case "minAlt":
+//				this.featureValues.put( "minAlt", String.format("%.2f", Altitude.min(flight)));
+//				break;
 			case "avgTemp":
 				this.featureValues.put( "avgTemperature", String.format("%.2f", Temperature.average(flight)));
 				break;
@@ -111,7 +111,7 @@ public class Analysis {
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 		this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 		this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
-		this.featureValues.put( "minAlt", String.format("%.2f", Altitude.min(flight)));
+//		this.featureValues.put( "minAlt", String.format("%.2f", Altitude.min(flight)));
 		this.featureValues.put( "avgTemp", String.format("%.2f", Temperature.average(flight)));
 		this.featureValues.put( "maxTemp", String.format("%.2f", Temperature.max(flight)));
 		this.featureValues.put( "minTemp", String.format("%.2f", Temperature.min(flight)));
