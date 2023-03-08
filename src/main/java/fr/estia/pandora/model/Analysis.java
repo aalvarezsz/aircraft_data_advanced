@@ -22,7 +22,7 @@ public class Analysis {
 	 */
 	public Analysis(Flight flight, String targetFeature) {
 		this.flight = flight;
-		this.flightDuration = FlightDuration.compute(this.flight);
+		this.flightDuration = FlightAnalysis.computeDuration(this.flight);
 		
 		this.featureValues = new HashMap<String, String> ();
 		
@@ -32,9 +32,6 @@ public class Analysis {
 	
 	public void execute(String targetFeature) {
 		switch(targetFeature) {
-			case "flightDuration":
-				this.featureValues.put( "flightDuration", FlightDuration.getFormattedDuration(this.flightDuration));
-				break;
 			case "avgAltitude":
 				System.out.println("Average Altitude");
 				break;
@@ -53,12 +50,19 @@ public class Analysis {
 			case "maxEnginePower":
 				this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 				break;
+			case "flightDuration":
+				this.featureValues.put( "flightDuration", FlightAnalysis.getFormattedDuration(this.flightDuration));
+				break;
+			case "flightDistance":
+				this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
+				break;
 		}
 	}
 	
 	public void executeAll() {
 		this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
-		this.featureValues.put( "flightDuration", FlightDuration.getFormattedDuration(this.flightDuration));
+		this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
+		this.featureValues.put( "flightDuration", FlightAnalysis.getFormattedDuration(this.flightDuration));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 	}
 	
