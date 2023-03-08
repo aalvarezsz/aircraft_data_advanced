@@ -20,7 +20,7 @@ public class FlightAnalysis {
 		Date date = new Date((long) timestamp * 1000);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		int hours = calendar.get(Calendar.HOUR_OF_DAY) - 1;
+		int hours = calendar.get(Calendar.HOUR_OF_DAY);
 		int minutes = calendar.get(Calendar.MINUTE);
 		int seconds = calendar.get(Calendar.SECOND);
 		
