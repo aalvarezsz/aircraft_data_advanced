@@ -7,7 +7,7 @@ import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.Position;
 
 public class FlightAnalysis {
-	public static final double EARTH_RADIUS = 6371.0; // Earth's radius in km
+	public static final double EARTH_RADIUS = 6371000.0; // Earth's radius in m
 	
 	public static double computeDuration(Flight flight) {
 		double startTime = flight.getRecords().get( 0 ).getTimestamp();
