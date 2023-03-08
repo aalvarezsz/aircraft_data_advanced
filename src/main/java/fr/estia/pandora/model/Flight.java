@@ -21,11 +21,16 @@ public class Flight {
 		// return another instance of it if you want to prevent external modifications
 		return new ArrayList<Record>(this.records);
 	}
+	
+	public void printRecords() {
+		ArrayList<Record> records = this.getRecords();
+		System.out.println("Records: ");
+		for(Record record: records) System.out.println(record.getTimestamp() + "; ");
+	}
 
 	public void addRecord(Record record) {
 		this.records.add( record ) ;
 	}
-	
 
 	public void parseMetaData(String line) {
 		String elements[] = line.split("\\s*:\\s*") ;
