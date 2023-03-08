@@ -12,7 +12,7 @@ public class EnginePower {
 		
 		for (int i = 0; i<flightRecords.size(); i++) enginePowerSum += flightRecords.get(i).getEngine_0_power();
 		
-		return enginePowerSum / flightRecords.size();
+		return enginePowerSum / flightRecords.size() / 754.7;
 	}
 	
 	public static double max(Flight flight) {
@@ -24,7 +24,7 @@ public class EnginePower {
 				maxEnginePower = flightRecords.get(i).getEngine_0_power();
 			};
 		}
-		return maxEnginePower;
+		return maxEnginePower / 754.7;
 	}
 
 }
