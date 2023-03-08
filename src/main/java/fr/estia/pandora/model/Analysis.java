@@ -36,13 +36,13 @@ public class Analysis {
 				this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
 				break;
 			case "avgAltitude":
-				this.featureValues.put( "avgAltitude", String.format("%.2f", Altitude.average(flight)));
+				this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 				break;
 			case "maxAltitude":
-				this.featureValues.put( "maxAltitude", String.format("%.2f", Altitude.max(flight)));
+				this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
 				break;
 			case "minAltitude":
-				this.featureValues.put( "minAltitude", String.format("%.2f", Altitude.min(flight)));
+				this.featureValues.put( "minAlt", String.format("%.2f", Altitude.min(flight)));
 				break;
 			case "avgTemperature":
 				this.featureValues.put( "avgTemperature", String.format("%.2f", Temperature.average(flight)));
@@ -108,9 +108,9 @@ public class Analysis {
 		this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
 		this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
-		this.featureValues.put( "avgAltitude", String.format("%.2f", Altitude.average(flight)));
-		this.featureValues.put( "maxAltitude", String.format("%.2f", Altitude.max(flight)));
-		this.featureValues.put( "minAltitude", String.format("%.2f", Altitude.min(flight)));
+		this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
+		this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
+		this.featureValues.put( "minAlt", String.format("%.2f", Altitude.min(flight)));
 		this.featureValues.put( "avgTemperature", String.format("%.2f", Temperature.average(flight)));
 		this.featureValues.put( "maxTemperature", String.format("%.2f", Temperature.max(flight)));
 		this.featureValues.put( "minTemperature", String.format("%.2f", Temperature.min(flight)));
