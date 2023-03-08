@@ -17,10 +17,10 @@ public class FlightAnalysis {
 	}
 	
 	public static String getFormattedDuration(double timestamp) {
-		Date date = new Date((long) timestamp);
+		Date date = new Date((long) timestamp * 1000);
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		int hours = calendar.get(Calendar.HOUR_OF_DAY);
+		int hours = calendar.get(Calendar.HOUR_OF_DAY) - 1;
 		int minutes = calendar.get(Calendar.MINUTE);
 		int seconds = calendar.get(Calendar.SECOND);
 		
