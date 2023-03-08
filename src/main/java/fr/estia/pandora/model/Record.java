@@ -11,6 +11,8 @@ public class Record {
 	private float pitch;
 	private float yaw;
 	private float heading;
+	private float u;
+	private float v;
 	
 	private double air_speed;
 	private double engine_0;
@@ -45,6 +47,12 @@ public class Record {
 	
 	public float getHeading() { return heading; }
 	public void setHeading(float heading) { this.heading = heading; }
+	
+	public float getU() { return u; }
+	public void setU(float u) { this.u = u; }
+	
+	public float getV() { return v; }
+	public void setV(float v) { this.v = v; }
 	
 	public double getAir_speed() { return air_speed; }
 	public void setAir_speed(double air_speed) { this.air_speed = air_speed; }

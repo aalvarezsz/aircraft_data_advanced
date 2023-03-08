@@ -55,10 +55,8 @@ public class FileReader {
 		String line ; 
 		//use scanner only if the metadata have not yet been used 
 		if( !metadataParsed ) {
-			if( !readyToParse() ) throw new MetadataException( sourcePath.toString() ) ;
-			while ( readyToParse() && !isEmptyLine(line = source.nextLine()) ) {
-				flight.parseMetaData( line ) ; 
-			}
+			if( !readyToParse() ) throw new MetadataException(sourcePath.toString()) ;
+			while (readyToParse() && !isEmptyLine(line = source.nextLine())) flight.parseMetaData(line);
 			metadataParsed = true ;
 		}		
 	}
@@ -70,28 +68,22 @@ public class FileReader {
 	private void parseData() throws HeaderException {
 		//Verify that metadata have been read
 		if( metadataParsed ) {
-			String header, recordLine  ; 
+			String header, recordLine;
 			if( !readyToParse() || isEmptyLine( header = source.nextLine() ) ) 
 				throw new HeaderException( sourcePath.toString() )  ;
 
 			RecordParser parser ; 
-			//Java 7 feature : switch on String 
+			//Java 7 feature : switch on String
 			switch( flight.getMetadata().getConstructor()  ) {
-			case "US" : 
-			default : parser = new RecordParser( header ) ;
+				case "US" : 
+				default : parser = new RecordParser( header ) ;
 			}
 
 			while ( readyToParse() ) {
 				recordLine = source.nextLine();
 				flight.addRecord( parser.parse ( recordLine ) );
 			}
-
 		}
-
 	}
-
-
-
-
 
 }
