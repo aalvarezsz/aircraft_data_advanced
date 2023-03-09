@@ -14,9 +14,9 @@ public class FlightAnalysis {
 	}
 	
 	public static double computeFullDistance(Flight flight) {
-		double fullDistance = 0.0;
+		double fullDistance = 0.00;
 		
-		if(flight.getRecords().size() <= 1) return 0;
+		if(flight.getRecords().size() <= 1) return fullDistance;
 		for(int i=0; i < flight.getRecords().size() - 1; i++) {
 			Position currentPosition = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude());
 			Position nextPosition = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude());

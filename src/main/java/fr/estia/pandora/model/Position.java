@@ -29,4 +29,12 @@ public class Position {
 	
 	public double getAltitude() { return altitude; }
 	public void setAltitude(double altitude) { this.altitude = altitude; }
+	
+	public void print() {
+		System.out.println("====================");
+		System.out.println("Latitude: " + this.latitude);
+		System.out.println("Longitude: " + this.longitude);
+		System.out.println("Altitude: " + this.altitude);
+		System.out.println("====================");
+	}
 }
