@@ -49,7 +49,7 @@ public class Reaching80PercentMaxAltitude {
 		//System.out.println("L'altitude max est"+maxaltitude);
 		timestamp = Taltitude-startTime;
 
-		System.out.println("Le timestamp est"+timestamp);
+		//System.out.println("Le timestamp est"+timestamp);
 		timestampFomatted = getFormattedDuration(timestamp);
 		//falta formatear el tiempo
 		
