@@ -29,7 +29,7 @@ public class Reaching80PercentMaxAltitude {
 		double Taltitude = 0;
 		double timestamp = 0;
 		String timestampFomatted;
-		//le timestamp du début du vol
+		//le timestamp du debut du vol
 		double startTime = flight.getRecords().get( 0 ).getTimestamp();
 		
 		//calculer max altitude
