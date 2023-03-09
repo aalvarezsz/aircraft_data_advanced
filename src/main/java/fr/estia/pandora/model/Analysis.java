@@ -67,7 +67,6 @@ public class Analysis {
 		this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 		this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
-		this.featureValues.put( "reachAlt", Reaching80PercentMaxDistance.average(flight));
 	}
 	
 	public String getFeatureValue( String feature ) {
