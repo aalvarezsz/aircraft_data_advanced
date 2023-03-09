@@ -13,7 +13,7 @@ public class Acceleration {
 		double accelerationSum = 0;
 		
 		for (int i = 1; i<flightRecords.size(); i++) {
-			speedDelta += flightRecords.get(i).getAir_speed() - flightRecords.get(i-1).getAir_speed();
+			speedDelta = flightRecords.get(i).getAir_speed() - flightRecords.get(i-1).getAir_speed();
 			timestampForDivision = flightRecords.get(i).getTimestamp() - flightRecords.get(i-1).getTimestamp();
 			accelerationSum += speedDelta / timestampForDivision ;
 		};
@@ -28,16 +28,25 @@ public class Acceleration {
 		double speedDelta = 0;
 		double timestampForDivision = 0;
 		double accelerationSum = 0;
+		ArrayList<Double> accelerationList = new ArrayList<Double>();
 		
 		for (int i = 1; i<flightRecords.size(); i++) {
 			speedDelta += flightRecords.get(i).getAir_speed() - flightRecords.get(i-1).getAir_speed();
 			timestampForDivision = flightRecords.get(i).getTimestamp() - flightRecords.get(i-1).getTimestamp();
-			accelerationSum += speedDelta / timestampForDivision ;
+			accelerationSum = speedDelta / timestampForDivision ;
+			
+			accelerationList.add(accelerationSum) ;
 			
 			if(maxAcceleration < accelerationSum) {
 				maxAcceleration = accelerationSum;
 			};
 		}
+		
+		System.out.println(accelerationList) ;
+		// print the last item of the list
+		int lastIndex = accelerationList.size() - 1;
+		double lastItem = accelerationList.get(lastIndex);
+		System.out.println("Last item: " + lastItem);
 		return maxAcceleration;
 	}
 	
