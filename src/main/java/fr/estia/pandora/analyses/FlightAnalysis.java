@@ -1,13 +1,14 @@
 package fr.estia.pandora.analyses;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.Position;
 
 public class FlightAnalysis {
-	public static final double EARTH_RADIUS = 6371000.0; // Earth's radius in m
+	public static final double EARTH_RADIUS = 6371000.0;
 	
 	public static double computeDuration(Flight flight) {
 		double startTime = flight.getRecords().get( 0 ).getTimestamp();
@@ -17,14 +18,13 @@ public class FlightAnalysis {
 	}
 	
 	public static String getFormattedDuration(double timestamp) {
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
 		Date date = new Date((long) timestamp * 1000);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		int hours = calendar.get(Calendar.HOUR_OF_DAY);
-		int minutes = calendar.get(Calendar.MINUTE);
-		int seconds = calendar.get(Calendar.SECOND);
+		String formattedDuration = formatter.format(date);
 		
-		return String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
+		return formattedDuration;
 	}
 	
 	public static double computeFullDistance(Flight flight) {
