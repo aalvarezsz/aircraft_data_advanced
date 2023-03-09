@@ -53,6 +53,12 @@ public class Analysis {
 			case "maxEnginePower":
 				this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 				break;
+			case "reachAlt":
+				this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
+				break;
+			case "reachDist":
+				this.featureValues.put( "reachDist", Reaching80PercentMaxDistance.average(flight));
+				break;
 		}
 	}
 	
@@ -60,6 +66,8 @@ public class Analysis {
 		this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
 		this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
+		this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
+		this.featureValues.put( "reachAlt", Reaching80PercentMaxDistance.average(flight));
 	}
 	
 	public String getFeatureValue( String feature ) {
