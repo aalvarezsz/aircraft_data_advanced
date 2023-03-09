@@ -11,7 +11,6 @@ import fr.estia.pandora.analyses.*;
  */
 public class Analysis {
 	private Flight flight;
-	private double flightDuration;
 	//List of feature computed by this analysis
 	//The Map associate the name of the feature with the textual representation to be printed
 	private Map<String, String> featureValues ;
@@ -22,8 +21,6 @@ public class Analysis {
 	 */
 	public Analysis(Flight flight, String targetFeature) {
 		this.flight = flight;
-		this.flightDuration = FlightAnalysis.computeDuration(this.flight);
-		
 		this.featureValues = new HashMap<String, String> ();
 		
 		if(targetFeature.equals("null")) this.executeAll();
@@ -51,7 +48,7 @@ public class Analysis {
 				this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 				break;
 			case "flightDuration":
-				this.featureValues.put( "flightDuration", FlightAnalysis.getFormattedDuration(this.flightDuration));
+				this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 				break;
 			case "flightDistance":
 				this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
@@ -62,7 +59,7 @@ public class Analysis {
 	public void executeAll() {
 		this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
 		this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
-		this.featureValues.put( "flightDuration", FlightAnalysis.getFormattedDuration(this.flightDuration));
+		this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 	}
 	
