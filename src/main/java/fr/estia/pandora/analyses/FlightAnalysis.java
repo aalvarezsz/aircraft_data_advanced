@@ -28,21 +28,24 @@ public class FlightAnalysis {
 	}
 	
 	public static double computeFullDistance(Flight flight) {
-		int startIndex = 0;
-		int endIndex = flight.getRecords().size() - 1;
+		double fullDistance = 0.0;
 		
-		Position startPosition = new Position(flight.getRecords().get(startIndex).getLatitude(), flight.getRecords().get(startIndex).getLongitude());
-		Position endPosition = new Position(flight.getRecords().get(endIndex).getLatitude(), flight.getRecords().get(endIndex).getLongitude());
+		for(int i=0; i < flight.getRecords().size() - 1; i++) {
+			Position currentPosition = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude());
+			Position nextPosition = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude());
+			
+			fullDistance += haversine(currentPosition, nextPosition);
+		}
 		
-		return haversine(startPosition, endPosition);
+		return fullDistance;
 	}
 	
 	private static double haversine(Position startPosition, Position endPosition) {
-	    double dLat = Math.toRadians(endPosition.getLatitude() - startPosition.getLatitude());
-	    double dLon = Math.toRadians(endPosition.getLongitude() - startPosition.getLongitude());
-
+	     double dLat = Math.toRadians(endPosition.getLatitude() - startPosition.getLatitude());
+	     double dLon = Math.toRadians(endPosition.getLongitude() - startPosition.getLongitude());
+		
 	    double a = Math.pow(Math.sin(dLat / 2), 2) + Math.pow(Math.sin(dLon / 2), 2) * Math.cos(startPosition.getLatitude()) * Math.cos(endPosition.getLatitude());
-	    double c = 2 * Math.asin(Math.sqrt(a));
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
 	    return EARTH_RADIUS * c;
 	}
