@@ -42,11 +42,11 @@ public class Acceleration {
 			};
 		}
 		
-		System.out.println(accelerationList) ;
-		// print the last item of the list
+//		System.out.println(accelerationList) ;
+		/*// print the last item of the list
 		int lastIndex = accelerationList.size() - 1;
 		double lastItem = accelerationList.get(lastIndex);
-		System.out.println("Last item: " + lastItem);
+		System.out.println("Last item: " + lastItem);*/
 		return maxAcceleration;
 	}
 	
