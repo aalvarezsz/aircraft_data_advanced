@@ -101,6 +101,12 @@ public class Analysis {
 			case "maxEnginePower":
 				this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 				break;
+			case "avgAcceleration":
+				this.featureValues.put( "avgAcceleration", String.format("%.2f", Acceleration.average(flight)));
+				break;
+			case "maxAcceleration":
+				this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
+				break;
 				
 		}
 	}
@@ -129,6 +135,8 @@ public class Analysis {
 		this.featureValues.put( "minHeartRate", String.format("%.2f", Heartrate.min(flight)));
 		this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
 		this.featureValues.put( "maxAirSpeed", String.format("%.2f", AirSpeed.max(flight)));
+		this.featureValues.put( "avgAcceleration", String.format("%.2f", Acceleration.average(flight)));
+		this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
 		
 	}
 	
