@@ -13,10 +13,12 @@ public class Record {
 	private float heading;
 	private float u;
 	private float v;
-	
 	private double air_speed;
+	
 	private double engine_0;
 	private double engine_1;
+	private double engine_2;
+	private double engine_3;
 	private double temperature_in;
 	private double humidity_in;
 	private double pressure_in;
@@ -62,6 +64,12 @@ public class Record {
 	
 	public double getEngine_1_power() { return engine_1; }
 	public void setEngine_1_power(double engine) { this.engine_1 = engine; }
+	
+	public double getEngine_2_power() { return engine_2; }
+	public void setEngine_2_power(double engine) { this.engine_2 = engine; }
+	
+	public double getEngine_3_power() { return engine_3; }
+	public void setEngine_3_power(double engine) { this.engine_3 = engine; }
 	
 	public double getTemperature_in() { return temperature_in; }
 	public void setTemperature_in(double temperature_in) { this.temperature_in = temperature_in; }

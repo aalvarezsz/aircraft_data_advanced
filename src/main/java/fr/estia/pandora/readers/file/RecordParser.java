@@ -43,6 +43,8 @@ public class RecordParser {
         			
         			case "engine_0": record.setEngine_0_power(Double.parseDouble(values[index])); break;
         			case "engine_1": record.setEngine_1_power(Double.parseDouble(values[index])); break;
+        			case "engine_2": record.setEngine_2_power(Double.parseDouble(values[index])); break;
+        			case "engine_3": record.setEngine_3_power(Double.parseDouble(values[index])); break;
         			case "temperature_in": record.setTemperature_in(Double.parseDouble(values[index])); break;
         			case "humidity_in": record.setHumidity_in(Double.parseDouble(values[index])); break;
         			case "pressure_in": record.setPressure_in(Double.parseDouble(values[index])); break;
