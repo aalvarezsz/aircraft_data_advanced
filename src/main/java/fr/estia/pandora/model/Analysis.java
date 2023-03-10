@@ -11,7 +11,6 @@ import fr.estia.pandora.analyses.*;
  */
 public class Analysis {
 	private Flight flight;
-	private double flightDuration;
 	//List of feature computed by this analysis
 	//The Map associate the name of the feature with the textual representation to be printed
 	private Map<String, String> featureValues ;
@@ -22,8 +21,6 @@ public class Analysis {
 	 */
 	public Analysis(Flight flight, String targetFeature) {
 		this.flight = flight;
-		this.flightDuration = FlightDuration.compute(this.flight);
-		
 		this.featureValues = new HashMap<String, String> ();
 		
 		if(targetFeature.equals("null")) this.executeAll();
@@ -32,18 +29,12 @@ public class Analysis {
 	
 	public void execute(String targetFeature) {
 		switch(targetFeature) {
-			case "flightDuration":
-				this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
-				break;
 			case "avgAlt":
 				this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 				break;
 			case "maxAlt":
 				this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
 				break;
-//			case "minAlt":
-//				this.featureValues.put( "minAlt", String.format("%.2f", Altitude.min(flight)));
-//				break;
 			case "avgTemp":
 				this.featureValues.put( "avgTemp", String.format("%.2f", Temperature.average(flight)));
 				break;
@@ -101,17 +92,22 @@ public class Analysis {
 			case "maxEnginePower":
 				this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 				break;
-				
+			case "flightDuration":
+				this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
+				break;
+			case "flightDistance":
+				this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
+				break;
 		}
 	}
 	
 	public void executeAll() {
 		this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
-		this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
+		this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
+		this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 		this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 		this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
-//		this.featureValues.put( "minAlt", String.format("%.2f", Altitude.min(flight)));
 		this.featureValues.put( "avgTemp", String.format("%.2f", Temperature.average(flight)));
 		this.featureValues.put( "maxTemp", String.format("%.2f", Temperature.max(flight)));
 		this.featureValues.put( "minTemp", String.format("%.2f", Temperature.min(flight)));

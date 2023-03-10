@@ -13,10 +13,10 @@ public class Record {
 	private float heading;
 	private float u;
 	private float v;
-	
 	private double air_speed;
-	private double engine_0;
-	private double engine_1;
+	
+	private int engine_number;
+	private double engine_power;
 	private double temperature_in;
 	private double humidity_in;
 	private double pressure_in;
@@ -24,6 +24,12 @@ public class Record {
 	private double heart_rate;
 	private double oxygen_mask;
 	
+	// Constructor
+	public Record() {
+		this.engine_number = 1;
+	}
+	
+	// Methods
 	public double getTimestamp() { return timestamp; }
 	public void setTimestamp(double timestamp) { this.timestamp = timestamp; }
 	
@@ -57,11 +63,11 @@ public class Record {
 	public double getAir_speed() { return air_speed; }
 	public void setAir_speed(double air_speed) { this.air_speed = air_speed; }
 	
-	public double getEngine_0_power() { return engine_0; }
-	public void setEngine_0_power(double engine) { this.engine_0 = engine; }
+	public double getEngineNumber() { return engine_number; }
+	public void setEngineNumber(int engine) { this.engine_number = engine; }
 	
-	public double getEngine_1_power() { return engine_1; }
-	public void setEngine_1_power(double engine) { this.engine_1 = engine; }
+	public double getEnginePower() { return engine_power; }
+	public void setEnginePower(double engine) { this.engine_power = engine; }
 	
 	public double getTemperature_in() { return temperature_in; }
 	public void setTemperature_in(double temperature_in) { this.temperature_in = temperature_in; }

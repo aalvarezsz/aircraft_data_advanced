@@ -10,21 +10,21 @@ public class EnginePower {
 		ArrayList<Record> flightRecords = flight.getRecords();
 		double enginePowerSum = 0;
 		
-		for (int i = 0; i<flightRecords.size(); i++) enginePowerSum += flightRecords.get(i).getEngine_0_power();
+		for (int i = 0; i<flightRecords.size(); i++) enginePowerSum += flightRecords.get(i).getEnginePower();
 		
-		return enginePowerSum / flightRecords.size();
+		return enginePowerSum / flightRecords.size() * flightRecords.get(0).getEngineNumber();
 	}
 	
 	public static double max(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
-		double maxEnginePower = flightRecords.get(0).getEngine_0_power();
+		double maxEnginePower = flightRecords.get(0).getEnginePower();
 		
 		for (int i = 1; i<flightRecords.size(); i++) {
-			if(maxEnginePower < flightRecords.get(i).getEngine_0_power()) {
-				maxEnginePower = flightRecords.get(i).getEngine_0_power();
+			if(maxEnginePower < flightRecords.get(i).getEnginePower()) {
+				maxEnginePower = flightRecords.get(i).getEnginePower();
 			};
 		}
-		return maxEnginePower;
+		return maxEnginePower * flightRecords.get(0).getEngineNumber();
 	}
 
 }
