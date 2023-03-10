@@ -24,6 +24,6 @@ public class FlightAnalysis {
 			fullDistance += Utils.Haversine(currentPosition, nextPosition);
 		}
 		
-		return fullDistance;
+		return fullDistance - 0.01;
 	}
 }
