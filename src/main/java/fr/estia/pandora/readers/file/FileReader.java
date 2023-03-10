@@ -81,7 +81,7 @@ public class FileReader {
 				recordLine = source.nextLine();
 				flight.addRecord(parser.parse(recordLine));
 			}
-			flight.getMetadata().print();
+			// flight.getMetadata().print();
 		}
 	}
 
