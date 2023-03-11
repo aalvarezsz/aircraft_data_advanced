@@ -92,7 +92,6 @@ public class Analysis {
 			case "maxEnginePower":
 				this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 				break;
-<<<<<<< HEAD
 			case "avgAcceleration":
 				this.featureValues.put( "avgAcceleration", String.format("%.2f", Acceleration.average(flight)));
 				break;
@@ -106,14 +105,6 @@ public class Analysis {
 				this.featureValues.put( "maxGroundspeed", String.format("%.2f", Groundspeed.max(flight)));
 				break;
 				
-=======
-			case "flightDuration":
-				this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
-				break;
-			case "flightDistance":
-				this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
-				break;
->>>>>>> master
 		}
 	}
 	

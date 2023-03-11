@@ -33,16 +33,6 @@ public class RecordParser {
         		for(Map.Entry<String, Integer> parameter: parameterColumn.entrySet()) {
         			int index = parameter.getValue();
         			
-<<<<<<< HEAD
-        			case "roll": record.setRoll(Float.parseFloat(values[index])); break;
-        			case "pitch": record.setPitch(Float.parseFloat(values[index])); break;
-        			case "yaw": record.setYaw(Float.parseFloat(values[index])); break;
-        			case "heading": record.setHeading(Float.parseFloat(values[index])); break;
-        			case "u": record.setU(Float.parseFloat(values[index])); break;
-        			case "v": record.setV(Float.parseFloat(values[index])); break;
-        			case "air_speed": record.setAir_speed(Double.parseDouble(values[index])); break;
-        			case "groundspeed": record.setGroundspeed(Double.parseDouble(values[index])); break;
-=======
         			switch(parameter.getKey()) {
 	        			case "timestamp": record.setTimestamp(Double.parseDouble(values[index])); break;
 	        			case "longitude": record.setLongitude(Double.parseDouble(values[index])); break;
@@ -69,7 +59,6 @@ public class RecordParser {
         	} else {
         		for(Map.Entry<String, Integer> parameter: parameterColumn.entrySet()) {
         			int index = parameter.getValue();
->>>>>>> master
         			
         			switch(parameter.getKey()) {
 	        			case "timestamp": record.setTimestamp(Double.parseDouble(values[index])); break;
