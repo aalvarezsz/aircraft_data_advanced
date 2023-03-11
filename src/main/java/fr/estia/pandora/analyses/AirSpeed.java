@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.Record;
 
-public class AirSpeed {
+public class AirSpeed { // m/s for US planes, knots for RU planes
 	public static double average(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
 		double airspeedSum = 0;

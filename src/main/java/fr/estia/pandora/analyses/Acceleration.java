@@ -51,6 +51,29 @@ public class Acceleration {
 		return maxAcceleration;
 	}
 	
+	public static double maxInG(Flight flight) {
+		ArrayList<Record> flightRecords = flight.getRecords();
+		double maxAcceleration = 0 ;
+		
+		double speedDelta = 0;
+		double timestampForDivision = 0;
+		double accelerationSum = 0;
+		ArrayList<Double> accelerationList = new ArrayList<Double>();
+		
+		for (int i = 1; i<flightRecords.size(); i++) {
+			speedDelta += flightRecords.get(i).getAir_speed() - flightRecords.get(i-1).getAir_speed();
+			timestampForDivision = flightRecords.get(i).getTimestamp() - flightRecords.get(i-1).getTimestamp();
+			accelerationSum = speedDelta / timestampForDivision ;
+			
+			accelerationList.add(accelerationSum) ;
+			
+			if(maxAcceleration < accelerationSum) {
+				maxAcceleration = accelerationSum;
+			};
+		}
+		return maxAcceleration/9.80665;
+	}
+	
 
 }
 
