@@ -13,7 +13,7 @@ public class MachSpeed {
 		for (int i = 0; i<flightRecords.size(); i++) airspeedSum += flightRecords.get(i).getAir_speed();
 		
 		//en supposant que airspeed est en m/s, soit des avions US
-		return ((airspeedSum / flightRecords.size()) / 1225.044)*7.14;
+		return (airspeedSum / flightRecords.size())  *0.00566;
 	}
 	
 	public static double max(Flight flight) {
@@ -25,7 +25,7 @@ public class MachSpeed {
 				maxAirspeed = flightRecords.get(i).getAir_speed();
 			};
 		}
-		return (maxAirspeed / 1225.044)*7.14;
+		return maxAirspeed *0.00566;
 	}
 	
 
