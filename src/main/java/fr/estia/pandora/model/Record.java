@@ -83,8 +83,6 @@ public class Record {
 	public double getAcceleration() { return acceleration; }
 	public void setAcceleration(double acceleration) { this.acceleration = acceleration; }
 	
-	public double getGroundspeed() { return groundspeed; }
-	public void setGroundspeed(double groundspeed) { this.groundspeed = groundspeed; }
 	
 	}
 	
