@@ -16,7 +16,7 @@ public class Acceleration {
 			//convert speed to m/s
 			speedDelta = flightRecords.get(i).getAir_speed() - flightRecords.get(i-1).getAir_speed();
 			timestampForDivision = flightRecords.get(i).getTimestamp() - flightRecords.get(i-1).getTimestamp();
-			accelerationSum += speedDelta*3.6 / timestampForDivision ;
+			accelerationSum += speedDelta*1.852*3.6 / timestampForDivision ;
 		};
 		
 		return accelerationSum / flightRecords.size();
@@ -34,7 +34,7 @@ public class Acceleration {
 		for (int i = 1; i<flightRecords.size(); i++) {
 			speedDelta += flightRecords.get(i).getAir_speed() - flightRecords.get(i-1).getAir_speed();
 			timestampForDivision = flightRecords.get(i).getTimestamp() - flightRecords.get(i-1).getTimestamp();
-			accelerationSum = speedDelta*3.6 / timestampForDivision ;
+			accelerationSum = speedDelta*1.852*3.6 / timestampForDivision ;
 			
 			accelerationList.add(accelerationSum) ;
 			
