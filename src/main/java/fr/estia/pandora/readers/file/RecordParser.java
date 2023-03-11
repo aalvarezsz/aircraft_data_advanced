@@ -45,7 +45,7 @@ public class RecordParser {
 	        			case "heading": record.setHeading(Float.parseFloat(values[index])); break;
 	        			case "u": record.setU(Float.parseFloat(values[index])); break;
 	        			case "v": record.setV(Float.parseFloat(values[index])); break;
-	        			case "air_speed": record.setAir_speed(Double.parseDouble(values[index])); break;
+	        			case "air_speed": record.setAir_speed(Double.parseDouble(values[index]) * 0.514444); break;
 	        			
 	        			case "engine_0": record.setEnginePower(Double.parseDouble(values[index]) * this.engineAmount * 754.7); break;
 	        			case "temperature_in": record.setTemperature_in(Double.parseDouble(values[index])); break;
