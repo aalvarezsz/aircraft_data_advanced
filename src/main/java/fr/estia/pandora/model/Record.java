@@ -21,6 +21,7 @@ public class Record {
 	private double humidity_in;
 	private double pressure_in;
 	private double acceleration;
+	private double groundspeed;
 	
 	private double heart_rate;
 	private double oxygen_mask;
@@ -81,6 +82,9 @@ public class Record {
 	
 	public double getAcceleration() { return acceleration; }
 	public void setAcceleration(double acceleration) { this.acceleration = acceleration; }
+	
+	public double getGroundspeed() { return groundspeed; }
+	public void setGroundspeed(double groundspeed) { this.groundspeed = groundspeed; }
 	
 	}
 	

@@ -40,6 +40,7 @@ public class RecordParser {
         			case "u": record.setU(Float.parseFloat(values[index])); break;
         			case "v": record.setV(Float.parseFloat(values[index])); break;
         			case "air_speed": record.setAir_speed(Double.parseDouble(values[index])); break;
+        			case "groundspeed": record.setGroundspeed(Double.parseDouble(values[index])); break;
         			
         			case "engine_0": record.setEngine_0_power(Double.parseDouble(values[index])); break;
         			case "engine_1": record.setEngine_1_power(Double.parseDouble(values[index])); break;
