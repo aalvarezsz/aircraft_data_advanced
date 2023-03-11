@@ -1,8 +1,9 @@
-/**
- *
- */
+
 package fr.estia.pandora.readers.commandLine;
 
+import java.io.File;
+
+import fr.estia.pandora.readers.commandLine.Configuration.InputMode;
 import fr.estia.pandora.readers.commandLine.exceptions.InvalidOptionException;
 import fr.estia.pandora.readers.commandLine.exceptions.MissingParameterException;
 import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
@@ -16,11 +17,11 @@ import gnu.getopt.LongOpt;
  * Read parameter from the command line and configure an Option object
  */
 /**
- * @author dimitri
+ * @author Dimitri
  *
  */
 /**
- * @author dimitri
+ * @author Dimitri
  *
  */
 public class CLI {
@@ -32,10 +33,12 @@ public class CLI {
 
 	/** Default of possible options for the command line, see Options class for more details */
 	static Option options[] = {
-			new Option( 'o', "output - Print only the specified feature at the end", Option.REQUIRED_ARGUMENT , "output") ,
-			new Option( 'h', "Help - print this help message" , "help") ,
-			new Option( 'v', "Version - print the version of the application ", "version")
-	} ;
+			new Option( 'o', "Output - Print only the specified feature at the end", Option.REQUIRED_ARGUMENT , "output"),
+			new Option( 'b', "Batch - Select a folder location to analyse every file inside", Option.REQUIRED_ARGUMENT , "batch"),
+			new Option( 'h', "Help - print this help message" , "help"),
+			new Option( 'v', "Version - print the version of the application ", "version"),
+			new Option( 'd', "Debug - print additional debug information on Unhandled error", "debug")
+	};
 	/** Resulting configuration */
 	private static Configuration configuration ;
 
@@ -48,17 +51,11 @@ public class CLI {
 	 * @param delta ( google SemVer )
 	 * @param options [Optional] set of possible options
 	 */
-	public static void initialize(String name, int major, int minor, int delta, Option options[] ) {
+	public static void initialize(String name, int major, int minor, int delta) {
 		appName = name ;
 		VERSION_MAJOR = major ;
 		VERSION_MINOR = minor ;
 		VERSION_DELTA = delta ;
-		//Update only if
-		if( options != null )  CLI.options = options ;
-	}
-
-	public static void initialize(String name, int major, int minor, int delta ) {
-		 initialize( name,  major,  minor,  delta, null ) ;
 	}
 
 	/**
@@ -71,36 +68,58 @@ public class CLI {
 	 * @throws NoOpException 			 Option is a no-op ( no further operation are expected ) e.g. version or help
 	 */
 	public static Configuration read( String arguments[] ) throws OptionException, MissingParameterException, UnhandledOptionException, NoOpException {
-		int code ;
+		int code;
 		Getopt g = createOpt( arguments ) ;
 		g.setOpterr(false); // We'll do our own error handling
-		configuration = new Configuration() ;
+		configuration = new Configuration() ;		
 
 		while ((code = g.getopt()) != -1) {
+			// System.out.println("COMMAND: " + String.valueOf((char)code));
+			// System.out.println("VALUE: " + g.getOptarg());
+			// System.out.println("==========================");
 			switch (code) {
-				case 'o': //Feature
-					configuration.setFeature( g.getOptarg() ) ;
+				case 'o':	// Feature
+					configuration.setFeature(g.getOptarg()) ;
 					break;
-				case 'd':
-					configuration.setDebugSession( true ) ;
+				case 'b':	// Batch folder
+					configuration.setInputMode(Configuration.InputMode.batch);
+					configuration.setBatchFolder(g.getOptarg());
+					break;
+				case 'd':	// Debug session
+					configuration.setDebugSession(true) ;
 					break ;
 				case 'v':
 					printVersion() ;
-					throw new NoOpException( "version" ) ;
+					throw new NoOpException("version") ;
 				case 'h':
 					printUsage();
 					throw new NoOpException( "help" ) ;
-				case ':':	//Missing parameters
-					throw new MissingParameterException( String.valueOf((char)g.getOptopt() ) ) ;
-				case '?':	//Invalid Options
-					throw new InvalidOptionException( String.valueOf((char)g.getOptopt() ) ) ;
-				default:
-					throw new UnhandledOptionException( String.valueOf( code ) ) ;
+				case ':': throw new MissingParameterException(String.valueOf((char)g.getOptopt()));	//Missing parameters
+				case '?': throw new InvalidOptionException   (String.valueOf((char)g.getOptopt())); //Invalid Options
+				default:  throw new UnhandledOptionException (String.valueOf(code));
 			}
 		}
-		for (int i = g.getOptind(); i < arguments.length ; i++) {
-			configuration.addSource( arguments[i] ) ;
+		
+		switch (configuration.getInputMode()) {
+			case mono:
+				for (int i = g.getOptind(); i < arguments.length; i++) {
+					if (!arguments[i].split("\\.")[arguments[i].split("\\.").length - 1].equals("frd")) continue;
+					configuration.addSource(arguments[i]);
+				}
+				if(configuration.getSources().size() >= 1) configuration.setInputMode(InputMode.multi);
+				break;
+			case batch:
+				File folder = new File(configuration.getBatchFolder());
+				File[] files = folder.listFiles();
+
+				for (File file : files) {
+				    if (!file.isFile() || !file.getName().split("\\.")[file.getName().split("\\.").length - 1].equals("frd")) continue;
+				    configuration.addSource(configuration.getBatchFolder() + "/" + file.getName());
+				}
+				break;
+			default: break;
 		}
+		
 		return configuration ;
 	}
 

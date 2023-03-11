@@ -2,6 +2,7 @@
 package fr.estia.pandora;
 
 
+import java.util.Collections;
 import java.util.List;
 
 import fr.estia.pandora.model.Analysis;
@@ -10,7 +11,6 @@ import fr.estia.pandora.printer.ConsolePrinter;
 import fr.estia.pandora.printer.FeaturePrinter;
 import fr.estia.pandora.readers.commandLine.CLI;
 import fr.estia.pandora.readers.commandLine.Configuration;
-import fr.estia.pandora.readers.commandLine.Option;
 import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
 import fr.estia.pandora.readers.commandLine.exceptions.OptionException;
 import fr.estia.pandora.readers.file.FileReader;
@@ -30,32 +30,36 @@ public class Pandora {
 
 	public static void main(String[] arguments) {
 		try {
-			// Configure the command line to tell it the name of the project, the version number, and possible options
-			// if add options, you should update the CLI to handle the new options
-			// you should not change the project name, but you can increment the version number ( see semver )
-			Option options[] = {
-					new Option( 'o', "output - Print only the specified feature at the end", Option.REQUIRED_ARGUMENT , "output") ,
-					new Option( 'h', "Help - print this help message" , "help") ,
-					new Option( 'v', "Version - print the version of the application ", "version"),
-					new Option( 'd', "Debug - print additional debug information on Unhandled error", "debug")
-			} ;
-			CLI.initialize("pandora", 1, 0, 1, options) ;
+			CLI.initialize("Pandora", 1, 0, 1);
 			// Parse the command line arguments
-			Configuration config = CLI.read( arguments );
+			Configuration config = CLI.read(arguments);
 
 			// Check that exactly one source file was provided, exit otherwise
-			List<String> sources = CLI.getConfiguration().getSources() ;
-			if( sources.size() != 1 ) {
-				throw new OptionException("No source provided");
-			}
-			//Create a file reader
+			List<String> sources = CLI.getConfiguration().getSources();
+			if(sources.size() <= 0) throw new OptionException("No source provided");
+			
+			// Create a file reader
 			FileReader fileReader = new FileReader( "./" );
-			//Get the flight
-			Flight flight = fileReader.GetRecordsFromFile(sources.get( 0 ));
-			//Get the analysis
-			Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
-			//Print everything
-			print( flight, analysis );
+			Flight flight; Analysis analysis;
+			
+			// Parse files, execute analysis and print result
+			switch(config.getInputMode()) {
+				case mono:
+					if(sources.size() != 1) throw new OptionException("Too much sources provided");
+					flight = fileReader.GetRecordsFromFile(sources.get(0));
+					analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+					print(flight, analysis);
+					break;
+				default:
+					Collections.sort(sources);
+					for(String source: sources) {
+						flight = fileReader.GetRecordsFromFile(source);
+						analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+						print( flight, analysis );
+					}
+					
+					break;
+			}
 			
 		} catch (OptionException e) {
 			System.out.println( e.getMessage() );
@@ -67,9 +71,7 @@ public class Pandora {
 			System.exit( EXIT_OK );
 		} catch ( Exception e ) {
 			System.out.println( "ERROR: Unhandled error" );
-			if( CLI.getConfiguration().isDebugSession() ) {
-				e.printStackTrace();
-			}
+			if( CLI.getConfiguration().isDebugSession() ) e.printStackTrace();
 			System.exit( EXIT_UNHANDLED );
 		}
 	}
@@ -82,14 +84,14 @@ public class Pandora {
 	static void print( Flight flight, Analysis analysis ) {
 		//Select printer according to configuration
 		switch (CLI.getConfiguration().getOutputMode()) {
-			case feature :
-				//output mode is set to only one feature, set target and print
-				FeaturePrinter.setTargetFeature( CLI.getConfiguration().getTargetFeature() ) ;
+			case feature:
+				//Output mode is set to only one feature, set target and print
+				FeaturePrinter.setTargetFeature(CLI.getConfiguration().getTargetFeature());
 				FeaturePrinter.print(flight, analysis);
-				break ;
-			default :
+				break;
+			default:
 				//Default mode print everything
-				ConsolePrinter.print( flight, analysis );
-			}
+				ConsolePrinter.print(flight, analysis);
+		}
 	}
 }

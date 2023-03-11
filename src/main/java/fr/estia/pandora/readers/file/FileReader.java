@@ -30,7 +30,7 @@ public class FileReader {
 	public Flight GetRecordsFromFile(String fileName) throws FlightRecordException {
 		flight = new Flight();
 		metadataParsed = false ;  
-		openFlightRecordFile( fileName ) ; 
+		openFlightRecordFile(fileName) ; 
 		parseMetaData();
 		parseData();
 		source.close();

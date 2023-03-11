@@ -98,6 +98,7 @@ public class Analysis {
 			case "flightDistance":
 				this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
 				break;
+			default: break;
 		}
 	}
 	
