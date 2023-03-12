@@ -40,7 +40,7 @@ public class CLI {
 			new Option( 'd', "Debug - print additional debug information on Unhandled error", "debug")
 	};
 	/** Resulting configuration */
-	private static Configuration configuration ;
+	private static Configuration configuration;
 
 	//
 	/**

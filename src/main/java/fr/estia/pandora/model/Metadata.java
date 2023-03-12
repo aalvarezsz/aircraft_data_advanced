@@ -13,9 +13,9 @@ public class Metadata {
 	private String flightDate = "";
 	private String flightOrigin = "";
 	private String flightDestination = "";
-	
+
 	// Plane data
-	private int engineAmount;
+	private int engineAmount = 1;
 	private float aircraftMass = 0;
 	private float fuelMass = 0;
 	private double liftCoef = 0;
@@ -30,8 +30,9 @@ public class Metadata {
 		sourceMetadata.put(key,	sourceValue);
 
 		switch(key) {
-			case "constructor" : flightRegion = sourceValue; break;
-			case "origin" : flightRegion = sourceValue; break;
+			case "constructor" :
+			case "origin" :
+				flightRegion = sourceValue; break;
 			case "flight id" : flightId = sourceValue; break;
 			case "motor(s)" : engineAmount = Integer.parseInt(sourceValue); break;
 			case "mass aircraft" : aircraftMass = (float) (flightRegion.equals("US") ? Double.parseDouble(sourceValue) / 2.205 : Double.parseDouble(sourceValue)); break;

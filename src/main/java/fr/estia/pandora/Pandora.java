@@ -36,7 +36,7 @@ public class Pandora {
 
 			// Check that exactly one source file was provided, exit otherwise
 			List<String> sources = CLI.getConfiguration().getSources();
-			if(sources.size() <= 0) throw new OptionException("No source provided");
+			if(sources.size() == 0) throw new OptionException("No source provided");
 			
 			// Create a file reader
 			FileReader fileReader = new FileReader( "./" );
