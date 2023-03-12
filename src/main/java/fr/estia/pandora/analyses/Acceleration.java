@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.Record;
-import fr.estia.pandora.model.Metadata;
 
 // F(N) = P(W)/v(m/s) et a(m/s2) = F(N) / m(kg)
 
@@ -13,73 +12,56 @@ public class Acceleration {
 		ArrayList<Record> flightRecords = flight.getRecords();
 		double Newtons = 0;
 		double aircraftmass = 0;
-		double accelerationSum = 0;
 		
 		aircraftmass = flight.getAircraftMass() ;
-
+		
 		for (int i = 0; i<flightRecords.size(); i++) {
 			
 			Newtons = flightRecords.get(i).getEnginePower() / flightRecords.get(i).getAir_speed();
 			
 			
-			accelerationSum += Newtons / aircraftmass ;
+			Newtons += Newtons ;
 		};
+		double NewtonsMean = Newtons / flightRecords.size() ;
 		
-		return accelerationSum / flightRecords.size();
+		
+		return NewtonsMean / aircraftmass;
 	}
 	
 	public static double max(Flight flight) {
-		ArrayList<Record> flightRecords = flight.getRecords();
-		double maxAcceleration = 0 ;
-		
+		ArrayList<Record> flightRecords = flight.getRecords();	
 		double Newtons = 0;
 		double aircraftmass = 0;
-		double accelerationSum = 0;
-		ArrayList<Double> accelerationList = new ArrayList<Double>();
+		double maxNewtons = 0;
 		
 		aircraftmass = flight.getAircraftMass() ;
 		
 		for (int i = 0; i<flightRecords.size(); i++) {
 			Newtons = flightRecords.get(i).getEnginePower() / flightRecords.get(i).getAir_speed();
-			accelerationSum = Newtons / aircraftmass ;
 			
-			accelerationList.add(accelerationSum) ;
-			
-			if(maxAcceleration < accelerationSum) {
-				maxAcceleration = accelerationSum;
+			if(maxNewtons < Newtons) {
+				maxNewtons = Newtons;
 			};
 		}
-		
-//		System.out.println(accelerationList) ;
-		/*// print the last item of the list
-		int lastIndex = accelerationList.size() - 1;
-		double lastItem = accelerationList.get(lastIndex);
-		System.out.println("Last item: " + lastItem);*/
-		return maxAcceleration;
+		return maxNewtons / aircraftmass;
 	}
 	
 	public static double maxInG(Flight flight) {
-		ArrayList<Record> flightRecords = flight.getRecords();
-		double maxAcceleration = 0 ;
-		
+		ArrayList<Record> flightRecords = flight.getRecords();	
 		double Newtons = 0;
 		double aircraftmass = 0;
-		double accelerationSum = 0;
-		ArrayList<Double> accelerationList = new ArrayList<Double>();
+		double maxNewtons = 0;
 		
 		aircraftmass = flight.getAircraftMass() ;
 		
 		for (int i = 0; i<flightRecords.size(); i++) {
 			Newtons = flightRecords.get(i).getEnginePower() / flightRecords.get(i).getAir_speed();
-			accelerationSum = Newtons / aircraftmass ;
 			
-			accelerationList.add(accelerationSum) ;
-			
-			if(maxAcceleration < accelerationSum) {
-				maxAcceleration = accelerationSum;
+			if(maxNewtons < Newtons) {
+				maxNewtons = Newtons;
 			};
 		}
-		return maxAcceleration/9.80665;
+		return (maxNewtons / aircraftmass) / 9.80665;
 	}
 	
 
