@@ -40,7 +40,7 @@ jobs:
 
       - name: run tests
         id: runTests
-        run: node autograder/execute.mjs 1 2 3 -f a1 a2 a3 target/pandora.jar
+        run: node autograder/execute.mjs 1 2 3 4 -f a1 a2 a3 a5 target/pandora.jar
 
       - name: update report
         if: failure()
