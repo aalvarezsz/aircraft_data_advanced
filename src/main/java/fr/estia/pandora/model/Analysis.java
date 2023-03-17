@@ -92,6 +92,9 @@ public class Analysis {
 			case "maxEnginePower":
 				this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 				break;
+			case "reachAlt":
+				this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
+				break;
 			case "flightDuration":
 				this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 				break;
@@ -106,6 +109,7 @@ public class Analysis {
 		this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
 		this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
+		this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
 		this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 		this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
 		this.featureValues.put( "avgTemp", String.format("%.2f", Temperature.average(flight)));
@@ -125,7 +129,6 @@ public class Analysis {
 		this.featureValues.put( "minHeartRate", String.format("%.2f", Heartrate.min(flight)));
 		this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
 		this.featureValues.put( "maxAirSpeed", String.format("%.2f", AirSpeed.max(flight)));
-		
 	}
 	
 	public String getFeatureValue( String feature ) {
