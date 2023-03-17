@@ -98,6 +98,9 @@ public class Analysis {
 			case "flightDuration":
 				this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 				break;
+			case "flightDistance":
+				this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
+				break;
 			case "maxAcceleration":
 				this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
 				break;

@@ -19,7 +19,7 @@ public class Acceleration {
 			duration = flight.getRecords().get(i).getTimestamp() - flight.getRecords().get(i+1).getTimestamp() ;
 			
 			double distance = Utils.ComputeDistance(currentPosition, nextPosition);
-			System.out.println("DEBUG " + i + ": " + distance);
+			// System.out.println("DEBUG " + i + ": " + distance);
 			averageGroundSpeed += distance / duration;
 		}
 		
