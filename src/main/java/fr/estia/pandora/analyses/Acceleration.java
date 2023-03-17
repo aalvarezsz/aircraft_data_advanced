@@ -15,7 +15,7 @@ public class Acceleration {
 		double startTime = flight.getRecords().get( 0 ).getTimestamp();
 		double endTime = flight.getRecords().get(flight.getRecords().size() - 1) .getTimestamp();
 		
-		double duration = Double.parseDouble(Utils.TimestampDurationToString(startTime, endTime)) ;
+		double duration = endTime - startTime ;
 		
 
 		if(flight.getRecords().size() <= 1) tempDistance = fullDistance;
@@ -47,7 +47,7 @@ public class Acceleration {
 		double startTime = flight.getRecords().get( 0 ).getTimestamp();
 		double endTime = flight.getRecords().get(flight.getRecords().size() - 1) .getTimestamp();
 		
-		double duration = Double.parseDouble(Utils.TimestampDurationToString(startTime, endTime)) ;
+		double duration = endTime - startTime ;
 		
 
 		if(flight.getRecords().size() <= 1) tempDistance = fullDistance;
