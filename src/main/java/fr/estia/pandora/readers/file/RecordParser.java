@@ -1,24 +1,36 @@
 package fr.estia.pandora.readers.file;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import fr.estia.pandora.model.Record;
+import fr.estia.pandora.readers.file.exceptions.HeaderException;
 
 public class RecordParser {
 	private Map<String, Integer> parameterColumn;
 	private String flightOrigin;
 	private int engineAmount;
-	
-	public RecordParser(String header, String flightOrigin, int engineAmount) {
+
+	public RecordParser(String header, String flightOrigin, int engineAmount) throws HeaderException {
 		this.parameterColumn = new HashMap<String, Integer>();
 		this.flightOrigin = flightOrigin;
 		this.engineAmount = engineAmount;
-		
+
+		List<String> headerParameterList = Arrays.asList(new String[] {
+				"timestamp","longitude","latitude","altitude","roll","pitch","yaw","heading","air_speed",
+				"engine_0","temperature_in","humidity_in","pressure_in","heart_rate","oxygen_mask"
+		});
+
+		if(flightOrigin.equals("US")) Collections.addAll(headerParameterList, new String[] {"u", "v"});
+
 		String[] headerTitle  = header.split(",");
 		for (int columnIndex = 0; columnIndex < headerTitle.length; columnIndex++) {
 			String parameter = headerTitle[columnIndex];
+			headerParameterList.remove(parameter);
 			parameterColumn.put(parameter, columnIndex);			
+		}
+
+		if(headerParameterList.size() != 0) {
+//			throw HeaderException();
 		}
 	}
 

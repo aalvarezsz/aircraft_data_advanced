@@ -1,9 +1,9 @@
 package fr.estia.pandora.readers.file.exceptions;
 
-public class MetadataException extends FlightRecordException {
+public class MetadataException extends Exception {
 	/** An id for serialization purpose */
 	private static final long serialVersionUID = -3886159525507073605L;
-	String message ; 
+	String message ;
 	public MetadataException( String filename ) {
 		super( filename ) ; 
 		this.message = "No Metadata to parse" ; 
@@ -11,7 +11,7 @@ public class MetadataException extends FlightRecordException {
 	
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
-		return super.getMessage() + this.message ;
+		return "";
+//		return "ERROR: Invalid Flight Record " + super.filename  ;
 	}
 }

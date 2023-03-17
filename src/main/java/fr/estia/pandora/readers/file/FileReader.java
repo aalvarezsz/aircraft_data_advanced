@@ -28,16 +28,21 @@ public class FileReader {
 	}
 
 	public Flight GetRecordsFromFile(String fileName) throws FlightRecordException {
-		flight = new Flight();
-		metadataParsed = false ;  
-		openFlightRecordFile(fileName) ; 
-		parseMetaData();
-		parseData();
-		source.close();
+		try {
+			flight = new Flight();
+			metadataParsed = false ;
+			openFlightRecordFile(fileName) ;
+			parseMetaData();
+			parseData();
+			source.close();
+		} catch (Exception e) {
+
+		}
+
 		return flight ;
 	}
 	
-	private void openFlightRecordFile( String fileName ) throws FlightRecordException {		
+	private void openFlightRecordFile( String fileName ) throws FlightRecordException {
 		try {
 			sourcePath = testFolderRoot.resolve( Paths.get( fileName )).toAbsolutePath().normalize() ;
 			File flightRecordFile = new File(sourcePath.toString()); 

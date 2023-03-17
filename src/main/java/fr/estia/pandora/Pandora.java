@@ -2,6 +2,7 @@
 package fr.estia.pandora;
 
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,11 +53,18 @@ public class Pandora {
 					break;
 				default:
 					Collections.sort(sources);
+					List<String> files = new ArrayList<String>();
 					for(String source: sources) {
-						flight = fileReader.GetRecordsFromFile(source);
-						analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
-						print( flight, analysis );
+						try {
+							flight = fileReader.GetRecordsFromFile(source);
+							analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+							print( flight, analysis );
+						} catch (Exception e) {
+
+						}
 					}
+					Collections.sort(files);
+
 					
 					break;
 			}

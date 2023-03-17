@@ -87,7 +87,7 @@ public class Configuration {
 	 */
 	public String getBatchFolder() { return batchFolder; }
 	/**
-	 * @param the batchFolder
+	 * @param batchFolder
 	 */
 	public void setBatchFolder(String batchFolder) { this.batchFolder = batchFolder; }
 

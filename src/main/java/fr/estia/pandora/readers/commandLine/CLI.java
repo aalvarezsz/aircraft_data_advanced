@@ -9,6 +9,8 @@ import fr.estia.pandora.readers.commandLine.exceptions.MissingParameterException
 import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
 import fr.estia.pandora.readers.commandLine.exceptions.OptionException;
 import fr.estia.pandora.readers.commandLine.exceptions.UnhandledOptionException;
+import fr.estia.pandora.readers.file.exceptions.FileException;
+import fr.estia.pandora.readers.file.exceptions.FlightRecordException;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 
@@ -59,7 +61,7 @@ public class CLI {
 	}
 
 	/**
-	 * Read arguments provided on the command line, parse them and produce a neat Config (@see fr.estia.model.Config ) object for the rest of the apllicaiton
+	 * Read arguments provided on the command line, parse them and produce a neat Config (@see fr.estia.model.Config ) object for the rest of the application
 	 * @param arguments Arguments from the command line
 	 * @return configuration of the run
 	 * @throws InvalidOptionException    One option was not listed as a possible options
@@ -67,11 +69,11 @@ public class CLI {
 	 * @throws UnhandledOptionException  Option is listed in the interface, but no handler where defined
 	 * @throws NoOpException 			 Option is a no-op ( no further operation are expected ) e.g. version or help
 	 */
-	public static Configuration read( String arguments[] ) throws OptionException, MissingParameterException, UnhandledOptionException, NoOpException {
+	public static Configuration read( String arguments[] ) throws OptionException, MissingParameterException, UnhandledOptionException, NoOpException, FlightRecordException {
 		int code;
-		Getopt g = createOpt( arguments ) ;
+		Getopt g = createOpt( arguments );
 		g.setOpterr(false); // We'll do our own error handling
-		configuration = new Configuration() ;		
+		configuration = new Configuration();
 
 		while ((code = g.getopt()) != -1) {
 			// System.out.println("COMMAND: " + String.valueOf((char)code));
@@ -89,7 +91,7 @@ public class CLI {
 					configuration.setDebugSession(true) ;
 					break ;
 				case 'v':
-					printVersion() ;
+					printVersion();
 					throw new NoOpException("version") ;
 				case 'h':
 					printUsage();
@@ -106,7 +108,8 @@ public class CLI {
 					if (!arguments[i].split("\\.")[arguments[i].split("\\.").length - 1].equals("frd")) continue;
 					configuration.addSource(arguments[i]);
 				}
-				if(configuration.getSources().size() >= 1) configuration.setInputMode(InputMode.multi);
+				if(configuration.getSources().size() > 1) configuration.setInputMode(InputMode.multi);
+				else if (configuration.getSources().size() == 0) throw new FlightRecordException("provided (only .frd files accepted)");
 				break;
 			case batch:
 				File folder = new File(configuration.getBatchFolder());
@@ -116,6 +119,7 @@ public class CLI {
 				    if (!file.isFile() || !file.getName().split("\\.")[file.getName().split("\\.").length - 1].equals("frd")) continue;
 				    configuration.addSource(configuration.getBatchFolder() + "/" + file.getName());
 				}
+				if (configuration.getSources().size() == 0) throw new FlightRecordException("provided (only .frd files accepted)");
 				break;
 			default: break;
 		}
@@ -142,7 +146,7 @@ public class CLI {
 
 		System.out.println( "" ) ;
 		System.out.print( "OPTIONS " ) ;
-		System.out.println( getShortOptions().substring(1 )); //remove pesky : at beggining that is only useful to distinguish betweeen missing param and invalid options
+		System.out.println( getShortOptions().substring(1 )); //remove pesky : at beginning that is only useful to distinguish between missing param and invalid options
 		for (Option commandLineOption : options) {
 			System.out.println( commandLineOption );
 		}
@@ -150,12 +154,13 @@ public class CLI {
 
 
 	/**
-	 * Provide a string decribing possible short option in the gnu OPTION_STRING format
+	 * Provide a string describing possible short option in the gnu OPTION_STRING format
 	 * @see https://www.gnu.org/software/gnuprologjava/api/gnu/getopt/Getopt.html
 	 * @return option string
 	 */
 	private static String getShortOptions() {
 		String shortOption = ":" ;
+
 		for (Option commandLineOption : options) {
 			shortOption += commandLineOption.getCode() ;
 		}
@@ -164,7 +169,7 @@ public class CLI {
 
 
 	/**
-	 * Provide the an array of long Options for the gnu.getOpt
+	 * Provide the array of long Options for the gnu.getOpt
 	 * @return
 	 */
 	private static LongOpt[] getLongOptions() {

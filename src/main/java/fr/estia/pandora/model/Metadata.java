@@ -31,8 +31,7 @@ public class Metadata {
 
 		switch(key) {
 			case "constructor" :
-			case "origin" :
-				flightRegion = sourceValue; break;
+			case "origin" : flightRegion = sourceValue; break;
 			case "flight id" : flightId = sourceValue; break;
 			case "motor(s)" : engineAmount = Integer.parseInt(sourceValue); break;
 			case "mass aircraft" : aircraftMass = (float) (flightRegion.equals("US") ? Double.parseDouble(sourceValue) / 2.205 : Double.parseDouble(sourceValue)); break;
