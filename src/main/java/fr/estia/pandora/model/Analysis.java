@@ -92,12 +92,18 @@ public class Analysis {
 			case "maxEnginePower":
 				this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 				break;
-			case "avgAcceleration":
-				this.featureValues.put( "avgAcceleration", String.format("%.2f", Acceleration.average(flight)));
+			case "reachAlt":
+				this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
+				break;
+			case "flightDuration":
+				this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 				break;
 			case "maxAcceleration":
 				this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
 				break;
+      case "avgAcceleration":
+        this.featureValues.put( "avgAcceleration", String.format("%.2f", Acceleration.average(flight)));
+        break;
 			/*case "maxAccelG":
 				this.featureValues.put( "maxAccelG", String.format("%.2f", Acceleration.maxInG(flight)));
 				break;*/
@@ -116,6 +122,7 @@ public class Analysis {
 		this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
 		this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
+		this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
 		this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 		this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
 		this.featureValues.put( "avgTemp", String.format("%.2f", Temperature.average(flight)));
