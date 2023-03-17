@@ -142,9 +142,9 @@ public class Analysis {
 		this.featureValues.put( "minHeartRate", String.format("%.2f", Heartrate.min(flight)));
 		this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
 		this.featureValues.put( "maxAirSpeed", String.format("%.2f", AirSpeed.max(flight)));
-		this.featureValues.put( "avgAcceleration", String.format("%.2f", Acceleration.average(flight)));
-		//this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
-		//this.featureValues.put( "maxAccelG", String.format("%.2f", Acceleration.maxInG(flight)));
+		this.featureValues.put( "avgAcceleration", String.format("%.3f", Acceleration.average(flight)));
+		this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
+		// this.featureValues.put( "maxAccelG", String.format("%.2f", Acceleration.maxInG(flight)));
 		this.featureValues.put( "avgMachSpeed", String.format("%.2f", MachSpeed.average(flight)));
 		this.featureValues.put( "maxMachSpeed", String.format("%.2f", MachSpeed.max(flight)));
 	}

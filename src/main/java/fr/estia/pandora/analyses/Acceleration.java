@@ -8,28 +8,25 @@ import fr.estia.pandora.model.Utils;
 public class Acceleration {
 	public static double average(Flight flight) {
 		double avgAcceleration = 0;
-		double tempDistance = 0;
 		double averageGroundSpeed = 0;
-		double fullDistance = 0.00;
+		double duration;
+
+		if(flight.getRecords().size() <= 1) return 0;
+		
+		for(int i=0; i < flight.getRecords().size() - 1; i++) {
+			Position currentPosition = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude(), flight.getRecords().get(i).getAltitude());
+			Position nextPosition = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude(), flight.getRecords().get(i+1).getAltitude());
+			duration = flight.getRecords().get(i).getTimestamp() - flight.getRecords().get(i+1).getTimestamp() ;
+			
+			double distance = Utils.ComputeDistance(currentPosition, nextPosition);
+			System.out.println("DEBUG " + i + ": " + distance);
+			averageGroundSpeed += distance / duration;
+		}
 		
 		double startTime = flight.getRecords().get( 0 ).getTimestamp();
 		double endTime = flight.getRecords().get(flight.getRecords().size() - 1) .getTimestamp();
 		
-		double duration = endTime - startTime ;
-		
-
-		if(flight.getRecords().size() <= 1) tempDistance = fullDistance;
-		
-		for(int i=0; i < flight.getRecords().size() - 1; i++) {
-			Position currentPosition = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude());
-			Position nextPosition = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude());
-			
-			tempDistance += Utils.Haversine(currentPosition, nextPosition);
-			
-		}
-		
-		
-		averageGroundSpeed = tempDistance / duration ;
+		duration = endTime - startTime ;
 		
 		avgAcceleration = averageGroundSpeed / duration ;
 		
@@ -39,31 +36,23 @@ public class Acceleration {
 	
 	public static double max(Flight flight) {
 		double maxAcceleration = 0;
-		double tempAcceleration = 0 ;
-		double tempDistance = 0;
-		double instantGroundSpeed = 0;
-		double fullDistance = 0.00;
-		
-		double startTime = flight.getRecords().get( 0 ).getTimestamp();
-		double endTime = flight.getRecords().get(flight.getRecords().size() - 1) .getTimestamp();
-		
-		double duration = endTime - startTime ;
-		
+		double distance = 0;
+		double acceleration = 0;
+		double fullDistance = 0;
+		double duration = 0;
 
-		if(flight.getRecords().size() <= 1) tempDistance = fullDistance;
+		if(flight.getRecords().size() <= 1) distance = fullDistance;
 		
 		for(int i=0; i < flight.getRecords().size() - 1; i++) {
-			Position currentPosition = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude());
-			Position nextPosition = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude());
+			Position currentPosition = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude(), flight.getRecords().get(i).getAltitude());
+			Position nextPosition = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude(), flight.getRecords().get(i+1).getAltitude());
+			duration = flight.getRecords().get(i).getTimestamp() - flight.getRecords().get(i+1).getTimestamp() ;
 			
-			tempDistance += Utils.Haversine(currentPosition, nextPosition);
-			instantGroundSpeed = tempDistance / duration ;
+			distance = Utils.ComputeDistance(currentPosition, nextPosition);
+
+			acceleration = (distance / duration) / duration;
 			
-			tempAcceleration = instantGroundSpeed / flight.getRecords().get( i ).getTimestamp() ;
-			
-			if (maxAcceleration < Math.abs(tempAcceleration)) {
-				maxAcceleration = tempAcceleration ;
-			};
+			if (maxAcceleration < Math.abs(acceleration)) maxAcceleration = acceleration;
 		}
 		
 		return maxAcceleration;
