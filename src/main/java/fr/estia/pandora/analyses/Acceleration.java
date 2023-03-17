@@ -1,69 +1,72 @@
 package fr.estia.pandora.analyses;
 
-import java.util.ArrayList;
-
 import fr.estia.pandora.model.Flight;
-import fr.estia.pandora.model.Record;
+import fr.estia.pandora.model.Position;
+import fr.estia.pandora.model.Utils;
 
-// F(N) = P(W)/v(m/s) et a(m/s2) = F(N) / m(kg)
 
 public class Acceleration {
 	public static double average(Flight flight) {
-		ArrayList<Record> flightRecords = flight.getRecords();
-		double Newtons = 0;
-		double aircraftmass = 0;
+		double avgAcceleration = 0;
+		double tempDistance = 0;
+		double averageGroundSpeed = 0;
+		double fullDistance = 0.00;
 		
-		aircraftmass = flight.getAircraftMass() ;
+		double startTime = flight.getRecords().get( 0 ).getTimestamp();
+		double endTime = flight.getRecords().get(flight.getRecords().size() - 1) .getTimestamp();
 		
-		for (int i = 0; i<flightRecords.size(); i++) {
+		double duration = Double.parseDouble(Utils.TimestampDurationToString(startTime, endTime)) ;
+		
+
+		if(flight.getRecords().size() <= 1) tempDistance = fullDistance;
+		
+		for(int i=0; i < flight.getRecords().size() - 1; i++) {
+			Position currentPosition = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude());
+			Position nextPosition = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude());
 			
-			Newtons = flightRecords.get(i).getEnginePower() / flightRecords.get(i).getAir_speed();
+			tempDistance += Utils.Haversine(currentPosition, nextPosition);
 			
-			
-			Newtons += Newtons ;
-		};
-		double NewtonsMean = Newtons / flightRecords.size() ;
+		}
 		
 		
-		return NewtonsMean / aircraftmass;
+		averageGroundSpeed = tempDistance / duration ;
+		
+		avgAcceleration = averageGroundSpeed / duration ;
+		
+		return avgAcceleration;
 	}
+	
 	
 	public static double max(Flight flight) {
-		ArrayList<Record> flightRecords = flight.getRecords();	
-		double Newtons = 0;
-		double aircraftmass = 0;
-		double maxNewtons = 0;
+		double maxAcceleration = 0;
+		double tempAcceleration = 0 ;
+		double tempDistance = 0;
+		double instantGroundSpeed = 0;
+		double fullDistance = 0.00;
 		
-		aircraftmass = flight.getAircraftMass() ;
+		double startTime = flight.getRecords().get( 0 ).getTimestamp();
+		double endTime = flight.getRecords().get(flight.getRecords().size() - 1) .getTimestamp();
 		
-		for (int i = 0; i<flightRecords.size(); i++) {
-			Newtons = flightRecords.get(i).getEnginePower() / flightRecords.get(i).getAir_speed();
-			
-			if(maxNewtons < Newtons) {
-				maxNewtons = Newtons;
-			};
-		}
-		return maxNewtons / aircraftmass;
-	}
-	
-	public static double maxInG(Flight flight) {
-		ArrayList<Record> flightRecords = flight.getRecords();	
-		double Newtons = 0;
-		double aircraftmass = 0;
-		double maxNewtons = 0;
+		double duration = Double.parseDouble(Utils.TimestampDurationToString(startTime, endTime)) ;
 		
-		aircraftmass = flight.getAircraftMass() ;
-		
-		for (int i = 0; i<flightRecords.size(); i++) {
-			Newtons = flightRecords.get(i).getEnginePower() / flightRecords.get(i).getAir_speed();
-			
-			if(maxNewtons < Newtons) {
-				maxNewtons = Newtons;
-			};
-		}
-		return (maxNewtons / aircraftmass) / 9.80665;
-	}
-	
 
+		if(flight.getRecords().size() <= 1) tempDistance = fullDistance;
+		
+		for(int i=0; i < flight.getRecords().size() - 1; i++) {
+			Position currentPosition = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude());
+			Position nextPosition = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude());
+			
+			tempDistance += Utils.Haversine(currentPosition, nextPosition);
+			instantGroundSpeed = tempDistance / duration ;
+			
+			tempAcceleration = instantGroundSpeed / flight.getRecords().get( i ).getTimestamp() ;
+			
+			if (maxAcceleration < tempAcceleration) {
+				maxAcceleration = tempAcceleration ;
+			};
+		}
+		
+		return maxAcceleration;
+	}
+	
 }
-
