@@ -61,7 +61,7 @@ public class Acceleration {
 			
 			tempAcceleration = instantGroundSpeed / flight.getRecords().get( i ).getTimestamp() ;
 			
-			if (maxAcceleration < tempAcceleration) {
+			if (maxAcceleration < Math.abs(tempAcceleration)) {
 				maxAcceleration = tempAcceleration ;
 			};
 		}
