@@ -16,7 +16,6 @@ public class Stress {
 			double n1 = flightRecords.get(i+1).getHeart_rate();
 			if ((n1-n0) > 10 || (n1-n0) < -10) {
 				System.out.println("n1 est"+n1+"n0 est"+n0);
-
 				test = true;
 			}
 		}
