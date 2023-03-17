@@ -11,7 +11,6 @@ import fr.estia.pandora.analyses.*;
  */
 public class Analysis {
 	private Flight flight;
-	private double flightDuration;
 	//List of feature computed by this analysis
 	//The Map associate the name of the feature with the textual representation to be printed
 	private Map<String, String> featureValues ;
@@ -22,8 +21,6 @@ public class Analysis {
 	 */
 	public Analysis(Flight flight, String targetFeature) {
 		this.flight = flight;
-		this.flightDuration = FlightDuration.compute(this.flight);
-		
 		this.featureValues = new HashMap<String, String> ();
 		
 		if(targetFeature.equals("null")) this.executeAll();
@@ -32,20 +29,62 @@ public class Analysis {
 	
 	public void execute(String targetFeature) {
 		switch(targetFeature) {
-			case "flightDuration":
-				this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
+			case "avgAlt":
+				this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 				break;
-			case "avgAltitude":
-				System.out.println("Average Altitude");
+			case "maxAlt":
+				this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
 				break;
-			case "maxAltitude":
-				System.out.println("Average Altitude");
+			case "avgTemp":
+				this.featureValues.put( "avgTemp", String.format("%.2f", Temperature.average(flight)));
+				break;
+			case "maxTemp":
+				this.featureValues.put( "maxTemp", String.format("%.2f", Temperature.max(flight)));
+				break;
+			case "minTemp":
+				this.featureValues.put( "minTemp", String.format("%.2f", Temperature.min(flight)));
+				break;
+			case "avgPressure":
+				this.featureValues.put( "avgPressure", String.format("%.2f", Pressure.average(flight)));
+				break;
+			case "maxPressure":
+				this.featureValues.put( "maxPressure", String.format("%.2f", Pressure.max(flight)));
+				break;
+			case "minPressure":
+				this.featureValues.put( "minPressure", String.format("%.2f", Pressure.min(flight)));
+				break;
+			case "avgHumidity":
+				this.featureValues.put( "avgHumidity", String.format("%.2f", Humidity.average(flight)));
+				break;
+			case "maxHumidity":
+				this.featureValues.put( "maxHumidity", String.format("%.2f", Humidity.max(flight)));
+				break;
+			case "minHumidity":
+				this.featureValues.put( "minHumidity", String.format("%.2f", Humidity.min(flight)));
+				break;
+			case "avgHeartRate":
+				this.featureValues.put( "avgHeartRate", String.format("%.2f", Heartrate.average(flight)));
+				break;
+			case "maxHeartRate":
+				this.featureValues.put( "maxHeartRate", String.format("%.2f", Heartrate.max(flight)));
+				break;
+			case "minHeartRate":
+				this.featureValues.put( "minHeartRate", String.format("%.2f", Heartrate.min(flight)));
+				break;
+			case "avgOxygen":
+				this.featureValues.put( "avgOxygen", String.format("%.2f", Oxygen.average(flight)));
+				break;
+			case "maxOxygen":
+				this.featureValues.put( "maxOxygen", String.format("%.2f", Oxygen.max(flight)));
+				break;
+			case "minOxygen":
+				this.featureValues.put( "minOxygen", String.format("%.2f", Oxygen.min(flight)));
 				break;
 			case "avgAirSpeed":
-				System.out.println("Average Altitude");
+				this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
 				break;
 			case "maxAirSpeed":
-				System.out.println("Average Altitude");
+				this.featureValues.put( "maxAirSpeed", String.format("%.2f", AirSpeed.max(flight)));
 				break;
 			case "avgEnginePower":
 				this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
@@ -56,17 +95,40 @@ public class Analysis {
 			case "reachAlt":
 				this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
 				break;
-			case "reachDist":
-				this.featureValues.put( "reachDist", Reaching80PercentMaxDistance.average(flight));
+			case "flightDuration":
+				this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
+				break;
+			case "flightDistance":
+				this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
 				break;
 		}
 	}
 	
 	public void executeAll() {
 		this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
-		this.featureValues.put( "flightDuration", String.format("%.2f", this.flightDuration));
+		this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
+		this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
 		this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
+		this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
+		this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
+		this.featureValues.put( "avgTemp", String.format("%.2f", Temperature.average(flight)));
+		this.featureValues.put( "maxTemp", String.format("%.2f", Temperature.max(flight)));
+		this.featureValues.put( "minTemp", String.format("%.2f", Temperature.min(flight)));
+		this.featureValues.put( "avgPressure", String.format("%.2f", Pressure.average(flight)));
+		this.featureValues.put( "maxPressure", String.format("%.2f", Pressure.max(flight)));
+		this.featureValues.put( "minPressure", String.format("%.2f", Pressure.min(flight)));
+		this.featureValues.put( "avgHumidity", String.format("%.2f", Humidity.average(flight)));
+		this.featureValues.put( "maxHumidity", String.format("%.2f", Humidity.max(flight)));
+		this.featureValues.put( "minHumidity", String.format("%.2f", Humidity.min(flight)));
+		this.featureValues.put( "avgOxygen", String.format("%.2f", Oxygen.average(flight)));
+		this.featureValues.put( "maxOxygen", String.format("%.2f", Oxygen.max(flight)));
+		this.featureValues.put( "minOxygen", String.format("%.2f", Oxygen.min(flight)));
+		this.featureValues.put( "avgHeartRate", String.format("%.2f", Heartrate.average(flight)));
+		this.featureValues.put( "maxHeartRate", String.format("%.2f", Heartrate.max(flight)));
+		this.featureValues.put( "minHeartRate", String.format("%.2f", Heartrate.min(flight)));
+		this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
+		this.featureValues.put( "maxAirSpeed", String.format("%.2f", AirSpeed.max(flight)));
 	}
 	
 	public String getFeatureValue( String feature ) {
