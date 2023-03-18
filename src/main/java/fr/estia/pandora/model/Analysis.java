@@ -95,6 +95,9 @@ public class Analysis {
 			case "reachAlt":
 				this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
 				break;
+			case "fastJetAlt":
+				this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.maxAccel(flight)));
+				break;
 			case "flightDuration":
 				this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 				break;
@@ -128,6 +131,7 @@ public class Analysis {
 		this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
 		this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 		this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
+		this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.maxAccel(flight)));
 		this.featureValues.put( "avgTemp", String.format("%.2f", Temperature.average(flight)));
 		this.featureValues.put( "maxTemp", String.format("%.2f", Temperature.max(flight)));
 		this.featureValues.put( "minTemp", String.format("%.2f", Temperature.min(flight)));
