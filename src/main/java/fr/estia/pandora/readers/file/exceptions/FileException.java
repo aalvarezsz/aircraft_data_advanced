@@ -6,34 +6,36 @@ import java.util.List;
 
 public class FileException extends Exception {
     /** An id for serialization purpose */
-    private static final long serialVersionUID = -1632350697567844111L;
+    private static final long serialVersionUID = -5255255831476166381L;
     /** code of the invalid exception */
-    protected List<String> missingFiles;
+    protected String fileName;
+    protected String exception;
+    protected int exitCode;
 
-    public FileException( List<String> missingFiles ) {
-        this.missingFiles = new ArrayList<>();
-        this.missingFiles = missingFiles;
+    public FileException(String fileName, String exception, int exitCode) {
+        this.fileName = fileName;
+        this.exception = exception;
+        this.exitCode = exitCode;
     }
 
-    /**
-     * @return the missingFile
-     */
-    public List<String> getMissingFiles() {
-        return this.missingFiles;
-    }
-
-    /**
-     * provide a one line explanation of the error
-     * @return  "Missing file: file name(s)"
-     * @see java.lang.Throwable#getMessage()
-     */
     @Override
-    public String getMessage() {
-        return "ERROR: MISSING_FILE - " + stringify(this.missingFiles) ;
-    }
+    public String getMessage() { return "ERROR: " + exception + " - "; }
+    public String getInfos() { return "File Exception"; }
+    public int getExitCode() { return exitCode; }
 
-    private String stringify(List<String> missingFiles) {
-        Collections.sort(missingFiles);
-        return String.join(" ", missingFiles);
-    }
+    /**
+     * ALL EXCEPTIONS :
+     * 	Invalid command line option
+     * 	Missing command line parameter
+     * 	Not implemented handling
+     * 	Missing files
+     * 	Encoding problem
+     * 	Corrupted files
+     * 	Missing header
+     * 	Incomplete header
+     * 	Missing columns
+     * 	Missing column name
+     * 	Incorrect timestamp ordering
+     * 	Incorrect input
+     */
 }

@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 import fr.estia.pandora.model.Analysis;
+import fr.estia.pandora.model.ExceptionManager;
 import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.printer.ConsolePrinter;
 import fr.estia.pandora.printer.FeaturePrinter;
@@ -15,7 +16,10 @@ import fr.estia.pandora.readers.commandLine.Configuration;
 import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
 import fr.estia.pandora.readers.commandLine.exceptions.OptionException;
 import fr.estia.pandora.readers.file.FileReader;
+import fr.estia.pandora.readers.file.exceptions.FileException;
 import fr.estia.pandora.readers.file.exceptions.FlightRecordException;
+import fr.estia.pandora.readers.file.exceptions.IncompleteHeaderException;
+import fr.estia.pandora.readers.file.exceptions.MissingHeaderException;
 
 
 /**
@@ -24,10 +28,10 @@ import fr.estia.pandora.readers.file.exceptions.FlightRecordException;
  *
  */
 public class Pandora {
-	static final int EXIT_OK = 0 ;
-	static final int EXIT_ILLEGAL_ARGUMENT = 1 ;
-	static final int EXIT_INVALID_FLIGHT_RECORD = 2 ;
-	static final int EXIT_UNHANDLED = 3 ;
+	public static final int EXIT_OK = 0;
+	public static final int EXIT_ILLEGAL_ARGUMENT = 1;
+	public static final int EXIT_INVALID_FLIGHT_RECORD = 2;
+	public static final int EXIT_UNHANDLED = 3;
 
 	public static void main(String[] arguments) {
 		try {
@@ -41,40 +45,43 @@ public class Pandora {
 			
 			// Create a file reader
 			FileReader fileReader = new FileReader( "./" );
-			Flight flight; Analysis analysis;
-			
+			Analysis analysis;
 			// Parse files, execute analysis and print result
 			switch(config.getInputMode()) {
 				case mono:
-					if(sources.size() != 1) throw new OptionException("Too much sources provided");
-					flight = fileReader.GetRecordsFromFile(sources.get(0));
-					analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
-					print(flight, analysis);
+					try {
+						if(sources.size() != 1) throw new OptionException("Too much sources provided");
+						Flight flight = fileReader.GetRecordsFromFile(sources.get(0));
+						analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+						print(flight, analysis);
+					} catch (FileException e) { ExceptionManager.handle(e); }
 					break;
-				default:
+				case batch:
+					List<Flight> flights = new ArrayList<>();
+					List<FileException> exceptions = new ArrayList<>();
 					Collections.sort(sources);
-					List<String> files = new ArrayList<String>();
+
 					for(String source: sources) {
 						try {
-							flight = fileReader.GetRecordsFromFile(source);
-							analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
-							print( flight, analysis );
-						} catch (Exception e) {
-
-						}
+							flights.add(fileReader.GetRecordsFromFile(source));
+						} catch (FileException e) { exceptions.add(e); }
 					}
-					Collections.sort(files);
 
-					
+					if (!exceptions.isEmpty()) ExceptionManager.handle(exceptions);
+
+					for(Flight flight: flights) {
+						analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+						print( flight, analysis );
+					}
+
 					break;
+				case multi:
+				default: break;
 			}
 			
 		} catch (OptionException e) {
 			System.out.println( e.getMessage() );
 			System.exit( EXIT_ILLEGAL_ARGUMENT );
-		} catch (FlightRecordException e) {
-			System.out.println( e.getMessage() );
-			System.exit( EXIT_INVALID_FLIGHT_RECORD );
 		} catch (NoOpException e) {
 			System.exit( EXIT_OK );
 		} catch ( Exception e ) {

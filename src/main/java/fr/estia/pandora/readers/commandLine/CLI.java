@@ -9,8 +9,8 @@ import fr.estia.pandora.readers.commandLine.exceptions.MissingParameterException
 import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
 import fr.estia.pandora.readers.commandLine.exceptions.OptionException;
 import fr.estia.pandora.readers.commandLine.exceptions.UnhandledOptionException;
-import fr.estia.pandora.readers.file.exceptions.FileException;
 import fr.estia.pandora.readers.file.exceptions.FlightRecordException;
+import fr.estia.pandora.readers.file.exceptions.MissingFileException;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 
@@ -51,7 +51,6 @@ public class CLI {
 	 * @param major ( google SemVer )
 	 * @param minor ( google SemVer )
 	 * @param delta ( google SemVer )
-	 * @param options [Optional] set of possible options
 	 */
 	public static void initialize(String name, int major, int minor, int delta) {
 		appName = name ;
@@ -69,7 +68,7 @@ public class CLI {
 	 * @throws UnhandledOptionException  Option is listed in the interface, but no handler where defined
 	 * @throws NoOpException 			 Option is a no-op ( no further operation are expected ) e.g. version or help
 	 */
-	public static Configuration read( String arguments[] ) throws OptionException, MissingParameterException, UnhandledOptionException, NoOpException, FlightRecordException {
+	public static Configuration read( String arguments[] ) throws OptionException, MissingParameterException, UnhandledOptionException, NoOpException, MissingFileException {
 		int code;
 		Getopt g = createOpt( arguments );
 		g.setOpterr(false); // We'll do our own error handling
@@ -105,21 +104,21 @@ public class CLI {
 		switch (configuration.getInputMode()) {
 			case mono:
 				for (int i = g.getOptind(); i < arguments.length; i++) {
-					if (!arguments[i].split("\\.")[arguments[i].split("\\.").length - 1].equals("frd")) continue;
+					String fileFormat = arguments[i].split("\\.")[arguments[i].split("\\.").length - 1];
+					if (!fileFormat.equals("frd") && !fileFormat.equals("csv")) continue;
 					configuration.addSource(arguments[i]);
 				}
 				if(configuration.getSources().size() > 1) configuration.setInputMode(InputMode.multi);
-				else if (configuration.getSources().size() == 0) throw new FlightRecordException("provided (only .frd files accepted)");
 				break;
 			case batch:
 				File folder = new File(configuration.getBatchFolder());
 				File[] files = folder.listFiles();
 
 				for (File file : files) {
-				    if (!file.isFile() || !file.getName().split("\\.")[file.getName().split("\\.").length - 1].equals("frd")) continue;
+					String fileFormat = file.getName().split("\\.")[file.getName().split("\\.").length - 1];
+					if (!file.isFile() || (!fileFormat.equals("frd") && !fileFormat.equals("csv"))) continue;
 				    configuration.addSource(configuration.getBatchFolder() + "/" + file.getName());
 				}
-				if (configuration.getSources().size() == 0) throw new FlightRecordException("provided (only .frd files accepted)");
 				break;
 			default: break;
 		}
