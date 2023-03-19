@@ -17,9 +17,6 @@ import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
 import fr.estia.pandora.readers.commandLine.exceptions.OptionException;
 import fr.estia.pandora.readers.file.FileReader;
 import fr.estia.pandora.readers.file.exceptions.FileException;
-import fr.estia.pandora.readers.file.exceptions.FlightRecordException;
-import fr.estia.pandora.readers.file.exceptions.IncompleteHeaderException;
-import fr.estia.pandora.readers.file.exceptions.MissingHeaderException;
 
 
 /**
@@ -36,23 +33,18 @@ public class Pandora {
 	public static void main(String[] arguments) {
 		try {
 			CLI.initialize("Pandora", 1, 0, 1);
-			// Parse the command line arguments
 			Configuration config = CLI.read(arguments);
 
-			// Check that exactly one source file was provided, exit otherwise
 			List<String> sources = CLI.getConfiguration().getSources();
 			if(sources.size() == 0) throw new OptionException("No source provided");
-			
-			// Create a file reader
 			FileReader fileReader = new FileReader( "./" );
-			Analysis analysis;
-			// Parse files, execute analysis and print result
+
 			switch(config.getInputMode()) {
 				case mono:
 					try {
 						if(sources.size() != 1) throw new OptionException("Too much sources provided");
 						Flight flight = fileReader.GetRecordsFromFile(sources.get(0));
-						analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+						Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
 						print(flight, analysis);
 					} catch (FileException e) { ExceptionManager.handle(e); }
 					break;
@@ -70,7 +62,7 @@ public class Pandora {
 					if (!exceptions.isEmpty()) ExceptionManager.handle(exceptions);
 
 					for(Flight flight: flights) {
-						analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+						Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
 						print( flight, analysis );
 					}
 
