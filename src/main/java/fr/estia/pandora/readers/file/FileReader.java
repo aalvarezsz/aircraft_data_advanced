@@ -72,13 +72,8 @@ public class FileReader {
 				}
 			}
 
-			if (metadataList.size() >= 11) {
-				System.out.println("No metadata :(");
-				throw new MissingMetadataException(fileName);
-			} else if (metadataList.size() > 0) {
-				System.out.println("Metadata list not empty :(");
-				throw new IncompleteMetadataException(fileName, metadataList);
-			}
+			if (metadataList.size() >= 11) throw new MissingMetadataException(fileName);
+			else if (metadataList.size() > 0) throw new IncompleteMetadataException(fileName, metadataList);
 
 			metadataParsed = true ;
 		}
@@ -88,7 +83,7 @@ public class FileReader {
 		return source != null && source.hasNextLine() ;
 	}
 
-	private void parseData() throws MissingHeaderException, IncompleteHeaderException {
+	private void parseData() throws FileException {
 		// Verify that metadata have been read
 		if( metadataParsed ) {
 			String header, recordLine;

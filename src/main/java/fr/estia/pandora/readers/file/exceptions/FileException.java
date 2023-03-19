@@ -1,8 +1,5 @@
 package fr.estia.pandora.readers.file.exceptions;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class FileException extends Exception {
     /** An id for serialization purpose */

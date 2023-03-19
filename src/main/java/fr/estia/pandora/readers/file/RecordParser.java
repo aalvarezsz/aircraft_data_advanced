@@ -3,6 +3,7 @@ package fr.estia.pandora.readers.file;
 import java.util.*;
 
 import fr.estia.pandora.model.Record;
+import fr.estia.pandora.readers.file.exceptions.FileException;
 import fr.estia.pandora.readers.file.exceptions.IncompleteHeaderException;
 import fr.estia.pandora.readers.file.exceptions.MissingHeaderException;
 
@@ -11,7 +12,7 @@ public class RecordParser {
 	private String flightOrigin;
 	private int engineAmount;
 
-	public RecordParser(String fileName, String header, String flightOrigin, int engineAmount) throws MissingHeaderException, IncompleteHeaderException {
+	public RecordParser(String fileName, String header, String flightOrigin, int engineAmount) throws FileException {
 		this.parameterColumn = new HashMap<>();
 		this.flightOrigin = flightOrigin;
 		this.engineAmount = engineAmount;
@@ -35,16 +36,9 @@ public class RecordParser {
 			}
 		}
 
-		if (headerTitles.size() >= 17 && flightOrigin.equals("US")) {
-			System.out.println("No header US :(");
-			throw new MissingHeaderException(fileName);
-		} else if (headerTitles.size() >= 15 && flightOrigin.equals("RU")) {
-			System.out.println("No header RU :(");
-			throw new MissingHeaderException(fileName);
-		} else if (headerTitles.size() > 0) {
-			System.out.println("Header list not empty :(");
-			throw new IncompleteHeaderException(fileName, headerTitles);
-		}
+		if (headerTitles.size() >= 17 && flightOrigin.equals("US")) throw new MissingHeaderException(fileName);
+		else if (headerTitles.size() >= 15 && flightOrigin.equals("RU")) throw new MissingHeaderException(fileName);
+		else if (headerTitles.size() > 0) throw new IncompleteHeaderException(fileName, headerTitles);
 	}
 
 	public Record parse(String data) {

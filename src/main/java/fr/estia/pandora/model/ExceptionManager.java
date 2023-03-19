@@ -7,12 +7,12 @@ import java.util.*;
 
 public class ExceptionManager {
 
-    public static void handle(FileException exception) {
+    public static void handleFileException(FileException exception) {
         System.out.println(exception.getMessage() + exception.getInfos());
         System.exit(exception.getExitCode());
     }
 
-    public static void handle(List<FileException> exceptions) {
+    public static void handleFileExceptions(List<FileException> exceptions) {
         Map<Class<? extends FileException>, List<FileException>> exceptionMap = sort(exceptions);
 
         for (Map.Entry<Class<? extends FileException>, List<FileException>> exceptionType : exceptionMap.entrySet()) {
