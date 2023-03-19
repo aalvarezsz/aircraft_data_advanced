@@ -9,17 +9,17 @@ public class FileException extends Exception {
     private static final long serialVersionUID = -5255255831476166381L;
     /** code of the invalid exception */
     protected String fileName;
-    protected String exception;
+    protected String exceptionName;
     protected int exitCode;
 
     public FileException(String fileName, String exception, int exitCode) {
         this.fileName = fileName;
-        this.exception = exception;
+        this.exceptionName = exception;
         this.exitCode = exitCode;
     }
 
     @Override
-    public String getMessage() { return "ERROR: " + exception + " - "; }
+    public String getMessage() { return "ERROR: " + exceptionName + " - "; }
     public String getInfos() { return "File Exception"; }
     public int getExitCode() { return exitCode; }
 

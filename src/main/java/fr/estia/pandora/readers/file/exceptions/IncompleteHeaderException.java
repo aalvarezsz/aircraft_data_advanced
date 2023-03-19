@@ -10,7 +10,7 @@ public class IncompleteHeaderException extends FileException {
 	private List<String> missingParameters;
 
 	public IncompleteHeaderException(String filename, List<String> params) {
-		super(filename, "INCOMPLETE_HEADER", Pandora.EXIT_INVALID_FLIGHT_RECORD);
+		super(filename, "MISSING_COLUMN", Pandora.EXIT_INVALID_FLIGHT_RECORD);
 		this.missingParameters = params;
 	}
 

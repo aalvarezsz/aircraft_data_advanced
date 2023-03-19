@@ -36,13 +36,13 @@ public class RecordParser {
 		}
 
 		if (headerTitles.size() >= 17 && flightOrigin.equals("US")) {
-			System.out.println("No header :(");
+			System.out.println("No header US :(");
 			throw new MissingHeaderException(fileName);
 		} else if (headerTitles.size() >= 15 && flightOrigin.equals("RU")) {
-			System.out.println("No header :(");
+			System.out.println("No header RU :(");
 			throw new MissingHeaderException(fileName);
 		} else if (headerTitles.size() > 0) {
-			System.out.println("List not empty :(");
+			System.out.println("Header list not empty :(");
 			throw new IncompleteHeaderException(fileName, headerTitles);
 		}
 	}

@@ -9,7 +9,6 @@ import fr.estia.pandora.readers.commandLine.exceptions.MissingParameterException
 import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
 import fr.estia.pandora.readers.commandLine.exceptions.OptionException;
 import fr.estia.pandora.readers.commandLine.exceptions.UnhandledOptionException;
-import fr.estia.pandora.readers.file.exceptions.FlightRecordException;
 import fr.estia.pandora.readers.file.exceptions.MissingFileException;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;

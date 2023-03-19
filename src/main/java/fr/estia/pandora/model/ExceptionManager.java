@@ -1,5 +1,6 @@
 package fr.estia.pandora.model;
 
+import fr.estia.pandora.Pandora;
 import fr.estia.pandora.readers.file.exceptions.FileException;
 
 import java.util.*;
@@ -20,8 +21,10 @@ public class ExceptionManager {
             System.out.print(exceptionList.get(0).getMessage());
             for (FileException exception : exceptionList) System.out.print(exception.getInfos() + " ");
             System.out.println();
-            System.exit(exceptionList.get(0).getExitCode());
+            // System.exit(exceptionList.get(0).getExitCode());
         }
+
+        System.exit(Pandora.EXIT_INVALID_FLIGHT_RECORD);
     }
 
     public static Map<Class<? extends FileException>, List<FileException>> sort(List<FileException> exceptions) {

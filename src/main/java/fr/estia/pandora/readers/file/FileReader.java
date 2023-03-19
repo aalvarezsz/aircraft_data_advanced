@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import fr.estia.pandora.model.Flight;
@@ -23,11 +26,11 @@ public class FileReader {
 
 	public FileReader( String root ) { testFolderRoot = Paths.get( root ).toAbsolutePath().normalize(); }
 
-	public Flight GetRecordsFromFile(String fileName) throws MissingFileException, MissingHeaderException, IncompleteHeaderException, MetadataException {
+	public Flight GetRecordsFromFile(String fileName) throws FileException {
 		this.fileName = fileName.split("/")[fileName.split("/").length - 1];
 		flight = new Flight();
-		metadataParsed = false ;
-		openFlightRecordFile(fileName) ;
+		metadataParsed = false;
+		openFlightRecordFile(fileName);
 		parseMetaData();
 		parseData();
 		source.close();
@@ -49,17 +52,36 @@ public class FileReader {
 		return line.matches("^$" );
 	}
 
-	private void parseMetaData() throws MetadataException {
-		String line ; 
-		//use scanner only if the metadata have not yet been used 
+	private void parseMetaData() throws MissingMetadataException, IncompleteMetadataException {
+		String line;
+
+		List<String> metadataList = new ArrayList<>(Arrays.asList(
+			"flight id","flight code","origin","date","from","to", "motor(s)",
+			"mass aircraft", "mass fuel", "lift coef","drag coef"
+		));
+
 		if( !metadataParsed ) {
-			if( !readyToParse() ) throw new MetadataException(sourcePath.toString()) ;
+			if( !readyToParse() ) throw new MissingMetadataException(this.fileName) ;
 			while (readyToParse() && !isEmptyLine(line = source.nextLine())) {
-				// System.out.println(line);
-				flight.parseMetaData(line);
+				String[] metadata = line.split("\\s*:\\s*");
+				int dataIndex = metadataList.indexOf(metadata[0]);
+
+				if(dataIndex >= 0) {
+					metadataList.remove(dataIndex);
+					flight.parseMetaData(line);
+				}
 			}
+
+			if (metadataList.size() >= 11) {
+				System.out.println("No metadata :(");
+				throw new MissingMetadataException(fileName);
+			} else if (metadataList.size() > 0) {
+				System.out.println("Metadata list not empty :(");
+				throw new IncompleteMetadataException(fileName, metadataList);
+			}
+
 			metadataParsed = true ;
-		}		
+		}
 	}
 
 	private boolean readyToParse() {
