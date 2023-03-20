@@ -9,6 +9,7 @@ import java.util.List;
 import fr.estia.pandora.model.Analysis;
 import fr.estia.pandora.model.ExceptionManager;
 import fr.estia.pandora.model.Flight;
+import fr.estia.pandora.model.MultiAnalysis;
 import fr.estia.pandora.printer.ConsolePrinter;
 import fr.estia.pandora.printer.FeaturePrinter;
 import fr.estia.pandora.readers.commandLine.CLI;
@@ -46,7 +47,7 @@ public class Pandora {
 						Flight flight = fileReader.GetRecordsFromFile(sources.get(0));
 						Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
 						print(flight, analysis);
-					} catch (FileException e) { ExceptionManager.handle(e); }
+					} catch (FileException e) { ExceptionManager.handleFileException(e); }
 					break;
 				case batch:
 					List<Flight> flights = new ArrayList<>();
@@ -59,7 +60,7 @@ public class Pandora {
 						} catch (FileException e) { exceptions.add(e); }
 					}
 
-					if (!exceptions.isEmpty()) ExceptionManager.handle(exceptions);
+					if (!exceptions.isEmpty()) ExceptionManager.handleFileExceptions(exceptions);
 
 					for(Flight flight: flights) {
 						Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
@@ -68,6 +69,22 @@ public class Pandora {
 
 					break;
 				case multi:
+					flights = new ArrayList<>();
+					exceptions = new ArrayList<>();
+					Collections.sort(sources);
+
+					for(String source: sources) {
+						try {
+							flights.add(fileReader.GetRecordsFromFile(source));
+						} catch (FileException e) { exceptions.add(e); }
+					}
+
+					if (!exceptions.isEmpty()) ExceptionManager.handleFileExceptions(exceptions);
+
+					MultiAnalysis analysis = new MultiAnalysis(flights);
+					// print whatever
+
+					break;
 				default: break;
 			}
 			

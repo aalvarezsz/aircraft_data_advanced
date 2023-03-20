@@ -34,8 +34,9 @@ public class Flight {
 		for(Record record: records) System.out.println(record.getTimestamp() + "; ");
 	}
 	
-	public void addRecord(Record record) {
-		this.records.add( record ) ;
+	public double addRecord(Record record) {
+		this.records.add(record);
+		return record.getTimestamp();
 	}
 
 	public void parseMetaData(String line) {

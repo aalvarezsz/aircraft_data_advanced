@@ -91,9 +91,10 @@ public class FileReader {
 
 			RecordParser parser = new RecordParser(fileName, header, flight.getOrigin(), flight.getEngineAmount());
 
+			double previousTimestamp = 0;
 			while ( readyToParse() ) {
 				recordLine = source.nextLine();
-				flight.addRecord(parser.parse(recordLine));
+				previousTimestamp = flight.addRecord(parser.parse(recordLine, previousTimestamp));
 			}
 		}
 	}

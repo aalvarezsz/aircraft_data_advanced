@@ -6,14 +6,17 @@ import fr.estia.pandora.model.Record;
 import fr.estia.pandora.readers.file.exceptions.FileException;
 import fr.estia.pandora.readers.file.exceptions.IncompleteHeaderException;
 import fr.estia.pandora.readers.file.exceptions.MissingHeaderException;
+import fr.estia.pandora.readers.file.exceptions.OrderingException;
 
 public class RecordParser {
 	private Map<String, Integer> parameterColumn;
+	private String fileName;
 	private String flightOrigin;
 	private int engineAmount;
 
 	public RecordParser(String fileName, String header, String flightOrigin, int engineAmount) throws FileException {
 		this.parameterColumn = new HashMap<>();
+		this.fileName = fileName;
 		this.flightOrigin = flightOrigin;
 		this.engineAmount = engineAmount;
 
@@ -41,10 +44,10 @@ public class RecordParser {
 		else if (headerTitles.size() > 0) throw new IncompleteHeaderException(fileName, headerTitles);
 	}
 
-	public Record parse(String data) {
+	public Record parse(String data, double previousTimestamp) throws OrderingException {
 		Record record = null;
         String[] values = data.split(",");
-        
+
         if( values.length > 0 ) {
         	record = new Record();
         	
@@ -53,7 +56,11 @@ public class RecordParser {
         			int index = parameter.getValue();
 
         			switch(parameter.getKey()) {
-	        			case "timestamp": record.setTimestamp(Double.parseDouble(values[index])); break;
+	        			case "timestamp":
+							double currentTimestamp = Double.parseDouble(values[index]);
+							if(previousTimestamp < currentTimestamp) record.setTimestamp(currentTimestamp);
+							else throw new OrderingException(fileName);
+							break;
 	        			case "longitude": record.setLongitude(Double.parseDouble(values[index])); break;
 	        			case "latitude": record.setLatitude(Double.parseDouble(values[index])); break;
 	        			case "altitude": record.setAltitude(Double.parseDouble(values[index]) / 3.281); break;
@@ -80,7 +87,11 @@ public class RecordParser {
         			int index = parameter.getValue();
 
         			switch(parameter.getKey()) {
-	        			case "timestamp": record.setTimestamp(Double.parseDouble(values[index])); break;
+	        			case "timestamp":
+							double currentTimestamp = Double.parseDouble(values[index]);
+							if(previousTimestamp < currentTimestamp) record.setTimestamp(currentTimestamp);
+							else throw new OrderingException(fileName);
+							break;
 	        			case "longitude": record.setLongitude(Double.parseDouble(values[index])); break;
 	        			case "latitude": record.setLatitude(Double.parseDouble(values[index])); break;
 	        			case "altitude": record.setAltitude(Double.parseDouble(values[index])); break;
