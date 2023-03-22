@@ -3,6 +3,7 @@ package fr.estia.pandora.readers.file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -38,13 +39,15 @@ public class FileReader {
 		return flight ;
 	}
 	
-	private void openFlightRecordFile( String fileName ) throws MissingFileException {
+	private void openFlightRecordFile( String fileName ) throws FileException {
 		try {
 			sourcePath = testFolderRoot.resolve( Paths.get( fileName )).toAbsolutePath().normalize() ;
 			File flightRecordFile = new File(sourcePath.toString()); 
 			source = new Scanner(flightRecordFile);
 		} catch (FileNotFoundException e) { //Catch missing files
 			throw new MissingFileException(this.fileName);
+		} catch (IOException e) {
+			throw new CorruptedFileException(this.fileName);
 		}
 	}
 	
