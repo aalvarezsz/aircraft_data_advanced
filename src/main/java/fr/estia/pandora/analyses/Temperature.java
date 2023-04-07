@@ -43,7 +43,7 @@ public class Temperature {
 		ArrayList<Record> flightRecords = flight.getRecords();
 		double temperatureSum = 0;
 
-		for (int i = 0; i<flightRecords.size(); i++) temperatureSum += Math.abs(25 - flightRecords.get(i).getTemperature_in());
+		for (int i = 0; i<flightRecords.size(); i++) temperatureSum += flightRecords.get(i).getTemperature_in() - 25;
 
 		return temperatureSum / flightRecords.size();
 	}
