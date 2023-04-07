@@ -45,7 +45,7 @@ public class Temperature {
 
 		for (int i = 0; i<flightRecords.size(); i++) temperatureSum += flightRecords.get(i).getTemperature_in() - 25;
 
-		return temperatureSum / flightRecords.size();
+		return -1*(temperatureSum / flightRecords.size());
 	}
 
 }
