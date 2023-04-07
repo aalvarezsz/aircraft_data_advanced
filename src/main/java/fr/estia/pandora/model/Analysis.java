@@ -126,6 +126,9 @@ public class Analysis {
 			case "stressedPilot":
 				this.featureValues.put( "stressedPilot", String.format("%.2f", Stress.attack(flight)));
 				break;
+			case "noiseTemp":
+				this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight)));
+				break;
 				
 		}
 	}
@@ -166,6 +169,8 @@ public class Analysis {
 		this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.maxAccel(flight)));
 		this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
 		this.featureValues.put( "stressedPilot", Stress.attack(flight));
+		this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight)));
+
 	}
 	
 	public String getFeatureValue( String feature ) {

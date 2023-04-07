@@ -39,5 +39,14 @@ public class Temperature {
 		return minTemperature;
 	}
 
+	public static double noise(Flight flight) {
+		ArrayList<Record> flightRecords = flight.getRecords();
+		double temperatureSum = 0;
+
+		for (int i = 0; i<flightRecords.size(); i++) temperatureSum += Math.abs(25 - flightRecords.get(i).getTemperature_in());
+
+		return temperatureSum / flightRecords.size();
+	}
+
 }
 
