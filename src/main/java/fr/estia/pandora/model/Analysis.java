@@ -123,6 +123,9 @@ public class Analysis {
 			case "fastJetAlt":
 				this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.maxAccel(flight)));
 				break;
+			case "stressedPilot":
+				this.featureValues.put( "stressedPilot", String.format("%.2f", Stress.attack(flight)));
+				break;
 				
 		}
 	}
@@ -162,6 +165,7 @@ public class Analysis {
 		//Milestone 4
 		this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.maxAccel(flight)));
 		this.featureValues.put( "reachAlt", Reaching80PercentMaxAltitude.average(flight));
+		this.featureValues.put( "stressedPilot", Stress.attack(flight));
 	}
 	
 	public String getFeatureValue( String feature ) {
