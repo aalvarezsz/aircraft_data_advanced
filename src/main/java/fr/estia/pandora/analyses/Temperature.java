@@ -39,9 +39,9 @@ public class Temperature {
 		return minTemperature;
 	}
 
-	public static double noise(Flight flight) {
+	public static float noise(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
-		double temperatureSum = 0;
+		float temperatureSum = 0;
 
 		for (int i = 0; i<flightRecords.size(); i++) temperatureSum += flightRecords.get(i).getTemperature_in() - 25;
 
