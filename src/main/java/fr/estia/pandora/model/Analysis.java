@@ -104,6 +104,20 @@ public class Analysis {
 			case "flightDistance":
 				this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
 				break;
+
+			case "windSpeed":
+				this.featureValues.put( "windSpeed", String.format("%.2f", Wind.average(flight)));
+				break;
+			case "fastWindAlt":
+				this.featureValues.put( "fastWindAlt", String.format("%.2f", Wind.altitudeWithFastestWind(flight)));
+				break;
+			case "noiseTemp":
+				this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight)));
+				break;
+			case "stressedPilot":
+				this.featureValues.put( "stressedPilot", Stress.attack(flight));
+				break;
+
 			case "maxAcceleration":
 				this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
 				break;
@@ -120,6 +134,7 @@ public class Analysis {
 				this.featureValues.put( "maxMachSpeed", String.format("%.2f", MachSpeed.max(flight)));
 				break;
 				
+
 		}
 	}
 	
@@ -149,13 +164,28 @@ public class Analysis {
 		this.featureValues.put( "minHeartRate", String.format("%.2f", Heartrate.min(flight)));
 		this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
 		this.featureValues.put( "maxAirSpeed", String.format("%.2f", AirSpeed.max(flight)));
+
+		this.featureValues.put( "windSpeed", String.format("%.2f", Wind.average(flight)));
+		this.featureValues.put( "fastWindAlt", String.format("%.2f", Wind.altitudeWithFastestWind(flight)));
+		this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight)));
+		this.featureValues.put( "stressedPilot", Stress.attack(flight));
+
+
+
+
 		this.featureValues.put( "avgAcceleration", String.format("%.3f", Acceleration.average(flight)));
 		this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
 		this.featureValues.put( "maxAccelG", String.format("%.2f", Acceleration.maxInG(flight)));
 		this.featureValues.put( "avgMachSpeed", String.format("%.2f", MachSpeed.average(flight)));
 		this.featureValues.put( "maxMachSpeed", String.format("%.2f", MachSpeed.max(flight)));
+
 	}
 	
+	private Object AverageWindspeed() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public String getFeatureValue( String feature ) {
 		String value = "" ;
 		if( featureValues.containsKey(feature)) {
