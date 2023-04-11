@@ -9,7 +9,6 @@ public class FlightPhases {
 
 	public static void test(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();		
-		return flightRecords.get(i).getHeart_rate()
 		
 			
 		}
