@@ -21,14 +21,13 @@ public class Reaching80PercentMaxAltitude {
 	    return formattedDate;
 	}
 	
-	public static String average(Flight flight) {
+	public static double average(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
 		double maxaltitude = 0;
 		
 		double altitude = 0;
 		double Taltitude = 0;
 		double timestamp = 0;
-		String timestampFomatted;
 		//le timestamp du debut du vol
 		double startTime = flight.getRecords().get( 0 ).getTimestamp();
 		
@@ -48,12 +47,9 @@ public class Reaching80PercentMaxAltitude {
 		}
 		//System.out.println("L'altitude max est"+maxaltitude);
 		timestamp = Taltitude-startTime;
-
-		//System.out.println("Le timestamp est"+timestamp);
-		timestampFomatted = getFormattedDuration(timestamp);
-		//falta formatear el tiempo
+		return timestamp/60;
 		
-		return timestampFomatted;
+		
 		
 	}
 }
