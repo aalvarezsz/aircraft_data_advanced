@@ -14,10 +14,10 @@ import fr.estia.pandora.model.Flight;
 public class Wind {
     private Flight flight;
     public static double speed(Flight flight) {
-        double avgGroundSpeed = 0;
-        double groundSpeed = 0;
-        double result = 0;
+        ArrayList<Record> flightRecords = flight.getRecords();
+        double windSpeed = 0;
         double nbOfPositions = 0;
+        double groundSpeed = 0;
 
         if(flight.getRecords().size() <= 1) return 0;
 
@@ -31,17 +31,17 @@ public class Wind {
 
             double dDistance = Utils.ComputeDistance(position_0, position_1);
 
-            double speed = dDistance / dTime;
+            groundSpeed = dDistance / dTime;
 
-            groundSpeed += speed ;
+
             nbOfPositions = i;
+
+            double airSpeed = flightRecords.get(i+1).getAir_speed();
+
+            windSpeed += groundSpeed - airSpeed ;
         }
-        double avgAirSpeed = AirSpeed.average(flight);
-        avgGroundSpeed = groundSpeed / flight.getRecords().size();
 
-
-        result = avgGroundSpeed - avgAirSpeed;
-        return result;
+        return windSpeed / nbOfPositions;
     }
 
 
