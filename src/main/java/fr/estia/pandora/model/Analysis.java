@@ -94,12 +94,43 @@ public class Analysis {
 			case "minOxygen":
 				this.featureValues.put( "minOxygen", String.format("%.2f", Oxygen.min(flight)));
 				break;
+
 			//Milestone 3
+			case "avgAirSpeed":
+				this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
+				break;
+			case "maxAirSpeed":
+				this.featureValues.put( "maxAirSpeed", String.format("%.2f", AirSpeed.max(flight)));
+				break;
+			case "avgEnginePower":
+				this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
+				break;
+			case "maxEnginePower":
+				this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
+				break;
+			case "reachAlt":
+				this.featureValues.put( "reachAlt", String.format("%.2f", Altitude.Reaching80PercentMaxAltitude.average(flight)));
+				break;
+			case "fastJetAlt":
+				this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.maxAccel(flight)));
+				break;
 			case "flightDuration":
 				this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
 				break;
 			case "flightDistance":
 				this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
+				break;
+			case "windSpeed":
+				this.featureValues.put( "windSpeed", String.format("%.2f", Wind.average(flight)));
+				break;
+			case "fastWindAlt":
+				this.featureValues.put( "fastWindAlt", String.format("%.2f", Wind.altitudeWithFastestWind(flight)));
+				break;
+			case "noiseTemp":
+				this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight)));
+				break;
+			case "stressedPilot":
+				this.featureValues.put( "stressedPilot", Stress.attack(flight));
 				break;
 			case "maxAcceleration":
 				this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
@@ -136,13 +167,17 @@ public class Analysis {
 				this.featureValues.put( "fastWindAlt", String.format("%.2f", Wind.altitudeWithFastestWind(flight)));
 				break;
 				
+
 		}
 	}
 	
 	public void executeAll() {
 		//Milestone 1
 		this.featureValues.put( "avgEnginePower", String.format("%.2f", EnginePower.average(flight)));
-		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));
+		this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
+		this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
+		this.featureValues.put( "maxEnginePower", String.format("%.2f", EnginePower.max(flight)));		
+		this.featureValues.put( "reachAlt", String.format("%.2f", Altitude.Reaching80PercentMaxAltitude.average(flight)));
 		this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight)));
 		this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight)));
 		this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
@@ -163,9 +198,15 @@ public class Analysis {
 		this.featureValues.put( "avgHeartRate", String.format("%.2f", Heartrate.average(flight)));
 		this.featureValues.put( "maxHeartRate", String.format("%.2f", Heartrate.max(flight)));
 		this.featureValues.put( "minHeartRate", String.format("%.2f", Heartrate.min(flight)));
+
 		//Milestone 3
 		this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
 		this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight));
+		this.featureValues.put( "avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
+		this.featureValues.put( "maxAirSpeed", String.format("%.2f", AirSpeed.max(flight)));
+		this.featureValues.put( "fastWindAlt", String.format("%.2f", Wind.altitudeWithFastestWind(flight)));
+		this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight)));
+		this.featureValues.put( "stressedPilot", Stress.attack(flight));
 		this.featureValues.put( "avgAcceleration", String.format("%.3f", Acceleration.average(flight)));
 		this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
 		this.featureValues.put( "maxAccelG", String.format("%.2f", Acceleration.maxInG(flight)));
@@ -181,8 +222,6 @@ public class Analysis {
 		this.featureValues.put( "fastWindAlt", String.format("%.2f", Wind.altitudeWithFastestWind(flight)));
 
 
-	}
-	
 	public String getFeatureValue( String feature ) {
 		String value = "" ;
 		if( featureValues.containsKey(feature)) {
