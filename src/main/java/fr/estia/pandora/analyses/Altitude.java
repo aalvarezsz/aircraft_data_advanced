@@ -61,21 +61,17 @@ public class Altitude {
 			timestampList.set(i, timestampList.get(i) / 60.0);
 		}
 
-		// Create a sliding window that scans every 5 minutes starting from the beginning
+		// Create a sliding window that slides every 1 minute
 		ArrayList<Double> maxSpeeds = new ArrayList<Double>();
 		double windowSize = 5.0; // in minutes
-		int i = 0;
-		while (i < timestampList.size()) {
+		for (int i = 0; i < timestampList.size() - windowSize; i++) {
 			double startTime = timestampList.get(i);
 			double endTime = startTime + windowSize;
 			double maxSpeed = Double.MIN_VALUE;
-			int j = i;
-			while (j < timestampList.size() && timestampList.get(j) <= endTime) {
+			for (int j = i; j < timestampList.size() && timestampList.get(j) <= endTime; j++) {
 				maxSpeed = Math.max(maxSpeed, airspeedList.get(j));
-				j++;
 			}
 			maxSpeeds.add(maxSpeed);
-			i = j;
 		}
 
 
