@@ -11,13 +11,16 @@ import java.util.List;
  * Store the options that configure this run of the pandora application
  */
 public class Configuration {
-	private List<String> sources ;
-	private InputMode inputMode ;
-	private OutputMode outputMode = OutputMode.console ;
-	private String targetFeature  ;
-	private boolean debugSession = false ; 
-	public Configuration( ) {
-		sources = new ArrayList<String> () ;
+	private List<String> sources;
+	private InputMode inputMode;
+	private OutputMode outputMode = OutputMode.console;
+	private String targetFeature;
+	private String batchFolder;
+	private boolean debugSession = false; 
+	
+	public Configuration() {
+		sources = new ArrayList<String> ();
+		this.inputMode = InputMode.mono;
 	}
 
 	/**
@@ -46,61 +49,47 @@ public class Configuration {
 		this.targetFeature = feature ;
 	}
 
-
 	/**
 	 * @return the sources
 	 */
-	public List<String> getSources() {
-		return this.sources;
-	}
-
-	public void addSource(String source) {
-		sources.add( source ) ;
-	}
-
-
+	public List<String> getSources() { return this.sources; }
+	public void addSource(String source) { sources.add( source ); }
 
 	/**
 	 * @return the inputMode
 	 */
-	public InputMode getInputMode() {
-		return this.inputMode;
-	}
-
+	public InputMode getInputMode() { return this.inputMode; }
 	/**
 	 * @param inputMode the inputMode to set
 	 */
-	public void setInputMode(InputMode inputMode) {
-		this.inputMode = inputMode;
-	}
+	public void setInputMode(InputMode inputMode) { this.inputMode = inputMode; }
 
 	/**
 	 * @return the outputMode
 	 */
-	public OutputMode getOutputMode() {
-		return this.outputMode;
-	}
-
+	public OutputMode getOutputMode() { return this.outputMode; }
 	/**
 	 * @param outputMode the outputMode to set
 	 */
-	public void setOutputMode(OutputMode outputMode) {
-		this.outputMode = outputMode;
-	}
+	public void setOutputMode(OutputMode outputMode) { this.outputMode = outputMode; }
 
 	/**
 	 * @return the targetFeature
 	 */
-	public String getTargetFeature() {
-		return this.targetFeature;
-	}
-
+	public String getTargetFeature() { return this.targetFeature; }
 	/**
 	 * @param targetFeature the targetFeature to set
 	 */
-	public void setTargetFeature(String targetFeature) {
-		this.targetFeature = targetFeature;
-	}
+	public void setTargetFeature(String targetFeature) { this.targetFeature = targetFeature; }
+	
+	/**
+	 * @return the batch folder
+	 */
+	public String getBatchFolder() { return batchFolder; }
+	/**
+	 * @param batchFolder
+	 */
+	public void setBatchFolder(String batchFolder) { this.batchFolder = batchFolder; }
 
 	/**
 	 * @param debugSession set the Debug Session mode
@@ -113,7 +102,5 @@ public class Configuration {
 	/**
 	 * @return if we are in a Debug Session
 	 */
-	public boolean isDebugSession() {
-		return this.debugSession;
-	}
+	public boolean isDebugSession() { return this.debugSession; }
 }

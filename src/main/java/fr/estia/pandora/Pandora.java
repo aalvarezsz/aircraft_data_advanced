@@ -2,19 +2,22 @@
 package fr.estia.pandora;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import fr.estia.pandora.model.Analysis;
+import fr.estia.pandora.model.ExceptionManager;
 import fr.estia.pandora.model.Flight;
+import fr.estia.pandora.model.MultiAnalysis;
 import fr.estia.pandora.printer.ConsolePrinter;
 import fr.estia.pandora.printer.FeaturePrinter;
 import fr.estia.pandora.readers.commandLine.CLI;
 import fr.estia.pandora.readers.commandLine.Configuration;
-import fr.estia.pandora.readers.commandLine.Option;
 import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
 import fr.estia.pandora.readers.commandLine.exceptions.OptionException;
 import fr.estia.pandora.readers.file.FileReader;
-import fr.estia.pandora.readers.file.exceptions.FlightRecordException;
+import fr.estia.pandora.readers.file.exceptions.FileException;
 
 
 /**
@@ -23,53 +26,75 @@ import fr.estia.pandora.readers.file.exceptions.FlightRecordException;
  *
  */
 public class Pandora {
-	static final int EXIT_OK = 0 ;
-	static final int EXIT_ILLEGAL_ARGUMENT = 1 ;
-	static final int EXIT_INVALID_FLIGHT_RECORD = 2 ;
-	static final int EXIT_UNHANDLED = 3 ;
+	public static final int EXIT_OK = 0;
+	public static final int EXIT_ILLEGAL_ARGUMENT = 1;
+	public static final int EXIT_INVALID_FLIGHT_RECORD = 2;
+	public static final int EXIT_UNHANDLED = 3;
 
 	public static void main(String[] arguments) {
 		try {
-			// Configure the command line to tell it the name of the project, the version number, and possible options
-			// if add options, you should update the CLI to handle the new options
-			// you should not change the project name, but you can increment the version number ( see semver )
-			Option options[] = {
-					new Option( 'o', "output - Print only the specified feature at the end", Option.REQUIRED_ARGUMENT , "output") ,
-					new Option( 'h', "Help - print this help message" , "help") ,
-					new Option( 'v', "Version - print the version of the application ", "version"),
-					new Option( 'd', "Debug - print additional debug information on Unhandled error", "debug")
-			} ;
-			CLI.initialize("pandora", 1, 0, 1, options) ;
-			// Parse the command line arguments
-			Configuration config = CLI.read( arguments );
+			CLI.initialize("Pandora", 1, 0, 1);
+			Configuration config = CLI.read(arguments);
 
-			// Check that exactly one source file was provided, exit otherwise
-			List<String> sources = CLI.getConfiguration().getSources() ;
-			if( sources.size() != 1 ) {
-				throw new OptionException("No source provided");
-			}
-			//Create a file reader
+			List<String> sources = CLI.getConfiguration().getSources();
+			if(sources.size() == 0) throw new OptionException("No source provided");
 			FileReader fileReader = new FileReader( "./" );
-			//Get the flight
-			Flight flight = fileReader.GetRecordsFromFile(sources.get( 0 ));
-			//Get the analysis
-			Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
-			//Print everything
-			print( flight, analysis );
-			
+
+			switch(config.getInputMode()) {
+				case mono:
+					try {
+						if(sources.size() != 1) throw new OptionException("Too much sources provided");
+						Flight flight = fileReader.GetRecordsFromFile(sources.get(0));
+						Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+						print(flight, analysis);
+					} catch (FileException e) { ExceptionManager.handleFileException(e); }
+					break;
+				case batch:
+					List<Flight> flights = new ArrayList<>();
+					List<FileException> exceptions = new ArrayList<>();
+					Collections.sort(sources);
+
+					for(String source: sources) {
+						try {
+							flights.add(fileReader.GetRecordsFromFile(source));
+						} catch (FileException e) { exceptions.add(e); }
+					}
+
+					if (!exceptions.isEmpty()) ExceptionManager.handleFileExceptions(exceptions);
+
+					for(Flight flight: flights) {
+						Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
+						print( flight, analysis );
+					}
+
+					break;
+				case multi:
+					flights = new ArrayList<>();
+					exceptions = new ArrayList<>();
+					Collections.sort(sources);
+
+					for(String source: sources) {
+						try {
+							flights.add(fileReader.GetRecordsFromFile(source));
+						} catch (FileException e) { exceptions.add(e); }
+					}
+
+					if (!exceptions.isEmpty()) ExceptionManager.handleFileExceptions(exceptions);
+
+					MultiAnalysis analysis = new MultiAnalysis(flights, String.valueOf(config.getTargetFeature()));
+					// print whatever
+
+					break;
+				default: break;
+			}
 		} catch (OptionException e) {
 			System.out.println( e.getMessage() );
 			System.exit( EXIT_ILLEGAL_ARGUMENT );
-		} catch (FlightRecordException e) {
-			System.out.println( e.getMessage() );
-			System.exit( EXIT_INVALID_FLIGHT_RECORD );
 		} catch (NoOpException e) {
 			System.exit( EXIT_OK );
 		} catch ( Exception e ) {
 			System.out.println( "ERROR: Unhandled error" );
-			if( CLI.getConfiguration().isDebugSession() ) {
-				e.printStackTrace();
-			}
+			if( CLI.getConfiguration().isDebugSession() ) e.printStackTrace();
 			System.exit( EXIT_UNHANDLED );
 		}
 	}
@@ -82,14 +107,14 @@ public class Pandora {
 	static void print( Flight flight, Analysis analysis ) {
 		//Select printer according to configuration
 		switch (CLI.getConfiguration().getOutputMode()) {
-			case feature :
-				//output mode is set to only one feature, set target and print
-				FeaturePrinter.setTargetFeature( CLI.getConfiguration().getTargetFeature() ) ;
+			case feature:
+				//Output mode is set to only one feature, set target and print
+				FeaturePrinter.setTargetFeature(CLI.getConfiguration().getTargetFeature());
 				FeaturePrinter.print(flight, analysis);
-				break ;
-			default :
+				break;
+			default:
 				//Default mode print everything
-				ConsolePrinter.print( flight, analysis );
-			}
+				ConsolePrinter.print(flight, analysis);
+		}
 	}
 }

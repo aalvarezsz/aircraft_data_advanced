@@ -3,85 +3,102 @@ package fr.estia.pandora.readers.file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import fr.estia.pandora.model.Flight;
-import fr.estia.pandora.readers.file.exceptions.HeaderException;
-import fr.estia.pandora.readers.file.exceptions.MetadataException;
-import fr.estia.pandora.readers.file.exceptions.FlightRecordException;
-
+import fr.estia.pandora.readers.file.exceptions.*;
 
 
 public class FileReader {
 
-	private final Path testFolderRoot ;
+	private final Path testFolderRoot;
 	private Scanner source;
-	private Path sourcePath ; 
-	private Flight flight ;
+	private Path sourcePath;
+	private Flight flight;
+	private String fileName;
 
 	private boolean metadataParsed = false ;
 
-	public FileReader( String root ){
-		testFolderRoot = Paths.get( root ).toAbsolutePath().normalize() ;  		
-	}
+	public FileReader( String root ) { testFolderRoot = Paths.get( root ).toAbsolutePath().normalize(); }
 
-	public Flight GetRecordsFromFile(String fileName) throws FlightRecordException {
+	public Flight GetRecordsFromFile(String fileName) throws FileException {
+		this.fileName = fileName.split("/")[fileName.split("/").length - 1];
 		flight = new Flight();
-		metadataParsed = false ;  
-		openFlightRecordFile( fileName ) ; 
+		metadataParsed = false;
+		openFlightRecordFile(fileName);
 		parseMetaData();
 		parseData();
 		source.close();
+
 		return flight ;
 	}
 	
-	private void openFlightRecordFile( String fileName ) throws FlightRecordException {		
+	private void openFlightRecordFile( String fileName ) throws FileException {
 		try {
 			sourcePath = testFolderRoot.resolve( Paths.get( fileName )).toAbsolutePath().normalize() ;
 			File flightRecordFile = new File(sourcePath.toString()); 
-			source = new Scanner(flightRecordFile);			
+			source = new Scanner(flightRecordFile);
 		} catch (FileNotFoundException e) { //Catch missing files
-			throw new FlightRecordException( sourcePath.toString() + " not found" ) ; 
-		} 	
+			throw new MissingFileException(this.fileName);
+		} catch (IOException e) {
+			throw new CorruptedFileException(this.fileName);
+		}
 	}
 	
 	private boolean isEmptyLine( String line ) {
 		return line.matches("^$" );
 	}
 
-	private void parseMetaData() throws MetadataException {
-		String line ; 
-		//use scanner only if the metadata have not yet been used 
+	private void parseMetaData() throws MissingMetadataException, IncompleteMetadataException {
+		String line;
+
+		List<String> metadataList = new ArrayList<>(Arrays.asList(
+			"flight id","flight code","origin","date","from","to", "motor(s)",
+			"mass aircraft", "mass fuel", "lift coef","drag coef"
+		));
+
 		if( !metadataParsed ) {
-			if( !readyToParse() ) throw new MetadataException(sourcePath.toString()) ;
+			if( !readyToParse() ) throw new MissingMetadataException(this.fileName) ;
 			while (readyToParse() && !isEmptyLine(line = source.nextLine())) {
-				// System.out.println(line);
-				flight.parseMetaData(line);
+				String[] metadata = line.split("\\s*:\\s*");
+				int dataIndex = metadataList.indexOf(metadata[0]);
+
+				if(dataIndex >= 0) {
+					metadataList.remove(dataIndex);
+					flight.parseMetaData(line);
+				}
 			}
+
+			if (metadataList.size() >= 11) throw new MissingMetadataException(fileName);
+			else if (metadataList.size() > 0) throw new IncompleteMetadataException(fileName, metadataList);
+
 			metadataParsed = true ;
-		}		
+		}
 	}
 
 	private boolean readyToParse() {
 		return source != null && source.hasNextLine() ;
 	}
 
-	private void parseData() throws HeaderException {
-		//Verify that metadata have been read
+	private void parseData() throws FileException {
+		// Verify that metadata have been read
 		if( metadataParsed ) {
 			String header, recordLine;
-			if( !readyToParse() || isEmptyLine( header = source.nextLine() ) ) 
-				throw new HeaderException( sourcePath.toString() )  ;
+			if(!readyToParse() || isEmptyLine( header = source.nextLine())) throw new MissingHeaderException(fileName);
 
-			RecordParser parser = new RecordParser(header, flight.getOrigin(), flight.getEngineAmount());
+			RecordParser parser = new RecordParser(fileName, header, flight.getOrigin(), flight.getEngineAmount());
 
+			double previousTimestamp = 0;
 			while ( readyToParse() ) {
 				recordLine = source.nextLine();
-				flight.addRecord(parser.parse(recordLine));
+				previousTimestamp = flight.addRecord(parser.parse(recordLine, previousTimestamp));
 			}
-			// flight.getMetadata().print();
 		}
 	}
 
