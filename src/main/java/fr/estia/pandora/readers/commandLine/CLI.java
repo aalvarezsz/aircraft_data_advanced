@@ -103,7 +103,6 @@ public class CLI {
 		switch (configuration.getInputMode()) {
 			case mono:
 				int index = g.getOptind();
-				// if(arguments.length > 1) throw new InvalidOptionException(arguments[1]);
 
 				if(!arguments[index].split("")[arguments[index].split("").length - 1].equals("/")) {
 					String fileFormat = arguments[index].split("\\.")[arguments[index].split("\\.").length - 1];
