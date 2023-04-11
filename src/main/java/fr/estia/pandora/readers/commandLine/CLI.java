@@ -102,11 +102,12 @@ public class CLI {
 		
 		switch (configuration.getInputMode()) {
 			case mono:
-				if(arguments.length > 1) throw new InvalidOptionException(arguments[1]);
+				int index = g.getOptind();
+				// if(arguments.length > 1) throw new InvalidOptionException(arguments[1]);
 
-				if(!arguments[0].split("")[arguments[0].split("").length - 1].equals("/")) {
-					String fileFormat = arguments[0].split("\\.")[arguments[0].split("\\.").length - 1];
-					if (!fileFormat.equals("frd") && !fileFormat.equals("csv")) configuration.addSource(arguments[0]);
+				if(!arguments[index].split("")[arguments[index].split("").length - 1].equals("/")) {
+					String fileFormat = arguments[index].split("\\.")[arguments[index].split("\\.").length - 1];
+					if (fileFormat.equals("frd") || fileFormat.equals("csv")) configuration.addSource(arguments[index]);
 					break;
 				} else {
 					configuration.setInputMode(InputMode.multi);
