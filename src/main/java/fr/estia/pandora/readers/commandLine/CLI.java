@@ -105,9 +105,15 @@ public class CLI {
 				int index = g.getOptind();
 
 				if(!arguments[index].split("")[arguments[index].split("").length - 1].equals("/")) {
-					String fileFormat = arguments[index].split("\\.")[arguments[index].split("\\.").length - 1];
-					if (fileFormat.equals("frd") || fileFormat.equals("csv")) configuration.addSource(arguments[index]);
+					for (int i = g.getOptind(); i < arguments.length; i++) {
+						String fileFormat = arguments[i].split("\\.")[arguments[i].split("\\.").length - 1];
+						if (!fileFormat.equals("frd") && !fileFormat.equals("csv")) continue;
+						configuration.addSource(arguments[i]);
+					}
 					break;
+//					String fileFormat = arguments[index].split("\\.")[arguments[index].split("\\.").length - 1];
+//					if (fileFormat.equals("frd") || fileFormat.equals("csv")) configuration.addSource(arguments[index]);
+//					break;
 				} else {
 					configuration.setInputMode(InputMode.multi);
 					configuration.setBatchFolder(arguments[0]);
