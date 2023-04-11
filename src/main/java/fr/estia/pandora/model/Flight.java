@@ -52,4 +52,5 @@ public class Flight {
 	public Metadata getMetadata() { return metadata ;  }
 	public String getOrigin() { return metadata.getFlightRegion(); }
 	public int getEngineAmount() { return metadata.getEngineAmount(); }
+	public float getAircraftMass() { return metadata.getAircraftMass(); }
 }
