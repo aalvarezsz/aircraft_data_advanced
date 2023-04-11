@@ -37,8 +37,6 @@ public class Wind {
             nbOfPositions = i;
         }
         double avgAirSpeed = AirSpeed.average(flight);
-        System.out.println(nbOfPositions);
-        System.out.println(flight.getRecords().size());
         avgGroundSpeed = groundSpeed / flight.getRecords().size();
 
 
