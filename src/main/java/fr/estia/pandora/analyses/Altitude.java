@@ -68,14 +68,15 @@ public class Altitude {
 		// Iterate over the rows of the dataset in steps of the size of the time window
 		ArrayList<Double> maxSpeeds = new ArrayList<Double>();
 		int i = 0;
-		while (i < airspeedList.size() - windowRows + 1) {
+		while (i < timestampList.size() - windowRows + 1) {
 			double maxSpeed = Double.MIN_VALUE;
 			for (int j = i; j < i + windowRows; j++) {
 				maxSpeed = Math.max(maxSpeed, airspeedList.get(j));
 			}
 			maxSpeeds.add(maxSpeed);
-			i += windowRows;
+			i ++;
 		}
+
 
 		// Calculate the average of the maximum airspeeds
 		double sum = 0.0;
