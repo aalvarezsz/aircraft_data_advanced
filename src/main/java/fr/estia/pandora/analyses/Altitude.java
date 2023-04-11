@@ -44,40 +44,52 @@ public class Altitude {
 		return minAltitude;
 	}
 
-	public static double maxAccel(Flight flight) {
-		double maxAcceleration = 0;
-		double altitudeForMaxAccel = 0;
+	public static double fastJetAltitude(Flight flight) {
+		ArrayList<Record> flightRecords = flight.getRecords();
 
-		if(flight.getRecords().size() <= 1) return 0;
+		ArrayList<Double> timestampList = new ArrayList<Double>();
+		ArrayList<Double> airspeedList = new ArrayList<Double>();
 
-		for(int i = 0; i < flight.getRecords().size() - 2; i++) {
-			Position position_0 = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude(), flight.getRecords().get(i).getAltitude());
-			Position position_1 = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude(), flight.getRecords().get(i+1).getAltitude());
-			Position position_2 = new Position(flight.getRecords().get(i+2).getLatitude(), flight.getRecords().get(i+2).getLongitude(), flight.getRecords().get(i+2).getAltitude());
-			double time_0 = flight.getRecords().get(i).getTimestamp();
-			double time_1 = flight.getRecords().get(i+1).getTimestamp();
-			double time_2 = flight.getRecords().get(i+2).getTimestamp();
-
-			double dTime_0 = time_1 - time_0;
-			double dTime_1 = time_2 - time_1;
-
-			double dDistance_0 = Utils.ComputeDistance(position_0, position_1);
-			double dDistance_1 = Utils.ComputeDistance(position_1, position_2);
-
-			double speed_0 = dDistance_0 / dTime_0;
-			double speed_1 = dDistance_1 / dTime_1;
-			double acceleration = (speed_1 - speed_0) / (dTime_1);
-
-			if (Math.abs(maxAcceleration) < Math.abs(acceleration)) {
-				maxAcceleration = acceleration;
-				altitudeForMaxAccel = flight.getRecords().get(i+2).getAltitude();
-			}
+		for (int i = 0; i<flightRecords.size(); i++) {
+			timestampList.add(flightRecords.get(i).getTimestamp());
+			airspeedList.add(flightRecords.get(i).getAir_speed());
 		}
 
-		return altitudeForMaxAccel;
+
+		// Convert the time column from seconds to minutes
+		for (int i = 0; i < flightRecords.size(); i++) {
+			timestampList.set(i, timestampList.get(i) / 60.0);
+		}
+
+		// Define a time window of 5 minutes
+		double windowSize = 5.0;
+		int windowRows = (int) Math.ceil(windowSize / (timestampList.get(1) - timestampList.get(0)));
+
+		// Iterate over the rows of the dataset in steps of the size of the time window
+		ArrayList<Double> maxSpeeds = new ArrayList<Double>();
+		int i = 0;
+		while (i < airspeedList.size() - windowRows + 1) {
+			double maxSpeed = Double.MIN_VALUE;
+			for (int j = i; j < i + windowRows; j++) {
+				maxSpeed = Math.max(maxSpeed, airspeedList.get(j));
+			}
+			maxSpeeds.add(maxSpeed);
+			i += windowRows;
+		}
+
+		// Calculate the average of the maximum airspeeds
+		double sum = 0.0;
+		for (Double speed : maxSpeeds) {
+			sum += speed;
+		}
+		double avgSpeed = sum / maxSpeeds.size();
+
+		return avgSpeed;
 	}
-	
-	public static class Reaching80PercentMaxAltitude {
+
+
+
+		public static class Reaching80PercentMaxAltitude {
 		public String getFormattedDuration(double timestamp) {
 		    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));

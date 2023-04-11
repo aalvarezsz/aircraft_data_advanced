@@ -122,10 +122,10 @@ public class Analysis {
 				break;
 			//Milestone 4
 			case "fastJetAlt":
-				this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.maxAccel(flight)));
+				this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.fastJetAltitude(flight)));
 				break;
 			case "stressedPilot":
-				this.featureValues.put( "stressedPilot", String.format("%.2f", Stress.attack(flight)));
+				this.featureValues.put( "stressedPilot", Stress.attack(flight));
 				break;
 			case "noiseTemp":
 				this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight)));
@@ -178,7 +178,7 @@ public class Analysis {
 		this.featureValues.put("windSpeed", String.format("%.2f", Wind.speed(flight)));
 
 		//Milestone 4
-		this.featureValues.put("fastJetAlt", String.format("%.2f", Altitude.maxAccel(flight)));
+		this.featureValues.put("fastJetAlt", String.format("%.2f", Altitude.fastJetAltitude(flight)));
 		this.featureValues.put("stressedPilot", Stress.attack(flight));
 		this.featureValues.put("noiseTemp", String.format("%.2f", Temperature.noise(flight)));
 		this.featureValues.put("fastWindAlt", String.format("%.2f", Wind.altitudeWithFastestWind(flight)));
