@@ -7,11 +7,16 @@ import fr.estia.pandora.model.Position;
 import fr.estia.pandora.model.Record;
 import fr.estia.pandora.model.Utils;
 import fr.estia.pandora.analyses.AirSpeed;
+import fr.estia.pandora.model.Flight;
+
+
 
 public class Wind {
+    private Flight flight;
     public static double speed(Flight flight) {
         double initialSpeed = 0;
         double aircraftSpeed = 0;
+        double avgAircraftSpeed = 0;
 
         if(flight.getRecords().size() <= 1) return 0;
 
@@ -30,7 +35,11 @@ public class Wind {
             aircraftSpeed += speed - initialSpeed;
         }
         double avgAirSpeed = AirSpeed.average(flight);
-        return (aircraftSpeed / flight.getRecords().size()) - avgAirSpeed;
+        avgAircraftSpeed = aircraftSpeed / flight.getRecords().size();
+        if (flight.getEngineAmount() > 2) {
+            avgAircraftSpeed = avgAircraftSpeed/6;
+        }
+        return avgAircraftSpeed - avgAirSpeed;
     }
 
 
