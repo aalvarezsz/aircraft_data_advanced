@@ -55,6 +55,7 @@ public class Altitude {
 			airspeedList.add(flightRecords.get(i).getAir_speed());
 		}
 
+		double altitudeAtMaxSpeed = flightRecords.get(0).getAltitude();
 
 		// Find the index of the maximum airspeed
 		int maxSpeedIndex = 0;
@@ -67,7 +68,7 @@ public class Altitude {
 		}
 
 		// Get the altitude at the maximum airspeed index
-		double altitudeAtMaxSpeed = altitudeList.get(maxSpeedIndex);
+		altitudeAtMaxSpeed = altitudeList.get(maxSpeedIndex);
 
 		return altitudeAtMaxSpeed;
 	}
