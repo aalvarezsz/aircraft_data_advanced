@@ -47,42 +47,29 @@ public class Altitude {
 	public static double fastJetAltitude(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
 
-		ArrayList<Double> timestampList = new ArrayList<Double>();
+		ArrayList<Double> altitudeList = new ArrayList<Double>();
 		ArrayList<Double> airspeedList = new ArrayList<Double>();
 
 		for (int i = 0; i<flightRecords.size(); i++) {
-			timestampList.add(flightRecords.get(i).getTimestamp());
+			altitudeList.add(flightRecords.get(i).getAltitude());
 			airspeedList.add(flightRecords.get(i).getAir_speed());
 		}
 
 
-		// Convert the time column from seconds to minutes
-		for (int i = 0; i < flightRecords.size(); i++) {
-			timestampList.set(i, timestampList.get(i) / 60.0);
-		}
-
-		// Create a sliding window that slides every 1 minute
-		ArrayList<Double> maxSpeeds = new ArrayList<Double>();
-		double windowSize = 5.0; // in minutes
-		for (int i = 0; i < timestampList.size() - windowSize; i++) {
-			double startTime = timestampList.get(i);
-			double endTime = startTime + windowSize;
-			double maxSpeed = Double.MIN_VALUE;
-			for (int j = i; j < timestampList.size() && timestampList.get(j) <= endTime; j++) {
-				maxSpeed = Math.max(maxSpeed, airspeedList.get(j));
+		// Find the index of the maximum airspeed
+		int maxSpeedIndex = 0;
+		double maxSpeed = Double.MIN_VALUE;
+		for (int i = 0; i < airspeedList.size(); i++) {
+			if (airspeedList.get(i) > maxSpeed) {
+				maxSpeed = airspeedList.get(i);
+				maxSpeedIndex = i;
 			}
-			maxSpeeds.add(maxSpeed);
 		}
 
+		// Get the altitude at the maximum airspeed index
+		double altitudeAtMaxSpeed = altitudeList.get(maxSpeedIndex);
 
-		// Calculate the average of the maximum airspeeds
-		double sum = 0.0;
-		for (Double speed : maxSpeeds) {
-			sum += speed;
-		}
-		double avgSpeed = sum / maxSpeeds.size();
-
-		return avgSpeed;
+		return altitudeAtMaxSpeed;
 	}
 
 
