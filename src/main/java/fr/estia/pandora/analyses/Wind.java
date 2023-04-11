@@ -27,7 +27,7 @@ public class Wind {
 
             double speed = dDistance / dTime;
 
-            aircraftSpeed = speed - initialSpeed;
+            aircraftSpeed += speed - initialSpeed;
         }
         double avgAirSpeed = AirSpeed.average(flight);
         return (aircraftSpeed / flight.getRecords().size()) - avgAirSpeed;
