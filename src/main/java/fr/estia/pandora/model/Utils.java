@@ -10,7 +10,12 @@ public class Utils {
 	    double a = Math.pow(Math.sin(dLat / 2), 2) + Math.pow(Math.sin(dLon / 2), 2) * Math.cos(Math.toRadians(startPosition.getLatitude())) * Math.cos(Math.toRadians(endPosition.getLatitude()));
 	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 	    
-	    return EARTH_RADIUS * c;
+	    return (EARTH_RADIUS + startPosition.getAltitude()) * c;
+	}
+	
+	public static double ComputeDistance(Position startPosition, Position endPosition) {
+		double flatDistance = Haversine(startPosition, endPosition);
+		return Math.sqrt(Math.pow(flatDistance, 2) + Math.pow(endPosition.getAltitude() - startPosition.getAltitude(), 2));
 	}
 	
 	public static String TimestampDurationToString(double startTime, double endTime) {
