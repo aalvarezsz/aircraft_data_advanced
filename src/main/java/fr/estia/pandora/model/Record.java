@@ -19,6 +19,8 @@ public class Record {
 	private double temperature_in;
 	private double humidity_in;
 	private double pressure_in;
+	private double acceleration;
+	private double groundspeed;
 	
 	private double heart_rate;
 	private double oxygen_mask;
@@ -78,4 +80,10 @@ public class Record {
 	public double getOxygen_mask() { return oxygen_mask; }
 	public void setOxygen_mask(double oxygen_mask) { this.oxygen_mask = oxygen_mask; }
 	
-}
+	public double getAcceleration() { return acceleration; }
+	public void setAcceleration(double acceleration) { this.acceleration = acceleration; }
+	
+	
+	}
+	
+

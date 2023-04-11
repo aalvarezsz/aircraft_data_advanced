@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.Record;
 
-public class AirSpeed { // m/s for US planes, knots for RU planes
+public class MachSpeed {
 	public static double average(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
 		double airspeedSum = 0;
 		
 		for (int i = 0; i<flightRecords.size(); i++) airspeedSum += flightRecords.get(i).getAir_speed();
 		
-		return airspeedSum / flightRecords.size();
+		return (airspeedSum / flightRecords.size())  *0.00291175304 ; // m/s to mach
 	}
 	
 	public static double max(Flight flight) {
@@ -24,9 +24,8 @@ public class AirSpeed { // m/s for US planes, knots for RU planes
 				maxAirspeed = flightRecords.get(i).getAir_speed();
 			};
 		}
-		return maxAirspeed;
+		return maxAirspeed *0.00291175304 ; // m/s to mach
 	}
 	
 
 }
-
