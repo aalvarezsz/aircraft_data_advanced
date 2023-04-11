@@ -14,14 +14,14 @@ import fr.estia.pandora.model.Flight;
 public class Wind {
     private Flight flight;
     public static double speed(Flight flight) {
-        double initialSpeed = 0;
-        double aircraftSpeed = 0;
-        double avgAircraftSpeed = 0;
-        double result;
+        double avgGroundSpeed = 0;
+        double groundSpeed = 0;
+        double result = 0;
+        double nbOfPositions = 0;
 
         if(flight.getRecords().size() <= 1) return 0;
 
-        for(int i = 0; i < flight.getRecords().size() - 2; i++) {
+        for(int i = 0; i < flight.getRecords().size() - 1; i++) {
             Position position_0 = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude(), flight.getRecords().get(i).getAltitude());
             Position position_1 = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude(), flight.getRecords().get(i+1).getAltitude());
             double time_0 = flight.getRecords().get(i).getTimestamp();
@@ -33,16 +33,14 @@ public class Wind {
 
             double speed = dDistance / dTime;
 
-            aircraftSpeed += speed - initialSpeed;
+            groundSpeed += speed ;
+            nbOfPositions = i;
         }
         double avgAirSpeed = AirSpeed.average(flight);
-        avgAircraftSpeed = aircraftSpeed / flight.getRecords().size();
-        if (flight.getEngineAmount() > 2) {
-            result = (avgAircraftSpeed - avgAirSpeed)*6;
-        }
-        else{
-            result = avgAircraftSpeed - avgAirSpeed;
-        }
+        avgGroundSpeed = groundSpeed / nbOfPositions;
+
+
+        result = avgGroundSpeed - avgAirSpeed;
         return result;
     }
 
