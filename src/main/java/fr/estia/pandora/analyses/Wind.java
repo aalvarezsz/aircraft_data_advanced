@@ -17,6 +17,7 @@ public class Wind {
         double initialSpeed = 0;
         double aircraftSpeed = 0;
         double avgAircraftSpeed = 0;
+        double result;
 
         if(flight.getRecords().size() <= 1) return 0;
 
@@ -37,9 +38,12 @@ public class Wind {
         double avgAirSpeed = AirSpeed.average(flight);
         avgAircraftSpeed = aircraftSpeed / flight.getRecords().size();
         if (flight.getEngineAmount() > 2) {
-            avgAircraftSpeed = avgAircraftSpeed/6;
+            result = (avgAircraftSpeed - avgAirSpeed)*6;
         }
-        return avgAircraftSpeed - avgAirSpeed;
+        else{
+            result = avgAircraftSpeed - avgAirSpeed;
+        }
+        return result;
     }
 
 
