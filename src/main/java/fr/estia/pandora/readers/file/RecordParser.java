@@ -58,7 +58,7 @@ public class RecordParser {
         			switch(parameter.getKey()) {
 	        			case "timestamp":
 							double currentTimestamp = Double.parseDouble(values[index]);
-							if(previousTimestamp < currentTimestamp) record.setTimestamp(currentTimestamp);
+							if(previousTimestamp <= currentTimestamp) record.setTimestamp(currentTimestamp);
 							else throw new OrderingException(fileName);
 							break;
 	        			case "longitude": record.setLongitude(Double.parseDouble(values[index])); break;
@@ -86,9 +86,9 @@ public class RecordParser {
         			int index = parameter.getValue();
 
         			switch(parameter.getKey()) {
-	        			case "timestamp":
+						case "timestamp":
 							double currentTimestamp = Double.parseDouble(values[index]);
-							if(previousTimestamp < currentTimestamp) record.setTimestamp(currentTimestamp);
+							if(previousTimestamp <= currentTimestamp) record.setTimestamp(currentTimestamp);
 							else throw new OrderingException(fileName);
 							break;
 	        			case "longitude": record.setLongitude(Double.parseDouble(values[index])); break;
