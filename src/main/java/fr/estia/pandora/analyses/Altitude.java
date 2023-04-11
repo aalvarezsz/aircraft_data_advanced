@@ -47,28 +47,20 @@ public class Altitude {
 	public static double fastJetAltitude(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
 
-		ArrayList<Double> altitudeList = new ArrayList<Double>();
-		ArrayList<Double> airspeedList = new ArrayList<Double>();
-
-		for (int i = 0; i<flightRecords.size(); i++) {
-			altitudeList.add(flightRecords.get(i).getAltitude());
-			airspeedList.add(flightRecords.get(i).getAir_speed());
-		}
-
 		double altitudeAtMaxSpeed = flightRecords.get(0).getAltitude();
 
 		// Find the index of the maximum airspeed
 		int maxSpeedIndex = 0;
 		double maxSpeed = Double.MIN_VALUE;
-		for (int i = 0; i < airspeedList.size(); i++) {
-			if (airspeedList.get(i) > maxSpeed) {
-				maxSpeed = airspeedList.get(i);
+		for (int i = 0; i < flightRecords.size(); i++) {
+			if (flightRecords.get(i).getAir_speed() > maxSpeed) {
+				maxSpeed = flightRecords.get(i).getAir_speed();
 				maxSpeedIndex = i;
 			}
 		}
 
 		// Get the altitude at the maximum airspeed index
-		altitudeAtMaxSpeed = altitudeList.get(maxSpeedIndex);
+		altitudeAtMaxSpeed = flightRecords.get(maxSpeedIndex).getAltitude();
 
 		return altitudeAtMaxSpeed;
 	}
