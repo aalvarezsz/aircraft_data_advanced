@@ -102,13 +102,28 @@ public class CLI {
 		
 		switch (configuration.getInputMode()) {
 			case mono:
-				for (int i = g.getOptind(); i < arguments.length; i++) {
-					String fileFormat = arguments[i].split("\\.")[arguments[i].split("\\.").length - 1];
-					if (!fileFormat.equals("frd") && !fileFormat.equals("csv")) continue;
-					configuration.addSource(arguments[i]);
+				if(arguments.length > 1) throw new InvalidOptionException(arguments[1]);
+
+				if(!arguments[0].split("")[arguments[0].split("").length - 1].equals("/")) {
+					String fileFormat = arguments[0].split("\\.")[arguments[0].split("\\.").length - 1];
+					if (!fileFormat.equals("frd") && !fileFormat.equals("csv")) configuration.addSource(arguments[0]);
+					break;
+				} else {
+					configuration.setInputMode(InputMode.multi);
+					configuration.setBatchFolder(arguments[0]);
 				}
-				if(configuration.getSources().size() > 1) configuration.setInputMode(InputMode.multi);
-				break;
+
+				/*
+					===== Old way of setting multi file configuration =====
+
+					for (int i = g.getOptind(); i < arguments.length; i++) {
+						String fileFormat = arguments[i].split("\\.")[arguments[i].split("\\.").length - 1];
+						if (!fileFormat.equals("frd") && !fileFormat.equals("csv")) continue;
+						configuration.addSource(arguments[i]);
+					}
+					if(configuration.getSources().size() > 1) configuration.setInputMode(InputMode.multi);
+					break;
+				 */
 			case batch:
 				File folder = new File(configuration.getBatchFolder());
 				File[] files = folder.listFiles();

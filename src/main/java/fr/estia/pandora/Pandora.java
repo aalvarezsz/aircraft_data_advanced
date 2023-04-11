@@ -81,13 +81,12 @@ public class Pandora {
 
 					if (!exceptions.isEmpty()) ExceptionManager.handleFileExceptions(exceptions);
 
-					MultiAnalysis analysis = new MultiAnalysis(flights);
+					MultiAnalysis analysis = new MultiAnalysis(flights, String.valueOf(config.getTargetFeature()));
 					// print whatever
 
 					break;
 				default: break;
 			}
-			
 		} catch (OptionException e) {
 			System.out.println( e.getMessage() );
 			System.exit( EXIT_ILLEGAL_ARGUMENT );
