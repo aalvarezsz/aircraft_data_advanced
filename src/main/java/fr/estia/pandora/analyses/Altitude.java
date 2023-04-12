@@ -49,12 +49,11 @@ public class Altitude {
 		ArrayList<Record> flightRecords = flight.getRecords();
 
 		double altitudeAtMaxSpeed = flightRecords.get(0).getAltitude();
-
-		// Find the index of the maximum airspeed
 		int maxSpeedIndex = 0;
 		double maxSpeed = 0;
+
 		for (int i = 0; i < flightRecords.size(); i++) {
-			if (flightRecords.get(i).getAir_speed() > maxSpeed) {
+			if (flightRecords.get(i).getAir_speed() >= maxSpeed) {
 				maxSpeed = flightRecords.get(i).getAir_speed();
 				maxSpeedIndex = i;
 			}
@@ -95,7 +94,7 @@ public class Altitude {
 			windSpeed = groundSpeed - airSpeed;
 			nbOfPositions++;
 
-			if (windSpeed > maxSpeed) {
+			if (windSpeed >= maxSpeed) {
 				maxSpeed = windSpeed;
 				maxSpeedIndex = i;
 			}
