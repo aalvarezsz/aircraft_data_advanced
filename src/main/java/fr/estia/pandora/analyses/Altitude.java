@@ -48,7 +48,7 @@ public class Altitude {
 	public static double fastJetAltitude(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
 
-		double altitudeAtMaxSpeed = flightRecords.get(0).getAltitude();
+		double altitudeAtMaxSpeed = flightRecords.get(1).getAltitude();
 		int maxSpeedIndex = 0;
 		double maxSpeed = 0;
 
@@ -76,10 +76,6 @@ public class Altitude {
 		double windSpeed = 0;
 		int nbOfPositions = 0;
 		double groundSpeed;
-
-		if (flightRecords.size() <= 1) {
-			return 0;
-		}
 
 		for (int i = 0; i < flightRecords.size()-1; i++) {
 
