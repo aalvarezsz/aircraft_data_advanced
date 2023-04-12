@@ -53,7 +53,7 @@ public class Altitude {
 		double maxSpeed = 0;
 
 		if (flightRecords.size()<=1){
-			return altitudeAtMaxSpeed;
+			return flightRecords.get(maxSpeedIndex+1).getAltitude();
 		}
 
 		for (int i = 0; i < flightRecords.size(); i++) {
