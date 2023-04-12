@@ -134,7 +134,7 @@ public class Analysis {
 				this.featureValues.put( "windSpeed", String.format("%.2f", Wind.speed(flight)));
 				break;
 			case "fastWindAlt":
-				this.featureValues.put( "fastWindAlt", String.format("%.2f", Wind.altitudeWithFastestWind(flight)));
+				this.featureValues.put( "fastWindAlt", String.format("%.2f", Altitude.fastWindAltitude(flight)));
 				break;
 				
 
@@ -181,7 +181,7 @@ public class Analysis {
 		this.featureValues.put("fastJetAlt", String.format("%.2f", Altitude.fastJetAltitude(flight)));
 		this.featureValues.put("stressedPilot", Stress.attack(flight));
 		this.featureValues.put("noiseTemp", String.format("%.2f", Temperature.noise(flight)));
-		this.featureValues.put("fastWindAlt", String.format("%.2f", Wind.altitudeWithFastestWind(flight)));
+		this.featureValues.put("fastWindAlt", String.format("%.2f", Altitude.fastWindAltitude(flight)));
 	}
 
 	public String getFeatureValue( String feature ) {

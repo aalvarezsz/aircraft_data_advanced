@@ -40,11 +40,4 @@ public class Wind {
     }
 
 
-
-    public static double altitudeWithFastestWind(Flight flight) {
-        ArrayList<Record> flightRecords = flight.getRecords();
-
-        return 0.0;
-    }
-
 }
