@@ -9,7 +9,6 @@ import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.Position;
 import fr.estia.pandora.model.Record;
 import fr.estia.pandora.model.Utils;
-import fr.estia.pandora.analyses.Wind;
 
 public class Altitude {
 	public static double average(Flight flight) {
@@ -48,13 +47,9 @@ public class Altitude {
 	public static double fastJetAltitude(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
 
-		double altitudeAtMaxSpeed = flightRecords.get(0).getAltitude();
+		double altitudeAtMaxSpeed;
 		int maxSpeedIndex = 0;
-		double maxSpeed = 0;
-
-		if (flightRecords.size()<=1){
-			return flightRecords.get(maxSpeedIndex+1).getAltitude();
-		}
+		double maxSpeed = -1000000;
 
 		for (int i = 0; i < flightRecords.size(); i++) {
 			if (flightRecords.get(i).getAir_speed() >= maxSpeed) {
