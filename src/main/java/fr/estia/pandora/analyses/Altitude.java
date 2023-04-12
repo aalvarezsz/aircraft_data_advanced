@@ -100,8 +100,8 @@ public class Altitude {
 			}
 		}
 
-		// Get the altitude at the maximum airspeed index
-		altitudeAtMaxWindspeed = flightRecords.get(maxSpeedIndex).getAltitude();
+		// Get the altitude at the maximum windspeed index
+		altitudeAtMaxWindspeed = flightRecords.get(maxSpeedIndex+1).getAltitude();
 
 		return altitudeAtMaxWindspeed;
 	}
