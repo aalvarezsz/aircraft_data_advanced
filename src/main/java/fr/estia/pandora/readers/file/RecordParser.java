@@ -1,40 +1,66 @@
 package fr.estia.pandora.readers.file;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import fr.estia.pandora.model.Record;
+import fr.estia.pandora.readers.file.exceptions.FileException;
+import fr.estia.pandora.readers.file.exceptions.IncompleteHeaderException;
+import fr.estia.pandora.readers.file.exceptions.MissingHeaderException;
+import fr.estia.pandora.readers.file.exceptions.OrderingException;
 
 public class RecordParser {
 	private Map<String, Integer> parameterColumn;
+	private String fileName;
 	private String flightOrigin;
 	private int engineAmount;
-	
-	public RecordParser(String header, String flightOrigin, int engineAmount) {
-		this.parameterColumn = new HashMap<String, Integer>();
+
+	public RecordParser(String fileName, String header, String flightOrigin, int engineAmount) throws FileException {
+		this.parameterColumn = new HashMap<>();
+		this.fileName = fileName;
 		this.flightOrigin = flightOrigin;
 		this.engineAmount = engineAmount;
-		
+
+		List<String> headerTitles = new ArrayList<>(Arrays.asList(
+				"timestamp","longitude","latitude","altitude","roll","pitch","yaw","heading",
+				"air_speed", "temperature_in","humidity_in","pressure_in","heart_rate","oxygen_mask"
+		));
+
+		for(int i = 0; i < engineAmount; i++) headerTitles.add("engine_" + i);
+		if(flightOrigin.equals("US")) headerTitles.addAll(Arrays.asList("u", "v"));
+
 		String[] headerTitle  = header.split(",");
 		for (int columnIndex = 0; columnIndex < headerTitle.length; columnIndex++) {
 			String parameter = headerTitle[columnIndex];
-			parameterColumn.put(parameter, columnIndex);			
+			int paramIndex = headerTitles.indexOf(parameter);
+
+			if(paramIndex >= 0) {
+				headerTitles.remove(paramIndex);
+				parameterColumn.put(parameter, columnIndex);
+			}
 		}
+
+		if (headerTitles.size() >= 17 && flightOrigin.equals("US")) throw new MissingHeaderException(fileName);
+		else if (headerTitles.size() >= 15 && flightOrigin.equals("RU")) throw new MissingHeaderException(fileName);
+		else if (headerTitles.size() > 0) throw new IncompleteHeaderException(fileName, headerTitles);
 	}
 
-	public Record parse(String data) {
-		Record record = null ; 
+	public Record parse(String data, double previousTimestamp) throws OrderingException {
+		Record record = null;
         String[] values = data.split(",");
-        
+
         if( values.length > 0 ) {
         	record = new Record();
         	
         	if(this.flightOrigin.equals("US")) {
         		for(Map.Entry<String, Integer> parameter: parameterColumn.entrySet()) {
         			int index = parameter.getValue();
-        			
+
         			switch(parameter.getKey()) {
-	        			case "timestamp": record.setTimestamp(Double.parseDouble(values[index])); break;
+	        			case "timestamp":
+							double currentTimestamp = Double.parseDouble(values[index]);
+							if(previousTimestamp <= currentTimestamp) record.setTimestamp(currentTimestamp);
+							else throw new OrderingException(fileName);
+							break;
 	        			case "longitude": record.setLongitude(Double.parseDouble(values[index])); break;
 	        			case "latitude": record.setLatitude(Double.parseDouble(values[index])); break;
 	        			case "altitude": record.setAltitude(Double.parseDouble(values[index]) / 3.281); break;
@@ -58,9 +84,13 @@ public class RecordParser {
         	} else {
         		for(Map.Entry<String, Integer> parameter: parameterColumn.entrySet()) {
         			int index = parameter.getValue();
-        			
+
         			switch(parameter.getKey()) {
-	        			case "timestamp": record.setTimestamp(Double.parseDouble(values[index])); break;
+						case "timestamp":
+							double currentTimestamp = Double.parseDouble(values[index]);
+							if(previousTimestamp <= currentTimestamp) record.setTimestamp(currentTimestamp);
+							else throw new OrderingException(fileName);
+							break;
 	        			case "longitude": record.setLongitude(Double.parseDouble(values[index])); break;
 	        			case "latitude": record.setLatitude(Double.parseDouble(values[index])); break;
 	        			case "altitude": record.setAltitude(Double.parseDouble(values[index])); break;

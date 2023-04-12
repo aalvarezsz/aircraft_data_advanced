@@ -2,6 +2,7 @@ package fr.estia.pandora.model;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import fr.estia.pandora.analyses.*;
 
 /**
@@ -13,7 +14,7 @@ public class Analysis {
 	private Flight flight;
 	//List of feature computed by this analysis
 	//The Map associate the name of the feature with the textual representation to be printed
-	private Map<String, String> featureValues ;
+	private Map<String, String> featureValues;
 
 	/**
 	 * Constructor, create a basic analysis 
@@ -120,6 +121,7 @@ public class Analysis {
 			case "maxMachSpeed":
 				this.featureValues.put( "maxMachSpeed", String.format("%.2f", MachSpeed.max(flight)));
 				break;
+
 			//Milestone 4
 			case "fastJetAlt":
 				this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.fastJetAltitude(flight)));

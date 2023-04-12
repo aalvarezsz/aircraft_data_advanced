@@ -14,7 +14,7 @@ public class Flight {
 	
 	public Flight() {
 		records = new ArrayList<Record>() ;
-		metadata = new Metadata() ;		
+		metadata = new Metadata();
 	}
 	
 	public ArrayList<Record> getRecords() {
@@ -34,12 +34,13 @@ public class Flight {
 		for(Record record: records) System.out.println(record.getTimestamp() + "; ");
 	}
 	
-	public void addRecord(Record record) {
-		this.records.add( record ) ;
+	public double addRecord(Record record) {
+		this.records.add(record);
+		return record.getTimestamp();
 	}
 
 	public void parseMetaData(String line) {
-		String elements[] = line.split("\\s*:\\s*");
+		String[] elements = line.split("\\s*:\\s*");
 		// System.out.println(elements[0] + " => " + elements[1]);
 		if( elements.length > 1  ) {
 			metadata.setMetaData(elements[0], elements[1]);

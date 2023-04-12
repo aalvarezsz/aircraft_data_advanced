@@ -11,7 +11,7 @@ public class OptionException extends Exception {
 	protected String invalidOption;
 
 	public OptionException( String invalidOption ) {
-		this.invalidOption = invalidOption ; 
+		this.invalidOption = invalidOption;
 	}
 
 	/**

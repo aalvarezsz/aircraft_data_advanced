@@ -1,13 +1,15 @@
-/**
- *
- */
+
 package fr.estia.pandora.readers.commandLine;
 
+import java.io.File;
+
+import fr.estia.pandora.readers.commandLine.Configuration.InputMode;
 import fr.estia.pandora.readers.commandLine.exceptions.InvalidOptionException;
 import fr.estia.pandora.readers.commandLine.exceptions.MissingParameterException;
 import fr.estia.pandora.readers.commandLine.exceptions.NoOpException;
 import fr.estia.pandora.readers.commandLine.exceptions.OptionException;
 import fr.estia.pandora.readers.commandLine.exceptions.UnhandledOptionException;
+import fr.estia.pandora.readers.file.exceptions.MissingFileException;
 import gnu.getopt.Getopt;
 import gnu.getopt.LongOpt;
 
@@ -16,11 +18,11 @@ import gnu.getopt.LongOpt;
  * Read parameter from the command line and configure an Option object
  */
 /**
- * @author dimitri
+ * @author Dimitri
  *
  */
 /**
- * @author dimitri
+ * @author Dimitri
  *
  */
 public class CLI {
@@ -32,12 +34,14 @@ public class CLI {
 
 	/** Default of possible options for the command line, see Options class for more details */
 	static Option options[] = {
-			new Option( 'o', "output - Print only the specified feature at the end", Option.REQUIRED_ARGUMENT , "output") ,
-			new Option( 'h', "Help - print this help message" , "help") ,
-			new Option( 'v', "Version - print the version of the application ", "version")
-	} ;
+			new Option( 'o', "Output - Print only the specified feature at the end", Option.REQUIRED_ARGUMENT , "output"),
+			new Option( 'b', "Batch - Select a folder location to analyse every file inside", Option.REQUIRED_ARGUMENT , "batch"),
+			new Option( 'h', "Help - print this help message" , "help"),
+			new Option( 'v', "Version - print the version of the application ", "version"),
+			new Option( 'd', "Debug - print additional debug information on Unhandled error", "debug")
+	};
 	/** Resulting configuration */
-	private static Configuration configuration ;
+	private static Configuration configuration;
 
 	//
 	/**
@@ -46,23 +50,16 @@ public class CLI {
 	 * @param major ( google SemVer )
 	 * @param minor ( google SemVer )
 	 * @param delta ( google SemVer )
-	 * @param options [Optional] set of possible options
 	 */
-	public static void initialize(String name, int major, int minor, int delta, Option options[] ) {
+	public static void initialize(String name, int major, int minor, int delta) {
 		appName = name ;
 		VERSION_MAJOR = major ;
 		VERSION_MINOR = minor ;
 		VERSION_DELTA = delta ;
-		//Update only if
-		if( options != null )  CLI.options = options ;
-	}
-
-	public static void initialize(String name, int major, int minor, int delta ) {
-		 initialize( name,  major,  minor,  delta, null ) ;
 	}
 
 	/**
-	 * Read arguments provided on the command line, parse them and produce a neat Config (@see fr.estia.model.Config ) object for the rest of the apllicaiton
+	 * Read arguments provided on the command line, parse them and produce a neat Config (@see fr.estia.model.Config ) object for the rest of the application
 	 * @param arguments Arguments from the command line
 	 * @return configuration of the run
 	 * @throws InvalidOptionException    One option was not listed as a possible options
@@ -70,37 +67,82 @@ public class CLI {
 	 * @throws UnhandledOptionException  Option is listed in the interface, but no handler where defined
 	 * @throws NoOpException 			 Option is a no-op ( no further operation are expected ) e.g. version or help
 	 */
-	public static Configuration read( String arguments[] ) throws OptionException, MissingParameterException, UnhandledOptionException, NoOpException {
-		int code ;
-		Getopt g = createOpt( arguments ) ;
+	public static Configuration read( String arguments[] ) throws OptionException, MissingParameterException, UnhandledOptionException, NoOpException, MissingFileException {
+		int code;
+		Getopt g = createOpt( arguments );
 		g.setOpterr(false); // We'll do our own error handling
-		configuration = new Configuration() ;
+		configuration = new Configuration();
 
 		while ((code = g.getopt()) != -1) {
+			// System.out.println("COMMAND: " + String.valueOf((char)code));
+			// System.out.println("VALUE: " + g.getOptarg());
+			// System.out.println("==========================");
 			switch (code) {
-				case 'o': //Feature
-					configuration.setFeature( g.getOptarg() ) ;
+				case 'o':	// Feature
+					configuration.setFeature(g.getOptarg()) ;
 					break;
-				case 'd':
-					configuration.setDebugSession( true ) ;
+				case 'b':	// Batch folder
+					configuration.setInputMode(Configuration.InputMode.batch);
+					configuration.setBatchFolder(g.getOptarg());
+					break;
+				case 'd':	// Debug session
+					configuration.setDebugSession(true) ;
 					break ;
 				case 'v':
-					printVersion() ;
-					throw new NoOpException( "version" ) ;
+					printVersion();
+					throw new NoOpException("version") ;
 				case 'h':
 					printUsage();
 					throw new NoOpException( "help" ) ;
-				case ':':	//Missing parameters
-					throw new MissingParameterException( String.valueOf((char)g.getOptopt() ) ) ;
-				case '?':	//Invalid Options
-					throw new InvalidOptionException( String.valueOf((char)g.getOptopt() ) ) ;
-				default:
-					throw new UnhandledOptionException( String.valueOf( code ) ) ;
+				case ':': throw new MissingParameterException(String.valueOf((char)g.getOptopt()));	//Missing parameters
+				case '?': throw new InvalidOptionException   (String.valueOf((char)g.getOptopt())); //Invalid Options
+				default:  throw new UnhandledOptionException (String.valueOf(code));
 			}
 		}
-		for (int i = g.getOptind(); i < arguments.length ; i++) {
-			configuration.addSource( arguments[i] ) ;
+		
+		switch (configuration.getInputMode()) {
+			case mono:
+				int index = g.getOptind();
+
+				if(!arguments[index].split("")[arguments[index].split("").length - 1].equals("/")) {
+					for (int i = g.getOptind(); i < arguments.length; i++) {
+						String fileFormat = arguments[i].split("\\.")[arguments[i].split("\\.").length - 1];
+						if (!fileFormat.equals("frd") && !fileFormat.equals("csv")) continue;
+						configuration.addSource(arguments[i]);
+					}
+					break;
+//					String fileFormat = arguments[index].split("\\.")[arguments[index].split("\\.").length - 1];
+//					if (fileFormat.equals("frd") || fileFormat.equals("csv")) configuration.addSource(arguments[index]);
+//					break;
+				} else {
+					configuration.setInputMode(InputMode.multi);
+					configuration.setBatchFolder(arguments[0]);
+				}
+
+				/*
+					===== Old way of setting multi file configuration =====
+
+					for (int i = g.getOptind(); i < arguments.length; i++) {
+						String fileFormat = arguments[i].split("\\.")[arguments[i].split("\\.").length - 1];
+						if (!fileFormat.equals("frd") && !fileFormat.equals("csv")) continue;
+						configuration.addSource(arguments[i]);
+					}
+					if(configuration.getSources().size() > 1) configuration.setInputMode(InputMode.multi);
+					break;
+				 */
+			case batch:
+				File folder = new File(configuration.getBatchFolder());
+				File[] files = folder.listFiles();
+
+				for (File file : files) {
+					String fileFormat = file.getName().split("\\.")[file.getName().split("\\.").length - 1];
+					if (!file.isFile() || (!fileFormat.equals("frd") && !fileFormat.equals("csv"))) continue;
+				    configuration.addSource(configuration.getBatchFolder() + "/" + file.getName());
+				}
+				break;
+			default: break;
 		}
+		
 		return configuration ;
 	}
 
@@ -123,7 +165,7 @@ public class CLI {
 
 		System.out.println( "" ) ;
 		System.out.print( "OPTIONS " ) ;
-		System.out.println( getShortOptions().substring(1 )); //remove pesky : at beggining that is only useful to distinguish betweeen missing param and invalid options
+		System.out.println( getShortOptions().substring(1 )); //remove pesky : at beginning that is only useful to distinguish between missing param and invalid options
 		for (Option commandLineOption : options) {
 			System.out.println( commandLineOption );
 		}
@@ -131,12 +173,13 @@ public class CLI {
 
 
 	/**
-	 * Provide a string decribing possible short option in the gnu OPTION_STRING format
+	 * Provide a string describing possible short option in the gnu OPTION_STRING format
 	 * @see https://www.gnu.org/software/gnuprologjava/api/gnu/getopt/Getopt.html
 	 * @return option string
 	 */
 	private static String getShortOptions() {
 		String shortOption = ":" ;
+
 		for (Option commandLineOption : options) {
 			shortOption += commandLineOption.getCode() ;
 		}
@@ -145,7 +188,7 @@ public class CLI {
 
 
 	/**
-	 * Provide the an array of long Options for the gnu.getOpt
+	 * Provide the array of long Options for the gnu.getOpt
 	 * @return
 	 */
 	private static LongOpt[] getLongOptions() {
