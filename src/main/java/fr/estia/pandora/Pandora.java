@@ -64,7 +64,7 @@ public class Pandora {
 
 					for(Flight flight: flights) {
 						Analysis analysis = new Analysis(flight, String.valueOf(config.getTargetFeature()));
-						print( flight, analysis );
+						print(flight, analysis);
 					}
 
 					break;
@@ -81,8 +81,8 @@ public class Pandora {
 
 					if (!exceptions.isEmpty()) ExceptionManager.handleFileExceptions(exceptions);
 
-					MultiAnalysis analysis = new MultiAnalysis(flights, String.valueOf(config.getTargetFeature()));
-					// print whatever
+					MultiAnalysis multiAnalysis = new MultiAnalysis(flights, String.valueOf(config.getTargetFeature()));
+					print(flights, multiAnalysis);
 
 					break;
 				default: break;
@@ -104,17 +104,36 @@ public class Pandora {
 	 * @param flight
 	 * @param analysis
 	 */
-	static void print( Flight flight, Analysis analysis ) {
+	static void print(Flight flight, Analysis analysis) {
 		//Select printer according to configuration
 		switch (CLI.getConfiguration().getOutputMode()) {
 			case feature:
 				//Output mode is set to only one feature, set target and print
 				FeaturePrinter.setTargetFeature(CLI.getConfiguration().getTargetFeature());
-				FeaturePrinter.print(flight, analysis);
+				FeaturePrinter.print(analysis);
 				break;
 			default:
 				//Default mode print everything
 				ConsolePrinter.print(flight, analysis);
+		}
+	}
+
+	/**
+	 * Print information about flight and analysis according to configuration from the command line
+	 * @param flights
+	 * @param multiAnalysis
+	 */
+	static void print(List<Flight> flights, MultiAnalysis multiAnalysis) {
+		//Select printer according to configuration
+		switch (CLI.getConfiguration().getOutputMode()) {
+			case feature:
+				//Output mode is set to only one feature, set target and print
+				FeaturePrinter.setTargetFeature(CLI.getConfiguration().getTargetFeature());
+				FeaturePrinter.print(multiAnalysis);
+				break;
+			default:
+				//Default mode print everything
+				ConsolePrinter.print(flights, multiAnalysis);
 		}
 	}
 }
