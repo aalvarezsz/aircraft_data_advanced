@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.FlightPhase;
 import fr.estia.pandora.model.Record;
+import fr.estia.pandora.model.Utils;
 
 public class PhaseAnalysis {
 	/* Replace XXXXXX by Phase (TakeOff, Cruise, Landing)
@@ -12,7 +13,7 @@ public class PhaseAnalysis {
 	 * maxAirSpeedXXXXXX 		--> Done
 	 * avgEnginePowerXXXXXX 	--> Done
 	 * maxEnginePowerXXXXXX	 	--> Done
-	 * flightDistanceXXXXXX		--> 
+	 * flightDistanceXXXXXX		--> Done
 	 * avgAccelerationXXXXXX	--> 
 	 * maxAccelerationXXXXXX	--> 
 	 * windSpeedXXXXXX 			-->
@@ -131,7 +132,9 @@ public class PhaseAnalysis {
     public static double avgEnginePowerTakeOff(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
         double power = flightRecords.get(0).getAir_speed();
+
         FlightPhase takeOff = Phases.getTakeOffData(flight);
+        if(takeOff == null) return 0;
         
         int i_start = takeOff.startIndex;
         int i_end = takeOff.endIndex;
@@ -142,9 +145,11 @@ public class PhaseAnalysis {
     }
     
     public static double avgEnginePowerCruise(Flight flight) {
-        ArrayList<Record> flightRecords = flight.getRecords();
         double power = 0;
+        ArrayList<Record> flightRecords = flight.getRecords();
+
         FlightPhase cruise = Phases.getCruiseData(flight);
+        if(cruise == null) return 0;
         
         int i_start = cruise.startIndex;
         int i_end = cruise.endIndex;
@@ -155,9 +160,11 @@ public class PhaseAnalysis {
     }
     
     public static double avgEnginePowerLanding(Flight flight) {
-        ArrayList<Record> flightRecords = flight.getRecords();
         double power = 0;
+        ArrayList<Record> flightRecords = flight.getRecords();
+
         FlightPhase landing = Phases.getLandingData(flight);
+        if(landing == null) return 0;
         
         int i_start = landing.startIndex;
         int i_end = landing.endIndex;
@@ -170,9 +177,11 @@ public class PhaseAnalysis {
 
     /* MAX ENGINE POWER IN ALL THREE PHASES */
     public static double maxEnginePowerTakeOff(Flight flight) {
-        ArrayList<Record> flightRecords = flight.getRecords();
         double power = 0;
+        ArrayList<Record> flightRecords = flight.getRecords();
+
         FlightPhase takeOff = Phases.getTakeOffData(flight);
+        if(takeOff == null) return 0;
         
         int i_start = takeOff.startIndex;
         int i_end = takeOff.endIndex;
@@ -186,9 +195,11 @@ public class PhaseAnalysis {
     }
     
     public static double maxEnginePowerCruise(Flight flight) {
-        ArrayList<Record> flightRecords = flight.getRecords();
         double power = 0;
+        ArrayList<Record> flightRecords = flight.getRecords();
+
         FlightPhase cruise = Phases.getCruiseData(flight);
+        if(cruise == null) return 0;
         
         int i_start = cruise.startIndex;
         int i_end = cruise.endIndex;
@@ -202,7 +213,9 @@ public class PhaseAnalysis {
     public static double maxEnginePowerLanding(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
         double power = flightRecords.get(0).getAir_speed();
+
         FlightPhase landing = Phases.getLandingData(flight);
+        if(landing == null) return 0;
         
         int i_start = landing.startIndex;
         int i_end = landing.endIndex;
@@ -216,10 +229,24 @@ public class PhaseAnalysis {
 
     /* FLIGHT DISTANCE IN ALL THREE PHASES */
     public static double flightDistanceTakeOff(Flight flight) {
-        double totalDistance = 0;
-        ArrayList<Record> flightRecords = flight.getRecords();
+        FlightPhase takeOff = Phases.getTakeOffData(flight);
 
-        return totalDistance;
+        if(takeOff == null) return 0;
+        else return Utils.ComputeDistanceBetween(flight, takeOff.startIndex, takeOff.endIndex);
+    }
+
+    public static double flightDistanceCruise(Flight flight) {
+        FlightPhase cruise = Phases.getCruiseData(flight);
+
+        if(cruise == null) return 0;
+        else return Utils.ComputeDistanceBetween(flight, cruise.startIndex, cruise.endIndex);
+    }
+
+    public static double flightDistanceLanding(Flight flight) {
+        FlightPhase landing = Phases.getLandingData(flight);
+
+        if(landing == null) return 0;
+        else return Utils.ComputeDistanceBetween(flight, landing.startIndex, landing.endIndex);
     }
     
     

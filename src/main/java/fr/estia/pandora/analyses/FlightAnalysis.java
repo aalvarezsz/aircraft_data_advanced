@@ -19,16 +19,6 @@ public class FlightAnalysis {
 	}
 	
 	public static double computeFullDistance(Flight flight) {
-		double fullDistance = 0;
-		
-		if(flight.getRecords().size() <= 1) return fullDistance;
-		for(int i=0; i < flight.getRecords().size() - 1; i++) {
-			Position currentPosition = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude(), flight.getRecords().get(i).getAltitude());
-			Position nextPosition = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude(), flight.getRecords().get(i+1).getAltitude());
-			
-			fullDistance += Utils.ComputeDistance(currentPosition, nextPosition);
-		}
-		
-		return fullDistance;
+		return Utils.ComputeDistanceBetween(flight, 0, flight.getRecords().size() - 1);
 	}
 }
