@@ -28,43 +28,47 @@ public class PhasesTests {
 	
     /* AVERAGE AIR SPEED IN ALL THREE PHASES */
     public static double avgAirSpeedTakeOff(Flight flight) {
-        ArrayList<Record> flightRecords = flight.getRecords();
         double airspeed = 0;
+        ArrayList<Record> flightRecords = flight.getRecords();
+
         FlightPhase takeOff = Phases.getTakeOffData(flight);
-        
+        if(takeOff == null) return airspeed;
+
         int i_start = takeOff.startIndex;
         int i_end = takeOff.endIndex;
-        for (int i = i_start; i < i_end; i++) {
-            airspeed += flightRecords.get(i).getAir_speed();
-        }
-        System.out.println(airspeed/(i_end-i_start));
+
+        for (int i = takeOff.startIndex; i < takeOff.endIndex; i++) airspeed += flightRecords.get(i).getAir_speed();
 
         return airspeed/(i_end-i_start);
     }
     
     public static double avgAirSpeedCruise(Flight flight) {
-        ArrayList<Record> flightRecords = flight.getRecords();
         double airspeed = 0;
+        ArrayList<Record> flightRecords = flight.getRecords();
+
         FlightPhase cruise = Phases.getCruiseData(flight);
+        if(cruise == null) return airspeed;
         
         int i_start = cruise.startIndex;
         int i_end = cruise.endIndex;
-        for (int i = i_start; i < i_end; i++) {
-            airspeed += flightRecords.get(i).getAir_speed();
-        }
+
+        for (int i = i_start; i < i_end; i++) airspeed += flightRecords.get(i).getAir_speed();
+
         return airspeed/(i_end-i_start);
     }
     
     public static double avgAirSpeedLanding(Flight flight) {
-        ArrayList<Record> flightRecords = flight.getRecords();
         double airspeed = 0;
+        ArrayList<Record> flightRecords = flight.getRecords();
+
         FlightPhase landing = Phases.getLandingData(flight);
+        if(landing == null) return airspeed;
         
         int i_start = landing.startIndex;
         int i_end = landing.endIndex;
-        for (int i = i_start; i < i_end; i++) {
-            airspeed += flightRecords.get(i).getAir_speed();
-        }
+
+        for (int i = i_start; i < i_end; i++) airspeed += flightRecords.get(i).getAir_speed();
+
         return airspeed/(i_end-i_start);
     }
     
@@ -73,15 +77,17 @@ public class PhasesTests {
     public static double maxAirSpeedTakeOff(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
         double airspeed = flightRecords.get(0).getAir_speed();
+
         FlightPhase takeOff = Phases.getTakeOffData(flight);
+        if(takeOff == null) return 0;
         
         int i_start = takeOff.startIndex;
         int i_end = takeOff.endIndex;
+
         for (int i = i_start; i < i_end; i++) {
         	if (flightRecords.get(i).getAir_speed() > airspeed) {
         		airspeed = flightRecords.get(i).getAir_speed();
         	}
-            
         }
         return airspeed;
     }
@@ -89,14 +95,18 @@ public class PhasesTests {
     public static double maxAirSpeedCruise(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
         double airspeed = 0;
+
         FlightPhase cruise = Phases.getCruiseData(flight);
+        if(cruise == null) return 0;
         
         int i_start = cruise.startIndex;
         int i_end = cruise.endIndex;
+
         for (int i = i_start; i < i_end; i++) {
         	if (flightRecords.get(i).getAir_speed() > airspeed) {
         		airspeed = flightRecords.get(i).getAir_speed();
-        	}        }
+        	}
+        }
         return airspeed;
     }
     
@@ -104,14 +114,18 @@ public class PhasesTests {
     public static double maxAirSpeedLanding(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
         double airspeed = flightRecords.get(0).getAir_speed();
+
         FlightPhase landing = Phases.getLandingData(flight);
+        if(landing == null) return 0;
         
         int i_start = landing.startIndex;
         int i_end = landing.endIndex;
+
         for (int i = i_start; i < i_end; i++) {
         	if (flightRecords.get(i).getAir_speed() > airspeed) {
         		airspeed = flightRecords.get(i).getAir_speed();
-        	}        }
+        	}
+        }
         return airspeed;
     }
     
