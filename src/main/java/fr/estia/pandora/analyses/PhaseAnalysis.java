@@ -271,6 +271,29 @@ public class PhaseAnalysis {
         if(landing == null) return 0;
         else return Acceleration.average(flight, landing.startIndex, landing.endIndex);
     }
+
+
+    /* MAX ACCELERATION IN ALL THREE PHASES */
+    public static double maxAccelerationTakeOff(Flight flight) {
+        FlightPhase takeOff = Phases.getTakeOffData(flight);
+
+        if(takeOff == null) return 0;
+        else return Acceleration.max(flight, takeOff.startIndex, takeOff.endIndex);
+    }
+
+    public static double maxAccelerationCruise(Flight flight) {
+        FlightPhase cruise = Phases.getCruiseData(flight);
+
+        if(cruise == null) return 0;
+        else return Acceleration.max(flight, cruise.startIndex, cruise.endIndex);
+    }
+
+    public static double maxAccelerationLanding(Flight flight) {
+        FlightPhase landing = Phases.getLandingData(flight);
+
+        if(landing == null) return 0;
+        else return Acceleration.max(flight, landing.startIndex, landing.endIndex);
+    }
     
     
 }

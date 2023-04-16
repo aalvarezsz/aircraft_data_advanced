@@ -67,6 +67,9 @@ public class Analysis {
 			case "noiseTemp": this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight))); break;
 			case "stressedPilot": this.featureValues.put( "stressedPilot", Stress.attack(flight)); break;
 			case "maxAcceleration": this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight))); break;
+			case "maxAccelerationTakeOff": this.featureValues.put( "maxAccelerationTakeOff", String.format("%.2f", PhaseAnalysis.maxAccelerationTakeOff(flight))); break;
+			case "maxAccelerationCruise": this.featureValues.put( "maxAccelerationCruise", String.format("%.2f", PhaseAnalysis.maxAccelerationCruise(flight))); break;
+			case "maxAccelerationLanding": this.featureValues.put( "maxAccelerationLanding", String.format("%.2f", PhaseAnalysis.maxAccelerationLanding(flight))); break;
 			case "maxAccelG": this.featureValues.put( "maxAccelG", String.format("%.2f", Acceleration.maxInG(flight))); break;
 			case "avgMachSpeed": this.featureValues.put( "avgMachSpeed", String.format("%.2f", MachSpeed.average(flight))); break;
 			case "maxMachSpeed": this.featureValues.put( "maxMachSpeed", String.format("%.2f", MachSpeed.max(flight))); break;
@@ -125,6 +128,9 @@ public class Analysis {
     	this.featureValues.put("maxAirSpeedTakeOff", String.format("%.2f", PhaseAnalysis.maxAirSpeedTakeOff(flight)));
     
 		this.featureValues.put("maxAcceleration", String.format("%.2f", Acceleration.max(flight)));
+		this.featureValues.put("maxAccelerationCruise", String.format("%.2f", PhaseAnalysis.maxAccelerationCruise(flight)));
+		this.featureValues.put("maxAccelerationLanding", String.format("%.2f", PhaseAnalysis.maxAccelerationLanding(flight)));
+		this.featureValues.put("maxAccelerationTakeOff", String.format("%.2f", PhaseAnalysis.maxAccelerationTakeOff(flight)));
 		this.featureValues.put("maxAccelG", String.format("%.2f", Acceleration.maxInG(flight)));
 		this.featureValues.put("maxAlt", String.format("%.2f", Altitude.max(flight)));
     
