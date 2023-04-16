@@ -196,6 +196,14 @@ public class Analysis {
 		this.featureValues.put("takeOff", Phases.takeOff(flight));
 		this.featureValues.put("cruise", Phases.cruise(flight));
 		this.featureValues.put("landing", Phases.landing(flight));
+		
+		//Milestone Phases
+		//    avgAirSpeedTakeOff avgAirSpeedCruise avgAirSpeedLanding
+
+		this.featureValues.put("avgAirSpeedTakeOff", String.format("%.2f", PhasesTests.avgAirSpeedTakeOff(flight)));
+		this.featureValues.put("avgAirSpeedCruise", String.format("%.2f", PhasesTests.avgAirSpeedCruise(flight)));
+		this.featureValues.put("avgAirSpeedLanding", String.format("%.2f", PhasesTests.avgAirSpeedLanding(flight)));
+
 	}
 
 	public String getFeatureValue( String feature ) {
