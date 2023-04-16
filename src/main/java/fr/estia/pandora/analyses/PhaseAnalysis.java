@@ -1,14 +1,12 @@
 package fr.estia.pandora.analyses;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.FlightPhase;
 import fr.estia.pandora.model.Record;
 
-public class PhasesTests {
-	private Flight flight;
+public class PhaseAnalysis {
 	/* Replace XXXXXX by Phase (TakeOff, Cruise, Landing)
 	 * avgAirSpeedXXXXXX 		--> Done
 	 * maxAirSpeedXXXXXX 		--> Done
@@ -109,8 +107,7 @@ public class PhasesTests {
         }
         return airspeed;
     }
-    
-    
+
     public static double maxAirSpeedLanding(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
         double airspeed = flightRecords.get(0).getAir_speed();
@@ -128,11 +125,7 @@ public class PhasesTests {
         }
         return airspeed;
     }
-    
-    
-    
-    
-    
+
     
     /* AVG ENGINE POWER IN ALL THREE PHASES */  
     public static double avgEnginePowerTakeOff(Flight flight) {
@@ -173,7 +166,8 @@ public class PhasesTests {
         }
         return power/(i_start-i_end);
     }
-    
+
+
     /* MAX ENGINE POWER IN ALL THREE PHASES */
     public static double maxEnginePowerTakeOff(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
@@ -205,7 +199,6 @@ public class PhasesTests {
         return power;
     }
     
-    
     public static double maxEnginePowerLanding(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
         double power = flightRecords.get(0).getAir_speed();
@@ -219,8 +212,15 @@ public class PhasesTests {
         	}        }
         return power;
     }
-    
-    
+
+
+    /* FLIGHT DISTANCE IN ALL THREE PHASES */
+    public static double flightDistanceTakeOff(Flight flight) {
+        double totalDistance = 0;
+        ArrayList<Record> flightRecords = flight.getRecords();
+
+        return totalDistance;
+    }
     
     
     
