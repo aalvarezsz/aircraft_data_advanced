@@ -26,7 +26,7 @@ public class Phases {
     }
 
     public static String landing(Flight flight) {
-        FlightPhase landing = getTakeOffData(flight);
+        FlightPhase landing = getLandingData(flight);
 
         if(landing != null) return landing.toString();
         else return error_message;
@@ -63,7 +63,7 @@ public class Phases {
         if(plateaus.size() == 0) return null;
 
         double landingDebutTimestamp = plateaus.get(plateaus.size() - 1).endTimestamp;
-        double landingEndTimestamp = flight.getRecords().get(flight.getRecords().size() - 1).getTimestamp();;
+        double landingEndTimestamp = flight.getRecords().get(flight.getRecords().size() - 1).getTimestamp();
 
         int landingDebutIndex = plateaus.get(plateaus.size() - 1).endIndex;
         int landingEndIndex = flight.getRecords().size() - 1;
