@@ -21,4 +21,12 @@ public class FlightAnalysis {
 	public static double computeFullDistance(Flight flight) {
 		return Utils.ComputeDistanceBetween(flight, 0, flight.getRecords().size() - 1);
 	}
+
+	public static double ratioDistance(Flight flight) {
+		int lastFlightRecordIndex = flight.getRecords().size() - 1;
+		Position startPosition = new Position(flight.getRecords().get(0).getLatitude(), flight.getRecords().get(0).getLongitude(), flight.getRecords().get(0).getAltitude());
+		Position endPosition = new Position(flight.getRecords().get(lastFlightRecordIndex).getLatitude(), flight.getRecords().get(lastFlightRecordIndex).getLongitude(), flight.getRecords().get(lastFlightRecordIndex).getAltitude());
+
+		return computeFullDistance(flight) / Utils.ComputeDistance(startPosition, endPosition);
+	}
 }

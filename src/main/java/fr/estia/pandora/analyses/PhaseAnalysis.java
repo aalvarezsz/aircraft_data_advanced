@@ -16,14 +16,15 @@ public class PhaseAnalysis {
 	 * flightDistanceXXXXXX		--> Done
 	 * avgAccelerationXXXXXX	--> Done
 	 * maxAccelerationXXXXXX	--> Done
-	 * windSpeedXXXXXX 			-->
+	 * windSpeedXXXXXX 			--> Done
 	 * 
 	 *
 	 * mostPowerPhase
 	 * mostStressPhase
 	 * mostAccelPhase
 	 *       
-	 * */
+	 *
+	 */
 	
     /* AVERAGE AIR SPEED IN ALL THREE PHASES */
     public static double avgAirSpeedTakeOff(Flight flight) {
