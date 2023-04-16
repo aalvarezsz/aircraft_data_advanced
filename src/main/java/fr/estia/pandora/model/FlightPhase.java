@@ -1,19 +1,25 @@
 package fr.estia.pandora.model;
 
-import fr.estia.pandora.analyses.FlightAnalysis;
-
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class FlightPhase {
+    // Timestamps
     public double startTimestamp;
     public double endTimestamp;
 
-    public FlightPhase(double startTimestamp, double endTimestamp) {
+    // Record indexes
+    public int startIndex;
+    public int endIndex;
+
+    public FlightPhase(double startTimestamp, double endTimestamp, int startIndex, int endIndex) {
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
+
+        this.startIndex = startIndex;
+        this.endIndex = endIndex;
     }
 
     public double getRawDuration() { return endTimestamp - startTimestamp; }

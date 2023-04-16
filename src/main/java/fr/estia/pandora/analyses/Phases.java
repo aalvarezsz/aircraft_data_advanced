@@ -39,7 +39,10 @@ public class Phases {
         double takeOffDebutTimestamp = flight.getRecords().get(0).getTimestamp();
         double takeOffEndTimestamp = plateaus.get(0).startTimestamp;
 
-        return new FlightPhase(takeOffDebutTimestamp, takeOffEndTimestamp);
+        int takeOffDebutIndex = 0;
+        int takeOffEndIndex = plateaus.get(0).startIndex;
+
+        return new FlightPhase(takeOffDebutTimestamp, takeOffEndTimestamp, takeOffDebutIndex, takeOffEndIndex);
     }
 
     public static FlightPhase getCruiseData(Flight flight) {
@@ -48,7 +51,10 @@ public class Phases {
         double cruiseDebutTimestamp = plateaus.get(0).startTimestamp;
         double cruiseEndTimestamp = plateaus.get(plateaus.size() - 1).endTimestamp;
 
-        return new FlightPhase(cruiseDebutTimestamp, cruiseEndTimestamp);
+        int cruiseDebutIndex = plateaus.get(0).startIndex;
+        int cruiseEndIndex = plateaus.get(plateaus.size() - 1).endIndex;
+
+        return new FlightPhase(cruiseDebutTimestamp, cruiseEndTimestamp, cruiseDebutIndex, cruiseEndIndex);
     }
 
     public static FlightPhase getLandingData(Flight flight) {
@@ -57,7 +63,10 @@ public class Phases {
         double landingDebutTimestamp = plateaus.get(plateaus.size() - 1).endTimestamp;
         double landingEndTimestamp = flight.getRecords().get(flight.getRecords().size() - 1).getTimestamp();;
 
-        return new FlightPhase(landingDebutTimestamp, landingEndTimestamp);
+        int landingDebutIndex = plateaus.get(plateaus.size() - 1).endIndex;
+        int landingEndIndex = flight.getRecords().size() - 1;
+
+        return new FlightPhase(landingDebutTimestamp, landingEndTimestamp, landingDebutIndex, landingEndIndex);
     }
 
     public static List<FlightPhase> findPlateaux(Flight flight) {
@@ -107,7 +116,7 @@ public class Phases {
             double startTime = flightRecords.get(startIndexes.get(i)).getTimestamp();
             double endTime = flightRecords.get(endIndexes.get(i)).getTimestamp();
 
-            FlightPhase plateau = new FlightPhase(startTime,endTime);
+            FlightPhase plateau = new FlightPhase(startTime,endTime, startIndexes.get(i), endIndexes.get(i));
             plateaus.add(plateau);
         }
 
