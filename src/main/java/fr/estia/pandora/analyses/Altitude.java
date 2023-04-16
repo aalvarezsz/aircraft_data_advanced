@@ -14,7 +14,7 @@ public class Altitude {
 	public static double average(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
 		double altitudeSum = 0;
-		
+
 		for (int i = 0; i<flightRecords.size(); i++) altitudeSum += flightRecords.get(i).getAltitude();
 		
 		return altitudeSum / flightRecords.size();
@@ -44,40 +44,66 @@ public class Altitude {
 		return minAltitude;
 	}
 
-	public static double maxAccel(Flight flight) {
-		double maxAcceleration = 0;
-		double altitudeForMaxAccel = 0;
+	public static double fastJetAltitude(Flight flight) {
+		ArrayList<Record> flightRecords = flight.getRecords();
 
-		if(flight.getRecords().size() <= 1) return 0;
+		double altitudeAtMaxSpeed;
+		int maxSpeedIndex = 0;
+		double maxSpeed = -1000000;
 
-		for(int i = 0; i < flight.getRecords().size() - 2; i++) {
-			Position position_0 = new Position(flight.getRecords().get(i).getLatitude(), flight.getRecords().get(i).getLongitude(), flight.getRecords().get(i).getAltitude());
-			Position position_1 = new Position(flight.getRecords().get(i+1).getLatitude(), flight.getRecords().get(i+1).getLongitude(), flight.getRecords().get(i+1).getAltitude());
-			Position position_2 = new Position(flight.getRecords().get(i+2).getLatitude(), flight.getRecords().get(i+2).getLongitude(), flight.getRecords().get(i+2).getAltitude());
-			double time_0 = flight.getRecords().get(i).getTimestamp();
-			double time_1 = flight.getRecords().get(i+1).getTimestamp();
-			double time_2 = flight.getRecords().get(i+2).getTimestamp();
-
-			double dTime_0 = time_1 - time_0;
-			double dTime_1 = time_2 - time_1;
-
-			double dDistance_0 = Utils.ComputeDistance(position_0, position_1);
-			double dDistance_1 = Utils.ComputeDistance(position_1, position_2);
-
-			double speed_0 = dDistance_0 / dTime_0;
-			double speed_1 = dDistance_1 / dTime_1;
-			double acceleration = (speed_1 - speed_0) / (dTime_1);
-
-			if (Math.abs(maxAcceleration) < Math.abs(acceleration)) {
-				maxAcceleration = acceleration;
-				altitudeForMaxAccel = flight.getRecords().get(i+2).getAltitude();
+		for (int i = 0; i < flightRecords.size(); i++) {
+			if (flightRecords.get(i).getAir_speed() >= maxSpeed) {
+				maxSpeed = flightRecords.get(i).getAir_speed();
+				maxSpeedIndex = i;
 			}
 		}
 
-		return altitudeForMaxAccel;
+		// Get the altitude at the maximum airspeed index
+		altitudeAtMaxSpeed = flightRecords.get(maxSpeedIndex).getAltitude();
+
+		return altitudeAtMaxSpeed;
 	}
-	
-	public static class Reaching80PercentMaxAltitude {
+
+	public static double fastWindAltitude(Flight flight) {
+		ArrayList<Record> flightRecords = flight.getRecords();
+
+		double altitudeAtMaxWindspeed = flightRecords.get(0).getAltitude();
+		int maxSpeedIndex = 0;
+		double maxSpeed = 0;
+
+
+		double windSpeed = 0;
+		int nbOfPositions = 0;
+		double groundSpeed;
+
+		for (int i = 0; i < flightRecords.size()-1; i++) {
+
+			Position position_0 = new Position(flightRecords.get(i).getLatitude(), flightRecords.get(i).getLongitude(), flightRecords.get(i).getAltitude());
+			Position position_1 = new Position(flightRecords.get(i+1).getLatitude(), flightRecords.get(i+1).getLongitude(), flightRecords.get(i+1).getAltitude());
+			double time_0 = flightRecords.get(i).getTimestamp();
+			double time_1 = flightRecords.get(i+1).getTimestamp();
+			double dTime = time_1 - time_0;
+			double dDistance = Utils.ComputeDistance(position_0, position_1);
+			groundSpeed = dDistance / dTime;
+			double airSpeed = flightRecords.get(i+1).getAir_speed();
+			windSpeed = groundSpeed - airSpeed;
+			nbOfPositions++;
+
+			if (windSpeed >= maxSpeed) {
+				maxSpeed = windSpeed;
+				maxSpeedIndex = i;
+			}
+		}
+
+		// Get the altitude at the maximum windspeed index
+		altitudeAtMaxWindspeed = flightRecords.get(maxSpeedIndex+1).getAltitude();
+
+		return altitudeAtMaxWindspeed;
+	}
+
+
+
+		public static class Reaching80PercentMaxAltitude {
 		public String getFormattedDuration(double timestamp) {
 		    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
