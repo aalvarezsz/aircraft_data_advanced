@@ -31,6 +31,10 @@ public class Analysis {
 	public void execute(String targetFeature) {
 		switch(targetFeature) {
 			case "avgAlt": this.featureValues.put( "avgAlt", String.format("%.2f", Altitude.average(flight))); break;
+			case "avgAcceleration": this.featureValues.put( "avgAcceleration", String.format("%.2f", Acceleration.average(flight))); break;
+			case "avgAccelerationCruise": this.featureValues.put( "avgAccelerationCruise", String.format("%.2f", PhaseAnalysis.avgAccelerationCruise(flight))); break;
+			case "avgAccelerationLanding": this.featureValues.put( "avgAccelerationLanding", String.format("%.2f", PhaseAnalysis.avgAccelerationLanding(flight))); break;
+			case "avgAccelerationTakeOff": this.featureValues.put( "avgAccelerationTakeOff", String.format("%.2f", PhaseAnalysis.avgAccelerationTakeOff(flight))); break;
 			case "maxAlt": this.featureValues.put( "maxAlt", String.format("%.2f", Altitude.max(flight))); break;
 			case "avgTemp": this.featureValues.put( "avgTemp", String.format("%.2f", Temperature.average(flight))); break;
 			case "maxTemp": this.featureValues.put( "maxTemp", String.format("%.2f", Temperature.max(flight))); break;
@@ -63,7 +67,6 @@ public class Analysis {
 			case "noiseTemp": this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight))); break;
 			case "stressedPilot": this.featureValues.put( "stressedPilot", Stress.attack(flight)); break;
 			case "maxAcceleration": this.featureValues.put( "maxAcceleration", String.format("%.2f", Acceleration.max(flight))); break;
-			case "avgAcceleration": this.featureValues.put( "avgAcceleration", String.format("%.2f", Acceleration.average(flight))); break;
 			case "maxAccelG": this.featureValues.put( "maxAccelG", String.format("%.2f", Acceleration.maxInG(flight))); break;
 			case "avgMachSpeed": this.featureValues.put( "avgMachSpeed", String.format("%.2f", MachSpeed.average(flight))); break;
 			case "maxMachSpeed": this.featureValues.put( "maxMachSpeed", String.format("%.2f", MachSpeed.max(flight))); break;
@@ -87,6 +90,9 @@ public class Analysis {
 	
 	public void executeAll() {
 		this.featureValues.put("avgAcceleration", String.format("%.3f", Acceleration.average(flight)));
+		this.featureValues.put("avgAccelerationCruise", String.format("%.2f", PhaseAnalysis.avgAccelerationCruise(flight)));
+		this.featureValues.put("avgAccelerationLanding", String.format("%.2f", PhaseAnalysis.avgAccelerationLanding(flight)));
+		this.featureValues.put("avgAccelerationTakeOff", String.format("%.2f", PhaseAnalysis.avgAccelerationTakeOff(flight)));
 		this.featureValues.put("avgAirSpeed", String.format("%.2f", AirSpeed.average(flight)));
 		this.featureValues.put("avgAirSpeedCruise", String.format("%.2f", PhaseAnalysis.avgAirSpeedCruise(flight)));
 		this.featureValues.put("avgAirSpeedLanding", String.format("%.2f", PhaseAnalysis.avgAirSpeedLanding(flight)));

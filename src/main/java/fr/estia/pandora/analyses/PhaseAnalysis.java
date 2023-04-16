@@ -232,29 +232,44 @@ public class PhaseAnalysis {
         FlightPhase takeOff = Phases.getTakeOffData(flight);
 
         if(takeOff == null) return 0;
-        else return Utils.ComputeDistanceBetween(flight, takeOff.startIndex, takeOff.endIndex);
+        else return Utils.ComputeDistanceBetween(flight, takeOff.startIndex, takeOff.endIndex) / 1000;
     }
 
     public static double flightDistanceCruise(Flight flight) {
         FlightPhase cruise = Phases.getCruiseData(flight);
 
         if(cruise == null) return 0;
-        else return Utils.ComputeDistanceBetween(flight, cruise.startIndex, cruise.endIndex);
+        else return Utils.ComputeDistanceBetween(flight, cruise.startIndex, cruise.endIndex) / 1000;
     }
 
     public static double flightDistanceLanding(Flight flight) {
         FlightPhase landing = Phases.getLandingData(flight);
 
         if(landing == null) return 0;
-        else return Utils.ComputeDistanceBetween(flight, landing.startIndex, landing.endIndex);
+        else return Utils.ComputeDistanceBetween(flight, landing.startIndex, landing.endIndex) / 1000;
     }
 
 
     /* AVERAGE ACCELERATION IN ALL THREE PHASES */
     public static double avgAccelerationTakeOff(Flight flight) {
+        FlightPhase takeOff = Phases.getTakeOffData(flight);
 
+        if(takeOff == null) return 0;
+        else return Acceleration.average(flight, takeOff.startIndex, takeOff.endIndex);
+    }
 
-        return 0;
+    public static double avgAccelerationCruise(Flight flight) {
+        FlightPhase cruise = Phases.getCruiseData(flight);
+
+        if(cruise == null) return 0;
+        else return Acceleration.average(flight, cruise.startIndex, cruise.endIndex);
+    }
+
+    public static double avgAccelerationLanding(Flight flight) {
+        FlightPhase landing = Phases.getLandingData(flight);
+
+        if(landing == null) return 0;
+        else return Acceleration.average(flight, landing.startIndex, landing.endIndex);
     }
     
     

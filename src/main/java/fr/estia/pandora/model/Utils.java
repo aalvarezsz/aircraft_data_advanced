@@ -29,7 +29,7 @@ public class Utils {
 			fullDistance += Utils.ComputeDistance(currentPosition, nextPosition);
 		}
 
-		return fullDistance / 1000;
+		return fullDistance;
 	}
 	
 	public static String TimestampDurationToString(double duration) {
