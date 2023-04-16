@@ -167,6 +167,24 @@ public class Analysis {
 			case "maxAirSpeedLanding":
 				this.featureValues.put("maxAirSpeedLanding", String.format("%.2f", PhasesTests.maxAirSpeedLanding(flight)));
 				break;
+			case "avgEnginePowerTakeOff":
+		        this.featureValues.put("avgEnginePowerTakeOff", String.format("%.2f", PhasesTests.avgEnginePowerTakeOff(flight)));
+		        break;
+		    case "avgEnginePowerCruise":
+		        this.featureValues.put("avgEnginePowerCruise", String.format("%.2f", PhasesTests.avgEnginePowerCruise(flight)));
+		        break;
+		    case "avgEnginePowerLanding":
+		        this.featureValues.put("avgEnginePowerLanding", String.format("%.2f", PhasesTests.avgEnginePowerLanding(flight)));
+		        break;
+		    case "maxEnginePowerTakeOff":
+		        this.featureValues.put("maxEnginePowerTakeOff", String.format("%.2f", PhasesTests.maxEnginePowerTakeOff(flight)));
+		        break;
+		    case "maxEnginePowerCruise":
+		        this.featureValues.put("maxEnginePowerCruise", String.format("%.2f", PhasesTests.maxEnginePowerCruise(flight)));
+		        break;
+		    case "maxEnginePowerLanding":
+		        this.featureValues.put("maxEnginePowerLanding", String.format("%.2f", PhasesTests.maxEnginePowerLanding(flight)));
+		        break;
 				
 			default: break;
 		}
@@ -221,10 +239,15 @@ public class Analysis {
 		this.featureValues.put("avgAirSpeedTakeOff", String.format("%.2f", PhasesTests.avgAirSpeedTakeOff(flight)));
 		this.featureValues.put("avgAirSpeedCruise", String.format("%.2f", PhasesTests.avgAirSpeedCruise(flight)));
 		this.featureValues.put("avgAirSpeedLanding", String.format("%.2f", PhasesTests.avgAirSpeedLanding(flight)));
-		
 		this.featureValues.put("maxAirSpeedTakeOff", String.format("%.2f", PhasesTests.maxAirSpeedTakeOff(flight)));
 		this.featureValues.put("maxAirSpeedCruise", String.format("%.2f", PhasesTests.maxAirSpeedCruise(flight)));
 		this.featureValues.put("maxAirSpeedLanding", String.format("%.2f", PhasesTests.maxAirSpeedLanding(flight)));
+		this.featureValues.put("avgEnginePowerTakeOff", String.format("%.2f", PhasesTests.avgEnginePowerTakeOff(flight)));
+		this.featureValues.put("avgEnginePowerCruise", String.format("%.2f", PhasesTests.avgEnginePowerCruise(flight)));
+		this.featureValues.put("avgEnginePowerLanding", String.format("%.2f", PhasesTests.avgEnginePowerLanding(flight)));
+		this.featureValues.put("maxEnginePowerTakeOff", String.format("%.2f", PhasesTests.maxEnginePowerTakeOff(flight)));
+		this.featureValues.put("maxEnginePowerCruise", String.format("%.2f", PhasesTests.maxEnginePowerCruise(flight)));
+		this.featureValues.put("maxEnginePowerLanding", String.format("%.2f", PhasesTests.maxEnginePowerLanding(flight)));
 
 	}
 

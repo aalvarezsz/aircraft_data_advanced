@@ -9,13 +9,27 @@ import fr.estia.pandora.model.Record;
 
 public class PhasesTests {
 	private Flight flight;
-	
+	/* Replace XXXXXX by Phase (TakeOff, Cruise, Landing)
+	 * avgAirSpeedXXXXXX 		--> Done
+	 * maxAirSpeedXXXXXX 		--> Done
+	 * avgEnginePowerXXXXXX 	--> 
+	 * maxEnginePowerXXXXXX	 	--> 
+	 * flightDistanceXXXXXX		--> 
+	 * avgAccelerationXXXXXX	--> 
+	 * maxAccelerationXXXXXX	--> 
+	 * windSpeedXXXXXX 			-->
+	 * 
+	 *
+	 * mostPowerPhase
+	 * mostStressPhase
+	 * mostAccelPhase
+	 *       
+	 * */
 	
     /* AVERAGE AIR SPEED IN ALL THREE PHASES */
-
     public static double avgAirSpeedTakeOff(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
-        double airspeed = flightRecords.get(0).getAir_speed();
+        double airspeed = 0;
         FlightPhase takeOff = Phases.getTakeOffData(flight);
         
         int i_start = takeOff.startIndex;
@@ -23,6 +37,8 @@ public class PhasesTests {
         for (int i = i_start; i < i_end; i++) {
             airspeed += flightRecords.get(i).getAir_speed();
         }
+        System.out.println(airspeed/(i_end-i_start));
+
         return airspeed/(i_end-i_start);
     }
     
@@ -41,7 +57,7 @@ public class PhasesTests {
     
     public static double avgAirSpeedLanding(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
-        double airspeed = flightRecords.get(0).getAir_speed();
+        double airspeed = 0;
         FlightPhase landing = Phases.getLandingData(flight);
         
         int i_start = landing.startIndex;
@@ -54,9 +70,6 @@ public class PhasesTests {
     
     
     /* MAX AIR SPEED IN ALL THREE PHASES */
-    
-    
-    
     public static double maxAirSpeedTakeOff(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
         double airspeed = flightRecords.get(0).getAir_speed();
@@ -84,7 +97,7 @@ public class PhasesTests {
         	if (flightRecords.get(i).getAir_speed() > airspeed) {
         		airspeed = flightRecords.get(i).getAir_speed();
         	}        }
-        return airspeed/(i_end-i_start);
+        return airspeed;
     }
     
     
@@ -99,7 +112,7 @@ public class PhasesTests {
         	if (flightRecords.get(i).getAir_speed() > airspeed) {
         		airspeed = flightRecords.get(i).getAir_speed();
         	}        }
-        return airspeed/(i_end-i_start);
+        return airspeed;
     }
     
     
@@ -109,5 +122,91 @@ public class PhasesTests {
     
     /* AVG ENGINE POWER IN ALL THREE PHASES */
     //avgEnginePowerCruise  
-
+    public static double avgEnginePowerTakeOff(Flight flight) {
+        ArrayList<Record> flightRecords = flight.getRecords();
+        double power = flightRecords.get(0).getAir_speed();
+        FlightPhase takeOff = Phases.getTakeOffData(flight);
+        
+        int i_start = takeOff.startIndex;
+        int i_end = takeOff.endIndex;
+        for (int i = i_start; i < i_end; i++) {
+            power += flightRecords.get(i).getEnginePower();
+        }
+        return power;
+    }
+    
+    public static double avgEnginePowerCruise(Flight flight) {
+        ArrayList<Record> flightRecords = flight.getRecords();
+        double power = 0;
+        FlightPhase cruise = Phases.getCruiseData(flight);
+        
+        int i_start = cruise.startIndex;
+        int i_end = cruise.endIndex;
+        for (int i = i_start; i < i_end; i++) {
+        	power += flightRecords.get(i).getEnginePower();
+        }
+        return power;
+    }
+    
+    public static double avgEnginePowerLanding(Flight flight) {
+        ArrayList<Record> flightRecords = flight.getRecords();
+        double power = 0;
+        FlightPhase landing = Phases.getLandingData(flight);
+        
+        int i_start = landing.startIndex;
+        int i_end = landing.endIndex;
+        for (int i = i_start; i < i_end; i++) {
+            power += flightRecords.get(0).getEnginePower();
+        }
+        return power;
+    }
+    
+    /* MAX ENGINE POWER IN ALL THREE PHASES */
+    public static double maxEnginePowerTakeOff(Flight flight) {
+        ArrayList<Record> flightRecords = flight.getRecords();
+        double power = 0;
+        FlightPhase takeOff = Phases.getTakeOffData(flight);
+        
+        int i_start = takeOff.startIndex;
+        int i_end = takeOff.endIndex;
+        for (int i = i_start; i < i_end; i++) {
+        	if (flightRecords.get(i).getAir_speed() > power) {
+        		power = flightRecords.get(i).getAir_speed();
+        	}
+            
+        }
+        return power;
+    }
+    
+    public static double maxEnginePowerCruise(Flight flight) {
+        ArrayList<Record> flightRecords = flight.getRecords();
+        double power = 0;
+        FlightPhase cruise = Phases.getCruiseData(flight);
+        
+        int i_start = cruise.startIndex;
+        int i_end = cruise.endIndex;
+        for (int i = i_start; i < i_end; i++) {
+        	if (flightRecords.get(i).getAir_speed() > power) {
+        		power = flightRecords.get(i).getAir_speed();
+        	}        }
+        return power;
+    }
+    
+    
+    public static double maxEnginePowerLanding(Flight flight) {
+        ArrayList<Record> flightRecords = flight.getRecords();
+        double power = flightRecords.get(0).getAir_speed();
+        FlightPhase landing = Phases.getLandingData(flight);
+        
+        int i_start = landing.startIndex;
+        int i_end = landing.endIndex;
+        for (int i = i_start; i < i_end; i++) {
+        	if (flightRecords.get(i).getAir_speed() > power) {
+        		power = flightRecords.get(i).getAir_speed();
+        	}        }
+        return power/(i_end-i_start);
+    }
+    
+    
+    
 }
