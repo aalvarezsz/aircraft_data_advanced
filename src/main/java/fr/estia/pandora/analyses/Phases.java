@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public class Phases {
-    private static final String error_message = "not_detected";
+    private static final String error_message = "not detected";
 
     public static String takeOff(Flight flight) {
         FlightPhase takeOff = getTakeOffData(flight);
@@ -47,9 +47,11 @@ public class Phases {
 
     public static FlightPhase getCruiseData(Flight flight) {
         List<FlightPhase> plateaus = findPlateaux(flight);
+        if(plateaus.size() == 0) return null;
 
         double cruiseDebutTimestamp = plateaus.get(0).startTimestamp;
         double cruiseEndTimestamp = plateaus.get(plateaus.size() - 1).endTimestamp;
+        System.out.println("DEBUG");
 
         int cruiseDebutIndex = plateaus.get(0).startIndex;
         int cruiseEndIndex = plateaus.get(plateaus.size() - 1).endIndex;
@@ -59,6 +61,7 @@ public class Phases {
 
     public static FlightPhase getLandingData(Flight flight) {
         List<FlightPhase> plateaus = findPlateaux(flight);
+        if(plateaus.size() == 0) return null;
 
         double landingDebutTimestamp = plateaus.get(plateaus.size() - 1).endTimestamp;
         double landingEndTimestamp = flight.getRecords().get(flight.getRecords().size() - 1).getTimestamp();;
