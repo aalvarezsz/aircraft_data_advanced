@@ -4,22 +4,37 @@ import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.FlightPhase;
 import fr.estia.pandora.model.Record;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 
-//Les phases de vols sont: takeoff, cruise, landing
-//les fonctions: takeOff
-//Take Off Phase Detection >> CLI option: -o takeOff
-
 public class Phases {
+    private static final String error_message = "not_detected";
 
-    public static FlightPhase takeOff(Flight flight) {
+    public static String takeOff(Flight flight) {
+        FlightPhase takeOff = getTakeOffData(flight);
+
+        if(takeOff != null) return takeOff.toString();
+        else return error_message;
+    }
+
+    public static String cruise(Flight flight) {
+        FlightPhase cruise = getCruiseData(flight);
+
+        if(cruise != null) return cruise.toString();
+        else return error_message;
+    }
+
+    public static String landing(Flight flight) {
+        FlightPhase landing = getTakeOffData(flight);
+
+        if(landing != null) return landing.toString();
+        else return error_message;
+    }
+
+    public static FlightPhase getTakeOffData(Flight flight) {
         List<FlightPhase> plateaus = findPlateaux(flight);
+        if(plateaus.size() == 0) return null;
 
         double takeOffDebutTimestamp = flight.getRecords().get(0).getTimestamp();
         double takeOffEndTimestamp = plateaus.get(0).startTimestamp;
@@ -27,7 +42,7 @@ public class Phases {
         return new FlightPhase(takeOffDebutTimestamp, takeOffEndTimestamp);
     }
 
-    public static FlightPhase cruise(Flight flight) {
+    public static FlightPhase getCruiseData(Flight flight) {
         List<FlightPhase> plateaus = findPlateaux(flight);
 
         double cruiseDebutTimestamp = plateaus.get(0).startTimestamp;
@@ -36,7 +51,7 @@ public class Phases {
         return new FlightPhase(cruiseDebutTimestamp, cruiseEndTimestamp);
     }
 
-    public static FlightPhase landing(Flight flight) {
+    public static FlightPhase getLandingData(Flight flight) {
         List<FlightPhase> plateaus = findPlateaux(flight);
 
         double landingDebutTimestamp = plateaus.get(plateaus.size() - 1).endTimestamp;
@@ -49,11 +64,11 @@ public class Phases {
         ArrayList<Record> flightRecords = flight.getRecords();
         List<Float> yawDeltaList = getYawDeltaList(flightRecords);
 
-        // Plateau start and finish indexes
+        // Plateaus' start and finish indexes
         List<Integer> startIndexes = new ArrayList<>();
         List<Integer> endIndexes = new ArrayList<>();
 
-        // Get plateau beginning indexes
+        // Get plateaus' beginning and end indexes
         int stableCount = 0;
 
         for(int i=0; i<yawDeltaList.size(); i++) {
@@ -73,6 +88,7 @@ public class Phases {
 
         if(startIndexes.size() > endIndexes.size()) endIndexes.add(yawDeltaList.size() - 1);
 
+        // Filter for plateaus that last > 60 seconds
         for(int i=0; i<startIndexes.size();) {
             double startTime = flightRecords.get(startIndexes.get(i)).getTimestamp();
             double endTime = flightRecords.get(endIndexes.get(i)).getTimestamp();
@@ -85,6 +101,7 @@ public class Phases {
             // System.out.println("DEBUG " + i + "/" + startIndexes.size());
         }
 
+        // Response data formatting
         List<FlightPhase> plateaus = new ArrayList<>();
         for(int i=0; i<startIndexes.size(); i++) {
             double startTime = flightRecords.get(startIndexes.get(i)).getTimestamp();

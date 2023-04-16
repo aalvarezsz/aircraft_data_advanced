@@ -139,13 +139,13 @@ public class Analysis {
 				this.featureValues.put( "fastWindAlt", String.format("%.2f", Altitude.fastWindAltitude(flight)));
 				break;
 			case "takeOff":
-				this.featureValues.put("takeOff", Phases.takeOff(flight).toString());
+				this.featureValues.put("takeOff", Phases.takeOff(flight));
 				break;
 			case "cruise":
-				this.featureValues.put("cruise", Phases.cruise(flight).toString());
+				this.featureValues.put("cruise", Phases.cruise(flight));
 				break;
 			case "landing":
-				this.featureValues.put("landing", Phases.landing(flight).toString());
+				this.featureValues.put("landing", Phases.landing(flight));
 				break;
 
 			default: break;
@@ -193,9 +193,9 @@ public class Analysis {
 		this.featureValues.put("stressedPilot", Stress.attack(flight));
 		this.featureValues.put("noiseTemp", String.format("%.2f", Temperature.noise(flight)));
 		this.featureValues.put("fastWindAlt", String.format("%.2f", Altitude.fastWindAltitude(flight)));
-		this.featureValues.put("takeOff", Phases.takeOff(flight).toString());
-		this.featureValues.put("cruise", Phases.cruise(flight).toString());
-		this.featureValues.put("landing", Phases.landing(flight).toString());
+		this.featureValues.put("takeOff", Phases.takeOff(flight));
+		this.featureValues.put("cruise", Phases.cruise(flight));
+		this.featureValues.put("landing", Phases.landing(flight));
 	}
 
 	public String getFeatureValue( String feature ) {
