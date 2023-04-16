@@ -248,8 +248,14 @@ public class PhaseAnalysis {
         if(landing == null) return 0;
         else return Utils.ComputeDistanceBetween(flight, landing.startIndex, landing.endIndex);
     }
-    
-    
+
+
+    /* AVERAGE ACCELERATION IN ALL THREE PHASES */
+    public static double avgAccelerationTakeOff(Flight flight) {
+
+
+        return 0;
+    }
     
     
 }

@@ -55,6 +55,9 @@ public class Analysis {
 			case "fastJetAlt": this.featureValues.put( "fastJetAlt", String.format("%.2f", Altitude.fastJetAltitude(flight))); break;
 			case "flightDuration": this.featureValues.put( "flightDuration", FlightAnalysis.getDuration(flight)); break;
 			case "flightDistance": this.featureValues.put( "flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight))); break;
+			case "flightDistanceCruise": this.featureValues.put( "flightDistanceCruise", String.format("%.2f", PhaseAnalysis.flightDistanceCruise(flight))); break;
+			case "flightDistanceLanding": this.featureValues.put( "flightDistanceLanding", String.format("%.2f", PhaseAnalysis.flightDistanceLanding(flight))); break;
+			case "flightDistanceTakeOff": this.featureValues.put( "flightDistanceTakeOff", String.format("%.2f", PhaseAnalysis.flightDistanceTakeOff(flight))); break;
 			case "windSpeed": this.featureValues.put( "windSpeed", String.format("%.2f", Wind.speed(flight))); break;
 			case "fastWindAlt": this.featureValues.put( "fastWindAlt", String.format("%.2f", Altitude.fastWindAltitude(flight))); break;
 			case "noiseTemp": this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight))); break;
@@ -104,6 +107,9 @@ public class Analysis {
 		this.featureValues.put("fastJetAlt", String.format("%.2f", Altitude.fastJetAltitude(flight)));
 		this.featureValues.put("fastWindAlt", String.format("%.2f", Altitude.fastWindAltitude(flight)));
 		this.featureValues.put("flightDistance", String.format("%.2f", FlightAnalysis.computeFullDistance(flight)));
+		this.featureValues.put("flightDistanceCruise", String.format("%.2f", PhaseAnalysis.flightDistanceCruise(flight)));
+		this.featureValues.put("flightDistanceLanding", String.format("%.2f", PhaseAnalysis.flightDistanceLanding(flight)));
+		this.featureValues.put("flightDistanceTakeOff", String.format("%.2f", PhaseAnalysis.flightDistanceTakeOff(flight)));
 		this.featureValues.put("flightDuration", FlightAnalysis.getDuration(flight));
     	this.featureValues.put("landing", Phases.landing(flight));
     
