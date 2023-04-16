@@ -18,9 +18,7 @@ public class Utils {
 		return Math.sqrt(Math.pow(flatDistance, 2) + Math.pow(endPosition.getAltitude() - startPosition.getAltitude(), 2));
 	}
 	
-	public static String TimestampDurationToString(double startTime, double endTime) {
-		double duration = endTime - startTime;
-		
+	public static String TimestampDurationToString(double duration) {
 		int hours = (int) duration / 3600;
 		duration -= hours * 3600;
 		int minutes = (int) duration / 60;
