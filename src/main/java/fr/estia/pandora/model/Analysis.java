@@ -63,6 +63,9 @@ public class Analysis {
 			case "flightDistanceLanding": this.featureValues.put( "flightDistanceLanding", String.format("%.2f", PhaseAnalysis.flightDistanceLanding(flight))); break;
 			case "flightDistanceTakeOff": this.featureValues.put( "flightDistanceTakeOff", String.format("%.2f", PhaseAnalysis.flightDistanceTakeOff(flight))); break;
 			case "windSpeed": this.featureValues.put( "windSpeed", String.format("%.2f", Wind.speed(flight))); break;
+			case "windSpeedTakeOff": this.featureValues.put( "windSpeedTakeOff", String.format("%.2f", PhaseAnalysis.avgWindSpeedTakeOff(flight))); break;
+			case "windSpeedCruise": this.featureValues.put( "windSpeedCruise", String.format("%.2f", PhaseAnalysis.avgWindSpeedCruise(flight))); break;
+			case "windSpeedLanding": this.featureValues.put( "windSpeedLanding", String.format("%.2f", PhaseAnalysis.avgWindSpeedLanding(flight))); break;
 			case "fastWindAlt": this.featureValues.put( "fastWindAlt", String.format("%.2f", Altitude.fastWindAltitude(flight))); break;
 			case "noiseTemp": this.featureValues.put( "noiseTemp", String.format("%.2f", Temperature.noise(flight))); break;
 			case "stressedPilot": this.featureValues.put( "stressedPilot", Stress.attack(flight)); break;
@@ -156,7 +159,11 @@ public class Analysis {
 		this.featureValues.put("reachAlt", String.format("%.2f", Altitude.Reaching80PercentMaxAltitude.average(flight)));
 		this.featureValues.put("stressedPilot", Stress.attack(flight));
     	this.featureValues.put("takeOff", Phases.takeOff(flight));
+
 		this.featureValues.put("windSpeed", String.format("%.2f", Wind.speed(flight)));
+		this.featureValues.put("windSpeedCruise", String.format("%.2f", PhaseAnalysis.avgWindSpeedCruise(flight)));
+		this.featureValues.put("windSpeedLanding", String.format("%.2f", PhaseAnalysis.avgWindSpeedLanding(flight)));
+		this.featureValues.put("windSpeedTakeOff", String.format("%.2f", PhaseAnalysis.avgWindSpeedTakeOff(flight)));
 	}
 
 	public String getFeatureValue( String feature ) {

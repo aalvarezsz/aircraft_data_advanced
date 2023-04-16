@@ -14,8 +14,8 @@ public class PhaseAnalysis {
 	 * avgEnginePowerXXXXXX 	--> Done
 	 * maxEnginePowerXXXXXX	 	--> Done
 	 * flightDistanceXXXXXX		--> Done
-	 * avgAccelerationXXXXXX	--> 
-	 * maxAccelerationXXXXXX	--> 
+	 * avgAccelerationXXXXXX	--> Done
+	 * maxAccelerationXXXXXX	--> Done
 	 * windSpeedXXXXXX 			-->
 	 * 
 	 *
@@ -293,6 +293,29 @@ public class PhaseAnalysis {
 
         if(landing == null) return 0;
         else return Acceleration.max(flight, landing.startIndex, landing.endIndex);
+    }
+
+
+    /* AVERAGE WIND SPEED IN ALL THREE PHASES */
+    public static double avgWindSpeedTakeOff(Flight flight) {
+        FlightPhase takeOff = Phases.getTakeOffData(flight);
+
+        if(takeOff == null) return 0;
+        else return Wind.speed(flight, takeOff.startIndex, takeOff.endIndex);
+    }
+
+    public static double avgWindSpeedCruise(Flight flight) {
+        FlightPhase cruise = Phases.getCruiseData(flight);
+
+        if(cruise == null) return 0;
+        else return Wind.speed(flight, cruise.startIndex, cruise.endIndex);
+    }
+
+    public static double avgWindSpeedLanding(Flight flight) {
+        FlightPhase landing = Phases.getLandingData(flight);
+
+        if(landing == null) return 0;
+        else return Wind.speed(flight, landing.startIndex, landing.endIndex);
     }
     
     
