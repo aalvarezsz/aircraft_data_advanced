@@ -2,7 +2,10 @@ package fr.estia.pandora.analyses;
 
 import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.Position;
+import fr.estia.pandora.model.Record;
 import fr.estia.pandora.model.Utils;
+
+import java.util.List;
 
 public class FlightAnalysis {
 	
@@ -28,5 +31,22 @@ public class FlightAnalysis {
 		Position endPosition = new Position(flight.getRecords().get(lastFlightRecordIndex).getLatitude(), flight.getRecords().get(lastFlightRecordIndex).getLongitude(), flight.getRecords().get(lastFlightRecordIndex).getAltitude());
 
 		return computeFullDistance(flight) / Utils.ComputeDistance(startPosition, endPosition);
+	}
+
+	public static double reachDistance(Flight flight) {
+		List<Record> flightRecords = flight.getRecords();
+		double ratioReachedDistance = computeFullDistance(flight) * 0.8;
+
+		double distanceReached = 0;
+		int i = 0;
+
+		for(i = 0; i<flightRecords.size() - 1; i++) {
+			distanceReached += Utils.ComputeDistanceBetween(flight, i, i+1);
+			if(distanceReached >= ratioReachedDistance) break;
+		}
+
+		double timeToReach = flightRecords.get(i).getTimestamp() - flightRecords.get(0).getTimestamp();
+
+		return timeToReach / 60;
 	}
 }
