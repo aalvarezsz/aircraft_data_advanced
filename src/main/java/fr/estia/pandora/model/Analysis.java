@@ -147,7 +147,27 @@ public class Analysis {
 			case "landing":
 				this.featureValues.put("landing", Phases.landing(flight));
 				break;
-
+				
+			//Milestone Flight Phases
+			case "avgAirSpeedTakeOff":
+				this.featureValues.put("avgAirSpeedTakeOff", String.format("%.2f", PhasesTests.avgAirSpeedTakeOff(flight)));
+				break;
+			case "avgAirSpeedCruise":
+				this.featureValues.put("avgAirSpeedCruise", String.format("%.2f", PhasesTests.avgAirSpeedCruise(flight)));
+				break;
+			case "avgAirSpeedLanding":
+				this.featureValues.put("avgAirSpeedLanding", String.format("%.2f", PhasesTests.avgAirSpeedLanding(flight)));
+				break;
+			case "maxAirSpeedTakeOff":
+				this.featureValues.put("maxAirSpeedTakeOff", String.format("%.2f", PhasesTests.maxAirSpeedTakeOff(flight)));
+				break;
+			case "maxAirSpeedCruise":
+				this.featureValues.put("maxAirSpeedCruise", String.format("%.2f", PhasesTests.maxAirSpeedCruise(flight)));
+				break;
+			case "maxAirSpeedLanding":
+				this.featureValues.put("maxAirSpeedLanding", String.format("%.2f", PhasesTests.maxAirSpeedLanding(flight)));
+				break;
+				
 			default: break;
 		}
 	}
@@ -198,11 +218,13 @@ public class Analysis {
 		this.featureValues.put("landing", Phases.landing(flight));
 		
 		//Milestone Phases
-		//    avgAirSpeedTakeOff avgAirSpeedCruise avgAirSpeedLanding
-
 		this.featureValues.put("avgAirSpeedTakeOff", String.format("%.2f", PhasesTests.avgAirSpeedTakeOff(flight)));
 		this.featureValues.put("avgAirSpeedCruise", String.format("%.2f", PhasesTests.avgAirSpeedCruise(flight)));
 		this.featureValues.put("avgAirSpeedLanding", String.format("%.2f", PhasesTests.avgAirSpeedLanding(flight)));
+		
+		this.featureValues.put("maxAirSpeedTakeOff", String.format("%.2f", PhasesTests.maxAirSpeedTakeOff(flight)));
+		this.featureValues.put("maxAirSpeedCruise", String.format("%.2f", PhasesTests.maxAirSpeedCruise(flight)));
+		this.featureValues.put("maxAirSpeedLanding", String.format("%.2f", PhasesTests.maxAirSpeedLanding(flight)));
 
 	}
 
