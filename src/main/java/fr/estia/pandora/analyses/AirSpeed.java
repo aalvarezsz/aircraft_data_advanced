@@ -14,6 +14,15 @@ public class AirSpeed { // m/s for US planes, knots for RU planes
 		
 		return airspeedSum / flightRecords.size();
 	}
+
+	public static double average(Flight flight, int startIndex, int endIndex) {
+		ArrayList<Record> flightRecords = flight.getRecords();
+		double airspeedSum = 0;
+
+		for (int i = startIndex; i<endIndex; i++) airspeedSum += flightRecords.get(i).getAir_speed();
+
+		return airspeedSum / flightRecords.size();
+	}
 	
 	public static double max(Flight flight) {
 		ArrayList<Record> flightRecords = flight.getRecords();
@@ -26,7 +35,17 @@ public class AirSpeed { // m/s for US planes, knots for RU planes
 		}
 		return maxAirspeed;
 	}
-	
 
+	public static double max(Flight flight, int startIndex, int endIndex) {
+		ArrayList<Record> flightRecords = flight.getRecords();
+		double maxAirspeed = flightRecords.get(startIndex).getAir_speed();
+
+		for (int i = startIndex + 1; i<endIndex; i++) {
+			if(maxAirspeed < flightRecords.get(i).getAir_speed()) {
+				maxAirspeed = flightRecords.get(i).getAir_speed();
+			};
+		}
+		return maxAirspeed;
+	}
 }
 

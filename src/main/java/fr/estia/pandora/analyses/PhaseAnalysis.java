@@ -34,12 +34,7 @@ public class PhaseAnalysis {
         FlightPhase takeOff = Phases.getTakeOffData(flight);
         if(takeOff == null) return airspeed;
 
-        int i_start = takeOff.startIndex;
-        int i_end = takeOff.endIndex;
-
-        for (int i = takeOff.startIndex; i < takeOff.endIndex; i++) airspeed += flightRecords.get(i).getAir_speed();
-
-        return airspeed/(i_end-i_start);
+        return AirSpeed.average(flight, takeOff.startIndex, takeOff.endIndex);
     }
     
     public static double avgAirSpeedCruise(Flight flight) {
@@ -48,13 +43,8 @@ public class PhaseAnalysis {
 
         FlightPhase cruise = Phases.getCruiseData(flight);
         if(cruise == null) return airspeed;
-        
-        int i_start = cruise.startIndex;
-        int i_end = cruise.endIndex;
 
-        for (int i = i_start; i < i_end; i++) airspeed += flightRecords.get(i).getAir_speed();
-
-        return airspeed/(i_end-i_start);
+        return AirSpeed.average(flight, cruise.startIndex, cruise.endIndex);
     }
     
     public static double avgAirSpeedLanding(Flight flight) {
@@ -63,13 +53,8 @@ public class PhaseAnalysis {
 
         FlightPhase landing = Phases.getLandingData(flight);
         if(landing == null) return airspeed;
-        
-        int i_start = landing.startIndex;
-        int i_end = landing.endIndex;
 
-        for (int i = i_start; i < i_end; i++) airspeed += flightRecords.get(i).getAir_speed();
-
-        return airspeed/(i_end-i_start);
+        return AirSpeed.average(flight, landing.startIndex, landing.endIndex);
     }
     
     
@@ -80,16 +65,8 @@ public class PhaseAnalysis {
 
         FlightPhase takeOff = Phases.getTakeOffData(flight);
         if(takeOff == null) return 0;
-        
-        int i_start = takeOff.startIndex;
-        int i_end = takeOff.endIndex;
 
-        for (int i = i_start; i < i_end; i++) {
-        	if (flightRecords.get(i).getAir_speed() > airspeed) {
-        		airspeed = flightRecords.get(i).getAir_speed();
-        	}
-        }
-        return airspeed;
+        return AirSpeed.max(flight, takeOff.startIndex, takeOff.endIndex);
     }
     
     public static double maxAirSpeedCruise(Flight flight) {
@@ -98,16 +75,8 @@ public class PhaseAnalysis {
 
         FlightPhase cruise = Phases.getCruiseData(flight);
         if(cruise == null) return 0;
-        
-        int i_start = cruise.startIndex;
-        int i_end = cruise.endIndex;
 
-        for (int i = i_start; i < i_end; i++) {
-        	if (flightRecords.get(i).getAir_speed() > airspeed) {
-        		airspeed = flightRecords.get(i).getAir_speed();
-        	}
-        }
-        return airspeed;
+        return AirSpeed.max(flight, cruise.startIndex, cruise.endIndex);
     }
 
     public static double maxAirSpeedLanding(Flight flight) {
@@ -116,16 +85,8 @@ public class PhaseAnalysis {
 
         FlightPhase landing = Phases.getLandingData(flight);
         if(landing == null) return 0;
-        
-        int i_start = landing.startIndex;
-        int i_end = landing.endIndex;
 
-        for (int i = i_start; i < i_end; i++) {
-        	if (flightRecords.get(i).getAir_speed() > airspeed) {
-        		airspeed = flightRecords.get(i).getAir_speed();
-        	}
-        }
-        return airspeed;
+        return AirSpeed.max(flight, landing.startIndex, landing.endIndex);
     }
 
     
@@ -137,12 +98,7 @@ public class PhaseAnalysis {
         FlightPhase takeOff = Phases.getTakeOffData(flight);
         if(takeOff == null) return 0;
         
-        int i_start = takeOff.startIndex;
-        int i_end = takeOff.endIndex;
-        for (int i = i_start; i < i_end; i++) {
-            power += flightRecords.get(i).getEnginePower();
-        }
-        return power/(i_start-i_end);
+        return EnginePower.average(flight, takeOff.startIndex, takeOff.endIndex);
     }
     
     public static double avgEnginePowerCruise(Flight flight) {
@@ -151,13 +107,8 @@ public class PhaseAnalysis {
 
         FlightPhase cruise = Phases.getCruiseData(flight);
         if(cruise == null) return 0;
-        
-        int i_start = cruise.startIndex;
-        int i_end = cruise.endIndex;
-        for (int i = i_start; i < i_end; i++) {
-        	power += flightRecords.get(i).getEnginePower();
-        }
-        return power/(i_start-i_end);
+
+        return EnginePower.average(flight, cruise.startIndex, cruise.endIndex);
     }
     
     public static double avgEnginePowerLanding(Flight flight) {
@@ -166,13 +117,8 @@ public class PhaseAnalysis {
 
         FlightPhase landing = Phases.getLandingData(flight);
         if(landing == null) return 0;
-        
-        int i_start = landing.startIndex;
-        int i_end = landing.endIndex;
-        for (int i = i_start; i < i_end; i++) {
-            power += flightRecords.get(i).getEnginePower();
-        }
-        return power/(i_start-i_end);
+
+        return EnginePower.average(flight, landing.startIndex, landing.endIndex);
     }
 
 
@@ -183,16 +129,8 @@ public class PhaseAnalysis {
 
         FlightPhase takeOff = Phases.getTakeOffData(flight);
         if(takeOff == null) return 0;
-        
-        int i_start = takeOff.startIndex;
-        int i_end = takeOff.endIndex;
-        for (int i = i_start; i < i_end; i++) {
-        	if (flightRecords.get(i).getAir_speed() > power) {
-        		power = flightRecords.get(i).getAir_speed();
-        	}
-            
-        }
-        return power;
+
+        return EnginePower.max(flight, takeOff.startIndex, takeOff.endIndex);
     }
     
     public static double maxEnginePowerCruise(Flight flight) {
@@ -201,14 +139,8 @@ public class PhaseAnalysis {
 
         FlightPhase cruise = Phases.getCruiseData(flight);
         if(cruise == null) return 0;
-        
-        int i_start = cruise.startIndex;
-        int i_end = cruise.endIndex;
-        for (int i = i_start; i < i_end; i++) {
-        	if (flightRecords.get(i).getAir_speed() > power) {
-        		power = flightRecords.get(i).getAir_speed();
-        	}        }
-        return power;
+
+        return EnginePower.max(flight, cruise.startIndex, cruise.endIndex);
     }
     
     public static double maxEnginePowerLanding(Flight flight) {
@@ -217,14 +149,8 @@ public class PhaseAnalysis {
 
         FlightPhase landing = Phases.getLandingData(flight);
         if(landing == null) return 0;
-        
-        int i_start = landing.startIndex;
-        int i_end = landing.endIndex;
-        for (int i = i_start; i < i_end; i++) {
-        	if (flightRecords.get(i).getAir_speed() > power) {
-        		power = flightRecords.get(i).getAir_speed();
-        	}        }
-        return power;
+
+        return EnginePower.max(flight, landing.startIndex, landing.endIndex);
     }
 
 
