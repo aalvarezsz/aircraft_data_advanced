@@ -51,7 +51,6 @@ public class Phases {
 
         double cruiseDebutTimestamp = plateaus.get(0).startTimestamp;
         double cruiseEndTimestamp = plateaus.get(plateaus.size() - 1).endTimestamp;
-        System.out.println("DEBUG");
 
         int cruiseDebutIndex = plateaus.get(0).startIndex;
         int cruiseEndIndex = plateaus.get(plateaus.size() - 1).endIndex;
