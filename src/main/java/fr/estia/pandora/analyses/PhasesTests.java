@@ -12,8 +12,8 @@ public class PhasesTests {
 	/* Replace XXXXXX by Phase (TakeOff, Cruise, Landing)
 	 * avgAirSpeedXXXXXX 		--> Done
 	 * maxAirSpeedXXXXXX 		--> Done
-	 * avgEnginePowerXXXXXX 	--> 
-	 * maxEnginePowerXXXXXX	 	--> 
+	 * avgEnginePowerXXXXXX 	--> Done
+	 * maxEnginePowerXXXXXX	 	--> Done
 	 * flightDistanceXXXXXX		--> 
 	 * avgAccelerationXXXXXX	--> 
 	 * maxAccelerationXXXXXX	--> 
@@ -120,8 +120,7 @@ public class PhasesTests {
     
     
     
-    /* AVG ENGINE POWER IN ALL THREE PHASES */
-    //avgEnginePowerCruise  
+    /* AVG ENGINE POWER IN ALL THREE PHASES */  
     public static double avgEnginePowerTakeOff(Flight flight) {
         ArrayList<Record> flightRecords = flight.getRecords();
         double power = flightRecords.get(0).getAir_speed();
@@ -132,7 +131,7 @@ public class PhasesTests {
         for (int i = i_start; i < i_end; i++) {
             power += flightRecords.get(i).getEnginePower();
         }
-        return power;
+        return power/(i_start-i_end);
     }
     
     public static double avgEnginePowerCruise(Flight flight) {
@@ -145,7 +144,7 @@ public class PhasesTests {
         for (int i = i_start; i < i_end; i++) {
         	power += flightRecords.get(i).getEnginePower();
         }
-        return power;
+        return power/(i_start-i_end);
     }
     
     public static double avgEnginePowerLanding(Flight flight) {
@@ -156,9 +155,9 @@ public class PhasesTests {
         int i_start = landing.startIndex;
         int i_end = landing.endIndex;
         for (int i = i_start; i < i_end; i++) {
-            power += flightRecords.get(0).getEnginePower();
+            power += flightRecords.get(i).getEnginePower();
         }
-        return power;
+        return power/(i_start-i_end);
     }
     
     /* MAX ENGINE POWER IN ALL THREE PHASES */
@@ -204,8 +203,11 @@ public class PhasesTests {
         	if (flightRecords.get(i).getAir_speed() > power) {
         		power = flightRecords.get(i).getAir_speed();
         	}        }
-        return power/(i_end-i_start);
+        return power;
     }
+    
+    
+    
     
     
     
