@@ -1,30 +1,10 @@
 package fr.estia.pandora.analyses;
 
-import java.util.ArrayList;
-
 import fr.estia.pandora.model.Flight;
 import fr.estia.pandora.model.FlightPhase;
-import fr.estia.pandora.model.Record;
 import fr.estia.pandora.model.Utils;
 
 public class PhaseAnalysis {
-	/* Replace XXXXXX by Phase (TakeOff, Cruise, Landing)
-	 * avgAirSpeedXXXXXX 		--> Done
-	 * maxAirSpeedXXXXXX 		--> Done
-	 * avgEnginePowerXXXXXX 	--> Done
-	 * maxEnginePowerXXXXXX	 	--> Done
-	 * flightDistanceXXXXXX		--> Done
-	 * avgAccelerationXXXXXX	--> Done
-	 * maxAccelerationXXXXXX	--> Done
-	 * windSpeedXXXXXX 			--> Done
-	 * 
-	 *
-	 * mostPowerPhase
-	 * mostStressPhase
-	 * mostAccelPhase
-	 *       
-	 *
-	 */
 	
     /* AVERAGE AIR SPEED IN ALL THREE PHASES */
     public static double avgAirSpeedTakeOff(Flight flight) {
